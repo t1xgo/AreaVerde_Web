@@ -14,7 +14,9 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="title">Area verde</v-list-item-title>
-            <v-list-item-subtitle>The cleaner & the better</v-list-item-subtitle>
+            <v-list-item-subtitle
+              >The cleaner & the better</v-list-item-subtitle
+            >
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -58,7 +60,7 @@
         v-if="isXs"
       />
       <div v-else>
-        <v-btn text @click="$vuetify.goTo('#home')">
+        <v-btn text @click="imprimirRecolectores()">
           <span class="mr-2">Incio</span>
         </v-btn>
         <v-btn text @click="$vuetify.goTo('#about')">
@@ -87,6 +89,7 @@
 </style>
 
 <script>
+import axios from "axios";
 export default {
   data: () => ({
     drawer: null,
@@ -106,11 +109,17 @@ export default {
     onResize() {
       this.isXs = window.innerWidth < 850;
     },
-     gotoLogin: function()
-  {
-    console.log('brandon mk')
-    this.$router.push({ path: 'Login&Signup' })
-  }
+    gotoLogin: function () {
+      console.log("brandon mk");
+      this.$router.push({ path: "Login&Signup" });
+    },
+    async imprimirRecolectores() {
+      let response = await axios.get(
+        "http://localhost:3001/getrecolectores/"
+      );
+      console.log(response);
+      //$vuetify.goTo('#home')
+    },
   },
 
   watch: {
