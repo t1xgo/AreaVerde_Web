@@ -110,7 +110,6 @@ export default {
       this.isXs = window.innerWidth < 850;
     },
     gotoLogin: function () {
-      console.log("brandon mk");
       this.$router.push({ path: "Login&Signup" });
     },
     async imprimirRecolectores() {
