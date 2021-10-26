@@ -58,7 +58,7 @@
         v-if="isXs"
       />
       <div v-else>
-        <v-btn text @click="$vuetify.goTo('#home')">
+        <v-btn text @click="imprimirRecolectores()">
           <span class="mr-2">Incio</span>
         </v-btn>
         <v-btn text @click="$vuetify.goTo('#feed')">
@@ -84,6 +84,7 @@
 </style>
 
 <script>
+import axios from "axios";
 export default {
   data: () => ({
     drawer: null,
@@ -104,7 +105,6 @@ export default {
       this.isXs = window.innerWidth < 850;
     },
     gotoLogin: function() {
-      console.log("brandon mk");
       this.$router.push({ path: "Login&Signup" });
     },
   },
