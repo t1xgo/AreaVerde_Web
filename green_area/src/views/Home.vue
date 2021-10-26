@@ -1,11 +1,12 @@
 <template>
   <section id="home">
+    <navbar :color="color" :flat="flat" />
     <v-parallax dark src="@/assets/img/Green_wallpaper.jpg" height="750">
       <v-row align="center" justify="center">
         <v-col cols="10">
           <v-row align="center" justify="center">
             <v-col cols="12" md="6" xl="8">
-              <h1 class="display-2 font-weight-bold mb-4"> Area Verde </h1>
+              <h1 class="display-2 font-weight-bold mb-4">Area Verde</h1>
               <h1 class="font-weight-light">
                 Un espacio en donde podrás reportar las basuras que <br />
                 encuentres por las calles de Medellín, ayudando <br />
@@ -22,7 +23,6 @@
                 Conocer mas
                 <v-icon class="ml-2">mdi-arrow-down</v-icon>
               </v-btn>
-              
             </v-col>
             <v-col cols="12" md="6" xl="4" class="hidden-sm-and-down"> </v-col>
           </v-row>
@@ -34,10 +34,12 @@
     </v-parallax>
 
     <v-container fluid id="about" class="mt-2">
-      <v-row align="center"  justify="center">
-        <h2 class="display-1 font-weight-bold mb-4" align = "center">   CLASIFICACION DE RESIDUOS </h2>
+      <v-row align="center" justify="center">
+        <h2 class="display-1 font-weight-bold mb-4" align="center">
+          CLASIFICACION DE RESIDUOS
+        </h2>
         <v-col cols="10">
-          <v-row align="center" justify="space-around">      
+          <v-row align="center" justify="space-around">
             <v-col
               cols="12"
               sm="4"
@@ -65,25 +67,25 @@
                 </v-card>
               </v-hover>
             </v-col>
-                <about class="aboutStyle">
-                </about>
+            <about class="aboutStyle"> </about>
           </v-row>
         </v-col>
       </v-row>
-       <div class="svg-border-waves">
-      <img src="~@/assets/img/wave.svg" />
-    </div>
+      <div class="svg-border-waves">
+        <img src="~@/assets/img/wave.svg" />
+      </div>
     </v-container>
   </section>
 </template>
 
 <script>
-import about from "../components/AboutSection.vue";
+import about from "../views/AboutSection.vue";
+import Navbar from "../components/Navigation.vue";
 export default {
-  components:
-{
-  about,
-},
+  components: {
+    about,
+    Navbar,
+  },
 
   data() {
     return {
@@ -92,45 +94,23 @@ export default {
         {
           img: require("@/assets/img/Garbage_bins/whiteBin.png"),
           title: "CODIGO BLANCO",
-          text: "Residuos que se encuentran limpios y que ademas son aprovechables. Por ejemplo: platicos, vidrio, carton, etc.",
+          text:
+            "Residuos que se encuentran limpios y que ademas son aprovechables. Por ejemplo: plásticos, vidrio, cartón, etc.",
         },
         {
           img: require("@/assets/img/Garbage_bins/blackBin.png"),
           title: "CODIGO NEGRO",
-          text: "Residuos que ya están contaminados o que no son aprovechables. Por ejemplo: servilletas, papel higiénico, cartón sucio, tapabocas, etc.",
+          text:
+            "Residuos que ya están contaminados o que no son aprovechables. Por ejemplo: servilletas, papel higiénico, cartón sucio, tapabocas, etc.",
         },
         {
           img: require("@/assets/img/Garbage_bins/greenBin.png"),
           title: "CODIGO VERDE",
-          text: "Residuos orgánicos aprovechables. Por ejemplo: restos de comida.",
+          text:
+            "Residuos orgánicos aprovechables. Por ejemplo: restos de comida.",
         },
       ],
     };
-  },
-  watch: {
-    dialog(value) {
-      if (!value) {
-        this.pause();
-      }
-    },
-  },
-  methods: {
-    ready(event) {
-      this.player = event.target;
-    },
-    change() {
-      // when you change the value, the player will also change.
-      // If you would like to change `playerVars`, please change it before you change `videoId`.
-      // If `playerVars.autoplay` is 1, `loadVideoById` will be called.
-      // If `playerVars.autoplay` is 0, `cueVideoById` will be called.
-      this.videoId = "another video id";
-    },
-    stop() {
-      this.player.stopVideo();
-    },
-    pause() {
-      this.player.pauseVideo();
-    },
   },
 };
 </script>
@@ -240,8 +220,7 @@ export default {
   transform: translateY(-20px);
   transition: 0.5s ease-out;
 }
-.aboutStyle
-{
+.aboutStyle {
   position: relative;
 }
 </style>
