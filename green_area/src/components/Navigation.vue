@@ -14,9 +14,7 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="title">Area verde</v-list-item-title>
-            <v-list-item-subtitle
-              >The cleaner & the better</v-list-item-subtitle
-            >
+            <v-list-item-subtitle>The cleaner, the better</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -63,9 +61,6 @@
         <v-btn text @click="imprimirRecolectores()">
           <span class="mr-2">Incio</span>
         </v-btn>
-        <v-btn text @click="$vuetify.goTo('#about')">
-          <span class="mr-2">Sobre</span>
-        </v-btn>
         <v-btn text @click="$vuetify.goTo('#feed')">
           <span class="mr-2">Feed</span>
         </v-btn>
@@ -109,16 +104,8 @@ export default {
     onResize() {
       this.isXs = window.innerWidth < 850;
     },
-    gotoLogin: function () {
-      console.log("brandon mk");
+    gotoLogin: function() {
       this.$router.push({ path: "Login&Signup" });
-    },
-    async imprimirRecolectores() {
-      let response = await axios.get(
-        "http://localhost:3001/getrecolectores/"
-      );
-      console.log(response);
-      //$vuetify.goTo('#home')
     },
   },
 

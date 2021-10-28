@@ -3,7 +3,10 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Navigation from '../components/Navigation.vue'
 import Login from '../views/Login&Signup.vue'
-import About from '../components/AboutSection.vue'
+import feed from '../views/Feed.vue'
+import user from '../views/UserPanel.vue'
+import admin from '../views/AdminPanel.vue'
+import collector from '../views/CollectorSection.vue'
 
 Vue.use(VueRouter)
 
@@ -14,14 +17,29 @@ const routes = [
     component: Home, Navigation
   },
   {
-    path: '/about',
-    name: 'About',
-    component: About, Navigation
+    path: '/feed',
+    name: 'Feed',
+    component: feed, Navigation
   },
   {
     path: '/login',
     name: 'Login',
     component: Login, Navigation
+  },
+  {
+    path: '/user',
+    name: 'User',
+    component: user
+  },
+  {
+    path: '/admin',
+    name: 'AdminPanel',
+    component: admin
+  },
+  {
+    path: '/collector',
+    name: 'CollectorSection',
+    component: collector
   },
 ]
 

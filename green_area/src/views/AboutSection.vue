@@ -5,9 +5,9 @@
         <v-col cols="10">
           <v-row align="center" justify="center">
             <v-col cols="12" md="7">
-              <h1 class="font-weight-light display-2">Sobre</h1>
+              <h1 class="font-weight-light display-2">Nuestras promesas</h1>
               <h1 class="font-weight-light display-1 mb-3">
-                Lorem ipsum dolor!
+                The cleaner, the better.
               </h1>
               <v-row>
                 <v-col cols="12" class="d-flex align-center">
@@ -17,9 +17,11 @@
                     class="mr-4"
                   />
                   <p class="text-justify">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Utilizando nuestra plataforma se podrán evitar grandes daños
+                    cuyos arreglos provocarían grandes impactos económicos
+                    alrededor de todo el mundo. Evitando esto, podríamos no solo
+                    mejorar nuestro planeta, sino también salvar muchos
+                    bolsillos.
                   </p>
                 </v-col>
                 <v-col cols="12" class="d-flex align-center">
@@ -29,9 +31,9 @@
                     class="mr-4"
                   />
                   <p class="text-justify">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Mediante nuesta plataforma se mantiene una comunicación
+                    constante entre todos, para permitir así el flujo rápido y
+                    eficiente de la información.
                   </p>
                 </v-col>
                 <v-col cols="12" class="d-flex align-center">
@@ -41,9 +43,10 @@
                     class="mr-4"
                   />
                   <p class="text-justify">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Luchamos para que nuestro planeta tenga un mejor futuro, en
+                    el que podamos vivir saludablemente y sin necesidad de
+                    preocuparnos por los daños ambientales causados por los
+                    desechos.
                   </p>
                 </v-col>
               </v-row>
@@ -52,7 +55,7 @@
               <v-img
                 src="@/assets/img/planetEarth.png"
                 class="d-block ml-auto mr-auto"
-                max-width="400px"
+                max-width="320px"
               />
             </v-col>
           </v-row>
