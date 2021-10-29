@@ -20,7 +20,6 @@
                         <v-text-field
                           label="usuario"
                           v-model="usuario.usuario"
-                          :rules="[rules.required, rules.min]"
                           outlined
                           dense
                           color="green"
@@ -53,7 +52,13 @@
                             </span>
                           </v-col>
                         </v-row>
-                        <v-btn color="green" @click="irRegistro()" dark block tile>
+                        <v-btn
+                          color="green"
+                          @click="irRegistro()"
+                          dark
+                          block
+                          tile
+                        >
                           Log in
                         </v-btn>
                         <h5 class="text-center grey--text mt-4 mb-3">
@@ -132,8 +137,10 @@
                         <v-row>
                           <v-col cols="12" sm="6">
                             <v-text-field
-                              label="First name"
+                              label="name"
                               outlined
+                              v-model="usuario.name"
+                              :rules="rules.required"
                               dense
                               color="green"
                               autocomplete="false"
@@ -143,8 +150,10 @@
                           </v-col>
                           <v-col cols="12" sm="6">
                             <v-text-field
-                              label="Last name"
+                              label="ID"
                               outlined
+                              v-model="usuario.cedula"
+                              :rules="rules.required"
                               dense
                               color="green"
                               autocomplete="false"
@@ -154,17 +163,47 @@
                           </v-col>
                         </v-row>
                         <v-text-field
+                          label="Cellphone"
+                          outlined
+                          v-model="usuario.celular"
+                          dense
+                          :rules="rules.required"
+                          color="green"
+                          autocomplete="false"
+                          class="mt-4"
+                        >
+                        </v-text-field>
+
+                        <v-text-field
                           label="Email"
                           outlined
+                          v-model="usuario.email"
                           dense
+                          :rules="rules.required"
                           color="green"
                           autocomplete="false"
                           class="mt-4"
                           type="email"
                         >
                         </v-text-field>
+
+                        <v-text-field
+                          label="Usuario"
+                          outlined
+                          dense
+                          v-model="usuario.usuario"
+                          :rules="rules.required"
+                          color="green"
+                          autocomplete="false"
+                          class="mt-4"
+                          type="email"
+                        >
+                        </v-text-field>
+
                         <v-text-field
                           label="Password"
+                          v-model="usuario.password"
+                          :rules="rules.required"
                           outlined
                           dense
                           color="green"
@@ -173,6 +212,44 @@
                           type="password"
                         >
                         </v-text-field>
+
+                        <template>
+                          <div>
+                            <v-menu
+                              ref="menu"
+                              v-model="menu"
+                              :close-on-content-click="false"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                  v-model="usuario.fechaNacimiento"
+                                  label="Birthday date"
+                                  prepend-icon="mdi-calendar"
+                                  readonly
+                                  v-bind="attrs"
+                                  v-on="on"
+                                ></v-text-field>
+                              </template>
+                              <v-date-picker
+                                v-model="usuario.fechaNacimiento"
+                                :active-picker.sync="activePicker"
+                                :max="
+                                  new Date(
+                                    Date.now() -
+                                      new Date().getTimezoneOffset() * 60000
+                                  )
+                                    .toISOString()
+                                    .substr(0, 10)
+                                "
+                                min="1950-01-01"
+                                @change="save"
+                              ></v-date-picker>
+                            </v-menu>
+                          </div>
+                        </template>
                         <v-row>
                           <v-col cols="12" sm="7">
                             <v-checkbox
@@ -188,7 +265,9 @@
                             </span>
                           </v-col>
                         </v-row>
-                        <v-btn color="green" dark block tile> Sign up </v-btn>
+                        <v-btn color="green" 
+                        @click="crearUsuario()"
+                        dark block tile> Sign up </v-btn>
                         <h5 class="text-center grey--text mt-4 mb-3">
                           Or sign up using:
                           <div
@@ -234,34 +313,83 @@ export default {
     Navbar,
   },
   data: () => ({
+    activePicker: null,
+    menu: false,
     step: 1,
     usuario: {
+      nombre: "",
       usuario: "",
+      cedula: "",
       password: "",
+      correo: "",
+      celular: "",
+      fechaNacimiento: "",
     },
     rules: {
       required: [(v) => !!v || "El campo es obligatorio"],
       min: (v) => v.length >= 8 || "Min 8 characters",
+      emailRules: [
+        (v) => !!v || "El campo es obligatorio",
+        (v) => /.+@.+\..+/.test(v) || "Correo invalido",
+      ],
     },
   }),
+  beforeMount() {
+    let token = localStorage.getItem("token");
+    this.$axios.setHeader("token", token);
+  },
+  watch: {
+      menu (val) {
+        val && setTimeout(() => (this.activePicker = 'YEAR'))
+      },
+    },
   methods: {
+    save (date) {
+        this.$refs.menu.save(date)
+    },
     async irRegistro() {
       this.ingreso();
-      this.$router.push("/incio");
+      this.$router.push("/user");
+    },
+    async crearUsuario() {
+      if (this.$refs.formRegistro.validate()) {
+        this.dialogError = false;
+        try {
+          console.log("Inicio guardar usuario");
+          let usuario = Object.assign({}, this.usuario);
+          console.log(usuario);
+          let response = await this.$axios.post(
+            "http://localhost:3001/login/",
+            usuario
+          );
+          console.log(response);
+          let resp = response.data;
+          console.log(resp);
+          if (resp.ok == true) {
+            this.$router.push("user");
+          } else {
+            this.dialogError = true;
+          }
+        } catch (error) {
+          this.dialogError = true;
+          console.log(error);
+        }
+      } else {
+        this.dialogError = true;
+        console.log("Formato incompleto");
+      }
     },
     async ingreso() {
-      console.log("BBBBBBBBBBBBBBBBB");
       try {
         //if (this.$refs.formLogin.validate()) {
         this.dialogError = false;
         console.log(this.usuario);
         let response = await axios.post(
-          "http://localhost:8080/login",
+          "http://localhost:3001/login",
           this.usuario
         );
         let usuario = response.data;
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        console.log(usuario);
+        console.log("ESTE ES AAAAAAAAAAAAAAAAA", usuario);
         if (usuario.ok == true) {
           let token = usuario.content.token;
           localStorage.setItem("token", token);
