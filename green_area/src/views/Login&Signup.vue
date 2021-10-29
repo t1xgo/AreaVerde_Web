@@ -9,9 +9,7 @@
               <v-row>
                 <v-col cols="12" sm="6">
                   <v-card-text class="mt-12">
-                    <h2 class="text-center">
-                      Login to your account
-                    </h2>
+                    <h2 class="text-center">Login to your account</h2>
                     <h4 class="text-center grey--text">
                       To access your account please fill in the <br />
                       information below.
@@ -20,7 +18,9 @@
                     <v-row align="center" justify="center">
                       <v-col cols="12" sm="8">
                         <v-text-field
-                          label="Email"
+                          label="usuario"
+                          v-model="usuario.usuario"
+                          :rules="[rules.required, rules.min]"
                           outlined
                           dense
                           color="green"
@@ -30,6 +30,7 @@
                         </v-text-field>
                         <v-text-field
                           label="password"
+                          v-model="usuario.password"
                           outlined
                           dense
                           color="green"
@@ -52,14 +53,20 @@
                             </span>
                           </v-col>
                         </v-row>
-                        <v-btn color="green" dark block tile>
+                        <v-btn color="green" @click="irRegistro()" dark block tile>
                           Log in
                         </v-btn>
                         <h5 class="text-center grey--text mt-4 mb-3">
                           Or log in using a social media account:
                         </h5>
                         <div
-                          class="d-flex justify-space-between align-center mx-10 mb-16"
+                          class="
+                            d-flex
+                            justify-space-between
+                            align-center
+                            mx-10
+                            mb-16
+                          "
                         >
                           <v-btn depressed outlined color="grey">
                             <v-icon color="red">fab fa-google</v-icon>
@@ -78,11 +85,9 @@
                   </v-card-text>
                 </v-col>
                 <v-col cols="12" sm="6" class="green rounded-bl-xl">
-                  <div style="text-align:center; padding: 180px 0;">
+                  <div style="text-align: center; padding: 180px 0">
                     <v-card-text class="white--text">
-                      <h2 class="text-center">
-                        Don't have an account yet?
-                      </h2>
+                      <h2 class="text-center">Don't have an account yet?</h2>
                       <h4 class="text-center">
                         Let's get you all set up so you can start helping <br />
                         the world be a better and CLEANER place!
@@ -101,11 +106,9 @@
             <v-window-item :value="2">
               <v-row>
                 <v-col cols="12" sm="6" class="green rounded-br-xl">
-                  <div style="text-align: center; padding: 180px 0;">
+                  <div style="text-align: center; padding: 180px 0">
                     <v-card-text class="white--text">
-                      <h2 class="text-center">
-                        Already have an account?
-                      </h2>
+                      <h2 class="text-center">Already have an account?</h2>
                       <h4 class="text-center">
                         Log into your account so you can make reports and view
                         more <br />
@@ -113,17 +116,13 @@
                       </h4>
                     </v-card-text>
                     <div class="text-center">
-                      <v-btn tile outlined dark @click="step--">
-                        Log in
-                      </v-btn>
+                      <v-btn tile outlined dark @click="step--"> Log in </v-btn>
                     </div>
                   </div>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-card-text class="mt-12">
-                    <h2 class="text-center">
-                      Sign up for an account.
-                    </h2>
+                    <h2 class="text-center">Sign up for an account.</h2>
                     <h4 class="text-center grey--text">
                       Please provide the information asked for <br />
                       below.
@@ -189,13 +188,17 @@
                             </span>
                           </v-col>
                         </v-row>
-                        <v-btn color="green" dark block tile>
-                          Sign up
-                        </v-btn>
+                        <v-btn color="green" dark block tile> Sign up </v-btn>
                         <h5 class="text-center grey--text mt-4 mb-3">
                           Or sign up using:
                           <div
-                            class="d-flex justify-space-between align-center mx-10 mb-11"
+                            class="
+                              d-flex
+                              justify-space-between
+                              align-center
+                              mx-10
+                              mb-11
+                            "
                           >
                             <v-btn depressed outlined color="grey">
                               <v-icon color="red">fab fa-google</v-icon>
@@ -225,15 +228,56 @@
 
 <script>
 import Navbar from "../components/Navigation.vue";
+import axios from "axios";
 export default {
   components: {
     Navbar,
   },
   data: () => ({
     step: 1,
+    usuario: {
+      usuario: "",
+      password: "",
+    },
+    rules: {
+      required: [(v) => !!v || "El campo es obligatorio"],
+      min: (v) => v.length >= 8 || "Min 8 characters",
+    },
   }),
-  propos: {
-    source: String,
+  methods: {
+    async irRegistro() {
+      this.ingreso();
+      this.$router.push("/incio");
+    },
+    async ingreso() {
+      console.log("BBBBBBBBBBBBBBBBB");
+      try {
+        //if (this.$refs.formLogin.validate()) {
+        this.dialogError = false;
+        console.log(this.usuario);
+        let response = await axios.post(
+          "http://localhost:8080/login",
+          this.usuario
+        );
+        let usuario = response.data;
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        console.log(usuario);
+        if (usuario.ok == true) {
+          let token = usuario.content.token;
+          localStorage.setItem("token", token);
+        } else {
+          this.dialogError = true;
+        }
+        //} else {
+        console.log("Formato incompleto");
+        // }
+      } catch (error) {
+        this.dialogError = true;
+      }
+    },
+    propos: {
+      source: String,
+    },
   },
 };
 </script>
