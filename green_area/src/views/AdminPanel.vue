@@ -1,83 +1,118 @@
 <template>
   <div class="dashboard">
     <sidebar></sidebar>
-    <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
-      <h1>Tablero</h1>
-    </v-subheader>
-    <br />
-    <v-row>
-      <v-col lg="7" cols="12">
-        <v-alert dense text type="success">
-          Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
-        </v-alert>
+    <v-window v-model="step">
+      <!-- ...............................................Seccion Principal........................................................-->
+
+      <v-window-item :value="1">
+        <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
+          <h1>Tablero</h1>
+        </v-subheader>
+        <br />
         <v-row>
+          <v-col lg="7" cols="12">
+            <v-alert dense text type="success">
+              Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
+            </v-alert>
+            <v-row>
+              <v-col
+                lg="6"
+                cols="12"
+                v-for="(item, index) in activityLog"
+                :key="index"
+              >
+                <v-card elevation="2" class="rounded-lg">
+                  <v-card-text
+                    class="d-flex justify-space-between align-center"
+                  >
+                    <div>
+                      <strong>{{ item.title }}</strong> <br />
+                      <span>{{ item.time }}</span>
+                    </div>
+                    <v-avatar
+                      size="60"
+                      :color="item.color"
+                      style="border: 3px solid #444"
+                    >
+                      <span style="color: white">{{ item.amount }} +</span>
+                    </v-avatar>
+                  </v-card-text>
+                  <v-card-actions class="d-flex justify-space-between">
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+
           <v-col
-            lg="6"
+            sm="12"
+            lg="5"
             cols="12"
-            v-for="(item, index) in activityLog"
-            :key="index"
+            justify="center"
+            align="center"
+            class="text-center"
           >
-            <v-card elevation="2" class="rounded-lg">
-              <v-card-text class="d-flex justify-space-between align-center">
-                <div>
-                  <strong>{{ item.title }}</strong> <br />
-                  <span>{{ item.time }}</span>
-                </div>
-                <v-avatar
-                  size="60"
-                  :color="item.color"
-                  style="border: 3px solid #444"
-                >
-                  <span style="color: white">{{ item.amount }} +</span>
-                </v-avatar>
-              </v-card-text>
-              <v-card-actions class="d-flex justify-space-between">
-              </v-card-actions>
+            <v-card class="elevation-6 mt-5 mb-10">
+              <v-row justify="center" align="center" class="text-center">
+                <v-col cols="12" sm="6">
+                  <v-card-title> Panel administrativo </v-card-title>
+                  <v-btn color="#546E7A" dark block tile @click="step++">
+                    Administrar recolectores
+                  </v-btn>
+                  <br />
+                  <v-btn color="#546E7A" dark block tile>
+                    administrar reportes
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+
+          <v-col>
+            <v-card>
+              <v-data-table
+                caption="Segumiento"
+                :headers="headers"
+                :items="statistics"
+                :items-per-page="5"
+                class="elevation-1"
+              >
+                <template>
+                  <v-btn color="success" outlined small shaped>View</v-btn>
+                </template>
+              </v-data-table>
             </v-card>
           </v-col>
         </v-row>
-      </v-col>
-
-      <v-col
-        sm="12"
-        lg="5"
-        cols="12"
-        justify="center"
-        align="center"
-        class="text-center"
-      >
-        <v-card class="elevation-6 mt-5 mb-10">
-          <v-row justify="center" align="center" class="text-center">
-            <v-col cols="12" sm="6">
-              <v-card-title> Panel administrativo </v-card-title>
-              <v-btn color="#546E7A" dark block tile>
-                Administrar recolectores
-              </v-btn>
-              <br />
-              <v-btn color="#546E7A" dark block tile>
-                administrar reportes
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-
-      <v-col>
-        <v-card>
-          <v-data-table
-            caption="Segumiento"
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-1"
-          >
-            <template>
-              <v-btn color="success" outlined small shaped>View</v-btn>
-            </template>
-          </v-data-table>
-        </v-card>
-      </v-col>
-    </v-row>
+      </v-window-item>
+      <!-- ...............................................Seccion de administracion de recolectores........................................................-->
+      <v-window-item :value="2">
+        <v-row
+          justify="center"
+          align="center"
+          class="ml-auto mr-auto p-auto collectors"
+        >
+          <v-col cols="12"  sm="12">
+            <table id="collectorsTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Tpye</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="colls in collectors" :key="colls.id">
+                  <td>{{ colls.id }}</td>
+                  <td>{{ colls.name }}</td>
+                  <td>{{ colls.type }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </v-col>
+        </v-row>
+      </v-window-item>
+    </v-window>
   </div>
 </template>
 
@@ -90,6 +125,7 @@ export default {
   name: "Dashboard",
   data() {
     return {
+      step: 1,
       activityLog: [
         {
           title: "Usuarios registrados ",
@@ -127,59 +163,52 @@ export default {
           sortable: false,
           value: "name",
         },
-        { text: "Codigo verde", value: "calories" },
-        { text: "Codigo Negro", value: "fat" },
-        { text: "Codigo blanco", value: "carbs" },
+        { text: "Codigo verde", value: "Belen" },
+        { text: "Codigo Negro", value: "Laureles" },
+        { text: "Codigo blanco", value: "Poblado" },
       ],
-      desserts: [
+      statistics: [
         {
           name: "Belen",
-          calories: 32,
-          fat: 15,
-          carbs: 24,
-          protein: 45,
-          iron: "1%",
+          Belen: 32,
+          Laureles: 15,
+          Poblado: 24,
         },
         {
           name: "Laureles",
-          calories: 13,
-          fat: 28,
-          carbs: 37,
-          protein: 19,
-          iron: "1%",
+          Belen: 13,
+          Laureles: 28,
+          Poblado: 37,
         },
         {
           name: "Poblado",
-          calories: 34,
-          fat: 16,
-          carbs: 23,
-          protein: 6,
-          iron: "7%",
+          Belen: 34,
+          Laureles: 16,
+          Poblado: 23,
         },
         {
           name: "Prado",
-          calories: 11,
-          fat: 3,
-          carbs: 27,
-          protein: 43,
-          iron: "8%",
+          Belen: 11,
+          Laureles: 3,
+          Poblado: 27,
         },
         {
           name: "Santo Domingo Savio",
-          calories: 36,
-          fat: 16,
-          carbs: 19,
-          protein: 33,
-          iron: "16%",
+          Belen: 36,
+          Laureles: 16,
+          Poblado: 19,
         },
         {
           name: "San Joaquín",
-          calories: 35,
-          fat: 25,
-          carbs: 11,
-          protein: 33,
-          iron: "0%",
+          Belen: 35,
+          Laureles: 25,
+          Poblado: 11,
         },
+      ],
+      collectors: [
+        { id: "123", name: "EmVarias", type: "guasacaca" },
+        { id: "456", name: "EmPocas", type: "cacaguasa" },
+        { id: "789", name: "EmMuchas", type: "sacaguaca" },
       ],
     };
   },
@@ -201,5 +230,38 @@ export default {
 .dashboard {
   margin-left: 10px;
   padding: 10px;
+}
+.collectors {
+  width: 100vh;
+}
+</style>
+<style>
+table {
+  font-family: "Open Sans", sans-serif;
+  width: 750px;
+  border-collapse: collapse;
+  border: 3px solid #44475c;
+  margin: 10px 10px 0 10px;
+}
+
+table th {
+  text-transform: uppercase;
+  text-align: left;
+  background: #44475c;
+  color: #fff;
+  padding: 8px;
+  min-width: 30px;
+}
+
+table td {
+  text-align: left;
+  padding: 8px;
+  border-right: 2px solid #7d82a8;
+}
+table td:last-child {
+  border-right: none;
+}
+table tbody tr:nth-child(2n) td {
+  background: #d4d8f9;
 }
 </style>
