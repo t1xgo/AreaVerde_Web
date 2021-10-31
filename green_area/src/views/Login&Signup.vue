@@ -60,18 +60,17 @@
                                 Forgot password?
                               </span>
                             </v-col>
-                            
                           </v-row>
-                        
-                        <v-btn
-                          color="green"
-                          @click="ingreso()"
-                          dark
-                          block
-                          tile
-                        >
-                          Log in
-                        </v-btn>
+
+                          <v-btn
+                            color="green"
+                            @click="ingreso()"
+                            dark
+                            block
+                            tile
+                          >
+                            Log in
+                          </v-btn>
                         </v-form>
                         <h5 class="text-center grey--text mt-4 mb-3">
                           Or log in using a social media account:
@@ -122,54 +121,41 @@
             <!-- ----------------------------------------------------------------------------------------------------------------------------------------  -->
             <v-window-item :value="2">
               <v-row>
-                <v-form
-                  ref="formRegistro"
-                  v-model="valid"
-                  class="pa-3 pt-4"
-                  lazy-validation
-                  color="#ccf2f4"
-                >
-                  <v-col cols="12" sm="6" class="green rounded-br-xl">
-                    <div style="text-align: center; padding: 180px 0">
-                      <v-card-text class="white--text">
-                        <h2 class="text-center">Already have an account?</h2>
-                        <h4 class="text-center">
-                          Log into your account so you can make reports and view
-                          more <br />
-                          detailed information.
-                        </h4>
-                      </v-card-text>
-                      <div class="text-center">
-                        <v-btn tile outlined dark @click="step--">
-                          Log in
-                        </v-btn>
-                      </div>
-                    </div>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-card-text class="mt-12">
-                      <h2 class="text-center">Sign up for an account.</h2>
-                      <h4 class="text-center grey--text">
-                        Please provide the information asked for <br />
-                        below.
+                <v-col cols="12" sm="6" class="green rounded-br-xl">
+                  <div style="text-align: center; padding: 180px 0">
+                    <v-card-text class="white--text">
+                      <h2 class="text-center">Already have an account?</h2>
+                      <h4 class="text-center">
+                        Log into your account so you can make reports and view
+                        more <br />
+                        detailed information.
                       </h4>
-                      <v-row align="center" justify="center">
-                        <v-col cols="12" sm="8">
-                          <v-row>
-                            <v-col cols="12" sm="6">
-                              <v-text-field
-                                label="name"
-                                outlined
-                                v-model="usuario.name"
-                                :rules="rules.required"
-                                dense
-                                color="green"
-                                autocomplete="false"
-                                class="mt-4"
-                              >
-                              </v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6">
+                    </v-card-text>
+                    <div class="text-center">
+                      <v-btn tile outlined dark @click="step--">
+                        Log in
+                      </v-btn>
+                    </div>
+                  </div>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-card-text class="mt-12">
+                    <h2 class="text-center">Sign up for an account.</h2>
+                    <h4 class="text-center grey--text">
+                      Please provide the information asked for <br />
+                      below.
+                    </h4>
+                    <v-row align="center" justify="center">
+                      <v-col cols="12" sm="12">
+                        <v-row>
+                          <v-col cols="12" sm="12">
+                            <v-form
+                              ref="formRegistro"
+                              v-model="valid"
+                              class="pa-3 pt-4"
+                              lazy-validation
+                              color="#ccf2f4"
+                            >
                               <v-text-field
                                 label="ID"
                                 outlined
@@ -181,148 +167,150 @@
                                 class="mt-4"
                               >
                               </v-text-field>
-                            </v-col>
-                          </v-row>
-                          <v-text-field
-                            label="Cellphone"
-                            outlined
-                            v-model="usuario.celular"
-                            dense
-                            :rules="rules.required"
-                            color="green"
-                            autocomplete="false"
-                            class="mt-4"
-                          >
-                          </v-text-field>
 
-                          <v-text-field
-                            label="Email"
-                            outlined
-                            v-model="usuario.email"
-                            dense
-                            :rules="rules.required"
-                            color="green"
-                            autocomplete="false"
-                            class="mt-4"
-                            type="email"
-                          >
-                          </v-text-field>
-
-                          <v-text-field
-                            label="Usuario"
-                            outlined
-                            dense
-                            v-model="usuario.usuario"
-                            :rules="rules.required"
-                            color="green"
-                            autocomplete="false"
-                            class="mt-4"
-                          >
-                          </v-text-field>
-
-                          <v-text-field
-                            label="Password"
-                            v-model="usuario.password"
-                            :rules="rules.required"
-                            outlined
-                            dense
-                            color="green"
-                            autocomplete="false"
-                            class="mt-4"
-                            type="password"
-                          >
-                          </v-text-field>
-
-                          <template>
-                            <div>
-                              <v-menu
-                                ref="menu"
-                                v-model="menu"
-                                :close-on-content-click="false"
-                                transition="scale-transition"
-                                offset-y
-                                min-width="auto"
-                              >
-                                <template v-slot:activator="{ on, attrs }">
-                                  <v-text-field
-                                    v-model="usuario.fechaNacimiento"
-                                    label="Birthday date"
-                                    prepend-icon="mdi-calendar"
-                                    readonly
-                                    v-bind="attrs"
-                                    v-on="on"
-                                  ></v-text-field>
-                                </template>
-                                <v-date-picker
-                                  v-model="usuario.fechaNacimiento"
-                                  :active-picker.sync="activePicker"
-                                  :max="
-                                    new Date(
-                                      Date.now() -
-                                        new Date().getTimezoneOffset() * 60000
-                                    )
-                                      .toISOString()
-                                      .substr(0, 10)
-                                  "
-                                  min="1950-01-01"
-                                  @change="save()"
-                                ></v-date-picker>
-                              </v-menu>
-                            </div>
-                          </template>
-                          <v-row>
-                            <v-col cols="12" sm="7">
-                              <v-checkbox
-                                label="I accept all"
-                                class="mt-n1"
+                              <v-text-field
+                                label="Celular"
+                                outlined
+                                v-model="usuario.celular"
+                                dense
+                                :rules="rules.required"
                                 color="green"
+                                autocomplete="false"
+                                class="mt-4"
                               >
-                              </v-checkbox>
-                            </v-col>
-                            <v-col cols="12" sm="5">
-                              <span class="caption green--text ml-n4">
-                                Terms & Conditions
-                              </span>
-                            </v-col>
-                          </v-row>
-                          <v-btn
-                            color="green"
-                            @click="crearUsuario()"
-                            dark
-                            block
-                            tile
-                          >
-                            Sign up
-                          </v-btn>
-                          <h5 class="text-center grey--text mt-4 mb-3">
-                            Or sign up using:
-                            <div
-                              class="
+                              </v-text-field>
+
+                              <v-text-field
+                                label="Correo"
+                                outlined
+                                v-model="usuario.email"
+                                dense
+                                :rules="rules.required"
+                                color="green"
+                                autocomplete="false"
+                                class="mt-4"
+                                type="email"
+                              >
+                              </v-text-field>
+
+                              <v-text-field
+                                label="Usuario"
+                                outlined
+                                dense
+                                v-model="usuario.usuario"
+                                :rules="rules.required"
+                                color="green"
+                                autocomplete="false"
+                                class="mt-4"
+                              >
+                              </v-text-field>
+
+                              <v-text-field
+                                label="Contraseña"
+                                v-model="usuario.password"
+                                :rules="rules.required"
+                                outlined
+                                dense
+                                color="green"
+                                autocomplete="false"
+                                class="mt-4"
+                                type="password"
+                              >
+                              </v-text-field>
+                            </v-form>
+                          </v-col>
+                        </v-row>
+
+                        <template>
+                          <div>
+                            <v-menu
+                              ref="menu"
+                              v-model="menu"
+                              :close-on-content-click="false"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                  v-model="usuario.fechaNacimiento"
+                                  label="Fecha de cumpleaños"
+                                  prepend-icon="mdi-calendar"
+                                  readonly
+                                  v-bind="attrs"
+                                  v-on="on"
+                                ></v-text-field>
+                              </template>
+                              <v-date-picker
+                                v-model="usuario.fechaNacimiento"
+                                :active-picker.sync="activePicker"
+                                :max="
+                                  new Date(
+                                    Date.now() -
+                                      new Date().getTimezoneOffset() * 60000
+                                  )
+                                    .toISOString()
+                                    .substr(0, 10)
+                                "
+                                min="1950-01-01"
+                                @change="save()"
+                              ></v-date-picker>
+                            </v-menu>
+                          </div>
+                        </template>
+                        <v-row>
+                          <v-col cols="12" sm="7">
+                            <v-checkbox
+                              label="Acepto"
+                              class="mt-n1"
+                              color="green"
+                            >
+                            </v-checkbox>
+                          </v-col>
+                          <v-col cols="12" sm="5">
+                            <span class="caption green--text ml-n4">
+                              Términos & Condiciones
+                            </span>
+                          </v-col>
+                        </v-row>
+                        <v-btn
+                          color="green"
+                          @click="crearUsuario()"
+                          dark
+                          block
+                          tile
+                        >
+                          Registrarse
+                        </v-btn>
+                        <h5 class="text-center grey--text mt-4 mb-3">
+                          O realiza el registro usando:
+                          <br />
+                          <div
+                            class="
                               d-flex
                               justify-space-between
                               align-center
                               mx-10
                               mb-11
                             "
-                            >
-                              <v-btn depressed outlined color="grey">
-                                <v-icon color="red">fab fa-google</v-icon>
-                              </v-btn>
-                              <v-btn depressed outlined color="grey">
-                                <v-icon color="blue">fab fa-facebook</v-icon>
-                              </v-btn>
-                              <v-btn depressed outlined color="grey">
-                                <v-icon color="light-blue lighten-3"
-                                  >fab fa-twitter</v-icon
-                                >
-                              </v-btn>
-                            </div>
-                          </h5>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-col>
-                </v-form>
+                          >
+                            <v-btn depressed outlined color="grey">
+                              <v-icon color="red">fab fa-google</v-icon>
+                            </v-btn>
+                            <v-btn depressed outlined color="grey">
+                              <v-icon color="blue">fab fa-facebook</v-icon>
+                            </v-btn>
+                            <v-btn depressed outlined color="grey">
+                              <v-icon color="light-blue lighten-3"
+                                >fab fa-twitter</v-icon
+                              >
+                            </v-btn>
+                          </div>
+                        </h5>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-col>
               </v-row>
             </v-window-item>
           </v-window>
