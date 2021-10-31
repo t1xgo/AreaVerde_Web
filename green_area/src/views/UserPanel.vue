@@ -13,7 +13,11 @@
           </v-alert>
         </v-row>
 
+<<<<<<< HEAD
         <v-row class="formReport">
+=======
+        <v-row>
+>>>>>>> ac82890f87711bda3ac6b5d2f8f8699d8c5fbd57
           <v-col sm="12" cols="12">
             <v-card class="elevation-6 mt-5 mb-10">
               <v-row justify="center" align="center">
@@ -69,6 +73,7 @@
           </v-col>
         </v-row>
 
+<<<<<<< HEAD
         <v-row class="feedRow">
           <v-col sm="12" cols="12">
             <v-card
@@ -155,35 +160,64 @@
                   />
                 </v-col>
               </v-row>
+=======
+        <div class="feedRow" v-for="report in reports" :key="report">
+          <v-row>
+            <v-col sm="12" cols="12">
+              <v-card
+                class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n15 cardcont codneg text-center"
+                shaped
+              >
+                <v-row align="center" justify="center">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    class="d-md-flex"
+                    align="center"
+                    justify="center"
+                  >
+                    <v-img
+                      :src="report.evidence"
+                      width="90%"
+                      class="d-block ml-auto mr-auto"
+                      :class="{ 'zoom-efect': hover }"
+                    ></v-img>
+                  </v-col>
+                </v-row>
+>>>>>>> ac82890f87711bda3ac6b5d2f8f8699d8c5fbd57
 
-              <v-row align="center" justify="center">
-                <v-col
-                  cols="12"
-                  sm="12"
-                  class="d-md-flex text-center"
-                  align="center"
-                  justify="center"
-                >
-                  <h4 class="font-weight-regular subtitle-1">
-                    <strong> Descripción: </strong>
-                    Residuos encontrados en una zona donde claramente se indica
-                    que no está permitido.
-                    <br />
-                    <br />
-                    <strong> Ubicación: </strong>
-                    Laureles, Estadio.
-                    <br />
-                    <br />
-                    <strong> Estado: </strong>
-                    Pendiente de recolección.
-                  </h4>
-                </v-col>
-                <hr size="5px" width="50%" color="green" />
-                <br />
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
+                <v-row align="center" justify="center">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    class="d-md-flex text-center"
+                    align="center"
+                    justify="center"
+                  >
+                    <h4 class="font-weight-regular subtitle-1">
+                      <strong> Descripción: </strong>
+                      {{ report.description }}
+                      <br />
+                      <br />
+                      <strong> Ubicación: </strong>
+                      {{ report.ubication }}
+                      <br />
+                      <br />
+                      <strong> Estado: </strong>
+                      {{ report.state }}
+                      <br />
+                      <br />
+                      <strong> Tipo: </strong>
+                      {{ report.colorCode }}
+                    </h4>
+                  </v-col>
+                  <br />
+                </v-row>
+              </v-card>
+            </v-col>
+          </v-row>
+        </div>
+        
       </v-col>
       <v-col cols="12" lg="5">
         <v-card>
@@ -326,21 +360,22 @@ export default {
           protein: 6.5,
           iron: "45%",
         },
+      reports: [
         {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: "22%",
+          evidence: require("@/assets/img/basura1.jpg"),
+          description:
+            "Basura con un olor muy fuerte en el sector de los Alpes, empieza a ser incómodo para la gente del alrededor.",
+          ubication: "Belen, Los Alpes.",
+          colorCode: "Codigo negro",
+          state: "Pendiente",
         },
         {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
+          evidence: require("@/assets/img/basura2.png"),
+          description:
+            "Residuos encontrados en una zona donde claramente se indica que no está permitido.",
+          ubication: "Laureles, Estadio.",
+          colorCode: "Codigo verde",
+          state: "Pendiente",
         },
       ],
     };
