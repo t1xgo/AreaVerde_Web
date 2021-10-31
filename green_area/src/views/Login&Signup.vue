@@ -160,7 +160,7 @@
                               <v-text-field
                                 label="name"
                                 outlined
-                                v-model="usuario.name"
+                                v-model="usuario.nombre"
                                 :rules="rules.required"
                                 dense
                                 color="green"
@@ -198,7 +198,7 @@
                           <v-text-field
                             label="Email"
                             outlined
-                            v-model="usuario.email"
+                            v-model="usuario.correo"
                             dense
                             :rules="rules.required"
                             color="green"
@@ -209,7 +209,7 @@
                           </v-text-field>
 
                           <v-text-field
-                            label="Usuario"
+                            label="Username"
                             outlined
                             dense
                             v-model="usuario.usuario"
@@ -414,9 +414,17 @@ export default {
           let usuario = response.data;
           console.log("ESTE ES AAAAAAAAAAAAAAAAA", usuario);
           if (usuario.ok == true) {
+            let rol = usuario.content.rol;
             let token = usuario.content.token;
             localStorage.setItem("token", token);
-            this.$router.push("/user");
+            localStorage.setItem("user-in", rol);
+            if (rol == 0) {
+              this.$router.push("/admin");
+            } else if (rol == 1) {
+              this.$router.push("/collector");
+            } else {
+              this.$router.push("/user");
+            }
           } else {
             this.dialogError = true;
           }
