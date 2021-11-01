@@ -396,7 +396,7 @@ export default {
           let resp = response.data;
           console.log(resp);
           if (resp.ok == true) {
-            this.$router.push("/user");
+            this.$router.push("/login");
           } else {
             this.dialogError = true;
           }

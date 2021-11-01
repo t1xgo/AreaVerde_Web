@@ -247,7 +247,7 @@ export default {
       report: {
         descripcion: "",
         id_categoria: "",
-        //id_usuario: "",
+        id_usuario: "",
         ubicacion: "",
         rutaimagen: "",
         estado: "Pendiente de recolección",
@@ -388,7 +388,6 @@ export default {
   },
 
   beforeMount() {
-    this.loadUser();
     let token = localStorage.getItem("token");
     axios.setHeader("token", token);
   },
@@ -396,11 +395,6 @@ export default {
   methods: {
     onButtonClick(item) {
       console.log("click on " + item.no);
-    },
-
-    loadUser() {
-      let stringUser = localStorage.getItem("user-in");
-      this.stringUser = JSON.parse(stringUser);
     },
 
     async createReport() {
@@ -413,17 +407,13 @@ export default {
           } else if (this.report.id_categoria == "No reciclables") {
             this.report.id_categoria = "3";
           }
-          this.report.id_usuario = this.stringUser;
-          console.log(report.id_usuario + "bbbbbbbbbbbbbbbbbbbbbbb");
-          
-          console.log(this.stringUser + "AAAAAAAAAAAAAAAAAAAAAAAA");
+          let id = localStorage.getItem("user-id");
           let report = Object.assign({}, this.report);
-          //let token = localStorage.getItem('token');
+          this.report.id_usuario = id;
           let response = await axios.post(
-            "http://localhost:3001/createReport" + this.report.id_usuario,
-            report
+            "http://localhost:3001/createReport/" ,report
           );
-          console.log(response.data);
+          console.log("aaaaaaaaaaaaaaaaaaaa",response.data);
           //let resp = response.data;
         } catch (error) {
           this.dialogError = true;
