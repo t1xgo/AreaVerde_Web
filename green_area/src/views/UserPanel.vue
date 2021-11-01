@@ -39,6 +39,8 @@
                       <v-row align="center" justify="center">
                         <v-col cols="12" sm="8">
                           <v-text-field
+                            :rules="rules"
+                            v-model="report.descripcion"
                             label="Descripción (opcional)"
                             outlined
                             dense
@@ -48,6 +50,8 @@
                           >
                           </v-text-field>
                           <v-text-field
+                            :rules="rules"
+                            v-model="report.ubicacion"
                             label="Ubicación"
                             outlined
                             dense
@@ -58,6 +62,7 @@
 
                           <v-select
                             :rules="rules"
+                            v-model="report.id_categoria"
                             :items="categoria"
                             label="Categoría"
                             outlined
@@ -65,6 +70,7 @@
 
                           <v-file-input
                             :rules="rules"
+                            v-model="report.ruta_imagen"
                             accept="image/png, image/jpeg, image/bmp"
                             placeholder="Adjuntar"
                             prepend-icon="mdi-camera"
