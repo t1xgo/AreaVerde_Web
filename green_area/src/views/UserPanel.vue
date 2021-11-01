@@ -70,14 +70,14 @@
 
                           <v-file-input
                             :rules="rules"
-                            v-model="report.ruta_imagen"
+                            v-model="report.rutaimagen"
                             accept="image/png, image/jpeg, image/bmp"
                             placeholder="Adjuntar"
                             prepend-icon="mdi-camera"
                             label="Adjuntar evidencia"
                           ></v-file-input>
                           <br />
-                          <v-btn color="green" dark block tile>
+                          <v-btn @click="createReport()" color="green" dark block tile>
                             Reportar
                           </v-btn>
                         </v-col>
@@ -245,11 +245,11 @@ export default {
       dialogError: false,
       categoria: ["Reciclable", "Organicos", "No reciclables"],
       report: {
-        descipcion: "",
+        descripcion: "",
         id_categoria: "",
-        id_usuario: "",
+        //id_usuario: "",
         ubicacion: "",
-        ruta_imagen: "",
+        rutaimagen: "",
         estado: "Pendiente de recolección",
       },
       rules: {
@@ -387,10 +387,11 @@ export default {
     };
   },
 
-  /*beforeMount() {
+  beforeMount() {
+    this.loadUser();
     let token = localStorage.getItem("token");
     axios.setHeader("token", token);
-  },*/
+  },
 
   methods: {
     onButtonClick(item) {
@@ -413,12 +414,14 @@ export default {
             this.report.id_categoria = "3";
           }
           this.report.id_usuario = this.stringUser;
+          console.log(report.id_usuario + "bbbbbbbbbbbbbbbbbbbbbbb");
+          
+          console.log(this.stringUser + "AAAAAAAAAAAAAAAAAAAAAAAA");
           let report = Object.assign({}, this.report);
           //let token = localStorage.getItem('token');
           let response = await axios.post(
-            "http://localhost:3001/createReport",
-            report,
-            response.data.token
+            "http://localhost:3001/createReport" + this.report.id_usuario,
+            report
           );
           console.log(response.data);
           //let resp = response.data;
