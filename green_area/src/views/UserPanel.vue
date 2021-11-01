@@ -14,263 +14,214 @@
         </v-row>
 
         <v-row class="formRow">
-          <v-row>
-            <v-col sm="12" cols="12">
-              <v-card class="elevation-6 mt-5 mb-10">
-                <componenteDialog
-                  v-if="this.dialogError == true"
-                  :estadoDialog="true"
-                  :tituloMensaje="'Error'"
-                  :mensaje="'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'"
-                />
-                <v-row justify="center" align="center">
-                  <v-col cols="12" sm="6">
-                    <v-card-text class="mt-12">
-                      <h2 class="text-center">Agregar un reporte</h2>
-                      <h4 class="text-center grey--text">
-                        Por favor ingresa la información necesaria para poder
-                        hacer un reporte
-                      </h4>
-
+          <v-col sm="12" cols="12">
+            <v-card class="elevation-6 mt-5 mb-10">
+              <componenteDialog
+                v-if="this.dialogError == true"
+                :estadoDialog="true"
+                :tituloMensaje="'Error'"
+                :mensaje="'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'"
+              />
+              <v-row justify="center" align="center">
+                <v-col cols="12" sm="6">
+                  <v-card-text class="mt-12">
+                    <h2 class="text-center">Agregar un reporte</h2>
+                    <h4 class="text-center grey--text">
+                      Por favor ingresa la información necesaria para poder
+                      hacer un reporte
+                    </h4>
+                    <v-form
+                      ref="formReport"
+                      v-model="valid"
+                      class="pa-3 pt-4"
+                      lazy-validation
+                    >
                       <v-row align="center" justify="center">
                         <v-col cols="12" sm="8">
-                          <v-form
-                            ref="formReport"
-                            v-model="valid"
-                            class="pa-3 pt-4"
-                            lazy-validation
+                          <v-text-field
+                            label="Descripción (opcional)"
+                            outlined
+                            dense
+                            color="green"
+                            autocomplete="false"
+                            class="mt-16"
                           >
-                            <v-text-field
-                              :rules="rules"
-                              label="Descripción (opcional)"
-                              outlined
-                              dense
-                              color="green"
-                              autocomplete="false"
-                              class="mt-16"
-                            >
-                            </v-text-field>
-                            <v-text-field
-                              :rules="rules"
-                              label="Ubicación"
-                              outlined
-                              dense
-                              color="green"
-                              autocomplete="false"
-                            >
-                            </v-text-field>
+                          </v-text-field>
+                          <v-text-field
+                            label="Ubicación"
+                            outlined
+                            dense
+                            color="green"
+                            autocomplete="false"
+                          >
+                          </v-text-field>
 
-                            <v-select
-                              :rules="rules"
-                              :items="categoria"
-                              label="Categoría"
-                              outlined
-                            ></v-select>
+                          <v-select
+                            :rules="rules"
+                            :items="categoria"
+                            label="Categoría"
+                            outlined
+                          ></v-select>
 
-                            <v-file-input
-                              :rules="rules"
-                              accept="image/png, image/jpeg, image/bmp"
-                              placeholder="Adjuntar"
-                              prepend-icon="mdi-camera"
-                              label="Adjuntar evidencia"
-                            ></v-file-input>
-                            <br />
-                            <v-btn
-                              color="green"
-                              dark
-                              block
-                              tile
-                              @click="createReport()"
-                            >
-                              Reportar
-                            </v-btn>
-                          </v-form>
+                          <v-file-input
+                            :rules="rules"
+                            accept="image/png, image/jpeg, image/bmp"
+                            placeholder="Adjuntar"
+                            prepend-icon="mdi-camera"
+                            label="Adjuntar evidencia"
+                          ></v-file-input>
+                          <br />
+                          <v-btn color="green" dark block tile>
+                            Reportar
+                          </v-btn>
                         </v-col>
                       </v-row>
-                    </v-card-text>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </v-col>
-          </v-row>
+                    </v-form>
+                  </v-card-text>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
+
+        <v-row class="feedRow">
+          <v-col sm="12" cols="12">
+            <v-card
+              class="
+                mx-12
+                rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                mt-n15
+                cardcont
+                codneg
+                text-center
+              "
+              shaped
+            >
+              <v-row align="center" justify="center">
+                <v-col
+                  cols="12"
+                  sm="12"
+                  class="d-md-flex"
+                  align="center"
+                  justify="center"
+                >
+                  <img
+                    :src="require(`@/assets/img/basura1.jpg`)"
+                    width="90%"
+                    class="d-block ml-auto mr-auto"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row align="center" justify="center">
+                <v-col
+                  cols="12"
+                  sm="12"
+                  class="d-md-flex text-center"
+                  align="center"
+                  justify="center"
+                >
+                  <h4 class="font-weight-regular subtitle-1">
+                    <strong> Descripción: </strong>
+                    Basura con un olor muy fuerte en el sector de los Alpes,
+                    empieza a ser incómodo para la gente del alrededor.
+                    <br />
+                    <br />
+                    <strong> Ubicación: </strong>
+                    Belen, Los Alpes.
+                    <br />
+                    <br />
+                    <strong> Estado: </strong>
+                    Pendiente de recolección.
+                  </h4>
+                </v-col>
+                <hr size="5px" width="50%" color="black" />
+                <br />
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
+
+        <v-row class="feedRow">
+          <v-col sm="12" cols="12">
+            <v-card
+              class="
+                mx-12
+                rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                mt-n15
+                cardcont
+                codver
+                text-center
+              "
+              shaped
+            >
+              <v-row align="center" justify="center">
+                <v-col
+                  cols="12"
+                  sm="12"
+                  class="d-md-flex"
+                  align="center"
+                  justify="center"
+                >
+                  <img
+                    :src="require(`@/assets/img/basura2.png`)"
+                    width="90%"
+                    class="d-block ml-auto mr-auto"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row align="center" justify="center">
+                <v-col
+                  cols="12"
+                  sm="12"
+                  class="d-md-flex text-center"
+                  align="center"
+                  justify="center"
+                >
+                  <h4 class="font-weight-regular subtitle-1">
+                    <strong> Descripción: </strong>
+                    Residuos encontrados en una zona donde claramente se indica
+                    que no está permitido.
+                    <br />
+                    <br />
+                    <strong> Ubicación: </strong>
+                    Laureles, Estadio.
+                    <br />
+                    <br />
+                    <strong> Estado: </strong>
+                    Pendiente de recolección.
+                  </h4>
+                </v-col>
+                <hr size="5px" width="50%" color="green" />
+                <br />
+              </v-row>
+            </v-card>
+          </v-col>
         </v-row>
       </v-col>
+      <v-col cols="12" lg="5">
+        <v-card>
+          <v-card-title>Historial en vivo</v-card-title>
+          <v-card-text class="py-0">
+            <v-timeline align-top dense>
+              <v-timeline-item color="black" small>
+                <strong>Hace 5 minutos</strong>
+                <div class="text-caption">Confirmado una recolección</div>
+              </v-timeline-item>
+              <v-timeline-item color="green" small>
+                <strong>Hace 35 minutos</strong>
+                <div class="text-caption mb-2">Confirmado una recolección</div>
+              </v-timeline-item>
 
-      <v-row class="feedRow">
-        <v-col sm="12" cols="12">
-          <v-card
-            class="
-              mx-12
-              rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-              mt-n15
-              cardcont
-              codneg
-              text-center
-            "
-            shaped
-          >
-            <v-row align="center" justify="center">
-              <v-col
-                cols="12"
-                sm="12"
-                class="d-md-flex"
-                align="center"
-                justify="center"
-              >
-                <img
-                  :src="require(`@/assets/img/basura1.jpg`)"
-                  width="90%"
-                  class="d-block ml-auto mr-auto"
-                />
-              </v-col>
-            </v-row>
-
-            <v-row align="center" justify="center">
-              <v-col
-                cols="12"
-                sm="12"
-                class="d-md-flex text-center"
-                align="center"
-                justify="center"
-              >
-                <h4 class="font-weight-regular subtitle-1">
-                  <strong> Descripción: </strong>
-                  Basura con un olor muy fuerte en el sector de los Alpes,
-                  empieza a ser incómodo para la gente del alrededor.
-                  <br />
-                  <br />
-                  <strong> Ubicación: </strong>
-                  Belen, Los Alpes.
-                  <br />
-                  <br />
-                  <strong> Estado: </strong>
-                  Pendiente de recolección.
-                </h4>
-              </v-col>
-              <hr size="5px" width="50%" color="black" />
-              <br />
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
-
-      <v-row class="feedRow">
-        <v-col sm="12" cols="12">
-          <v-card
-            class="
-              mx-12
-              rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-              mt-n15
-              cardcont
-              codver
-              text-center
-            "
-            shaped
-          >
-            <v-row align="center" justify="center">
-              <v-col
-                cols="12"
-                sm="12"
-                class="d-md-flex"
-                align="center"
-                justify="center"
-              >
-                <img
-                  :src="require(`@/assets/img/basura2.png`)"
-                  width="90%"
-                  class="d-block ml-auto mr-auto"
-                />
-              </v-col>
-            </v-row>
-          </v-card>
-          <div class="feedRow" v-for="report in reports" :key="report">
-            <v-row>
-              <v-col sm="12" cols="12">
-                <v-card
-                  class="
-                    mx-12
-                    rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                    mt-n15
-                    cardcont
-                    codneg
-                    text-center
-                  "
-                  shaped
-                >
-                  <v-row align="center" justify="center">
-                    <v-col
-                      cols="12"
-                      sm="12"
-                      class="d-md-flex"
-                      align="center"
-                      justify="center"
-                    >
-                      <v-img
-                        :src="report.evidence"
-                        width="90%"
-                        class="d-block ml-auto mr-auto"
-                        :class="{ 'zoom-efect': hover }"
-                      ></v-img>
-                    </v-col>
-                  </v-row>
-
-                  <v-row align="center" justify="center">
-                    <v-col
-                      cols="12"
-                      sm="12"
-                      class="d-md-flex text-center"
-                      align="center"
-                      justify="center"
-                    >
-                      <h4 class="font-weight-regular subtitle-1">
-                        <strong> Descripción: </strong>
-                        {{ report.description }}
-                        <br />
-                        <br />
-                        <strong> Ubicación: </strong>
-                        {{ report.ubication }}
-                        <br />
-                        <br />
-                        <strong> Estado: </strong>
-                        {{ report.state }}
-                        <br />
-                        <br />
-                        <strong> Tipo: </strong>
-                        {{ report.colorCode }}
-                      </h4>
-                    </v-col>
-                    <br />
-                  </v-row>
-                </v-card>
-              </v-col>
-            </v-row>
-          </div>
-        </v-col>
-        <v-col cols="12" lg="5">
-          <v-card>
-            <v-card-title>Historial en vivo</v-card-title>
-            <v-card-text class="py-0">
-              <v-timeline align-top dense>
-                <v-timeline-item color="black" small>
-                  <strong>Hace 5 minutos</strong>
-                  <div class="text-caption">Confirmado una recolección</div>
-                </v-timeline-item>
-                <v-timeline-item color="green" small>
-                  <strong>Hace 35 minutos</strong>
-                  <div class="text-caption mb-2">
-                    Confirmado una recolección
-                  </div>
-                </v-timeline-item>
-
-                <v-timeline-item color="white" small>
-                  <strong>Jace 44 minutos</strong>
-                  <div class="text-caption">Confirmado una recolección</div>
-                </v-timeline-item>
-              </v-timeline>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+              <v-timeline-item color="white" small>
+                <strong>Jace 44 minutos</strong>
+                <div class="text-caption">Confirmado una recolección</div>
+              </v-timeline-item>
+            </v-timeline>
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -460,7 +411,8 @@ export default {
           //let token = localStorage.getItem('token');
           let response = await axios.post(
             "http://localhost:3001/createReport",
-            report, response.data.token
+            report,
+            response.data.token
           );
           console.log(response.data);
           //let resp = response.data;
