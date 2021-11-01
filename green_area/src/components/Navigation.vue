@@ -59,7 +59,7 @@
       />
       <div v-else>
         <v-btn text @click="imprimirRecolectores()">
-          <span class="mr-2">Incio</span>
+          <span class="mr-2">Inicio</span>
         </v-btn>
         <v-btn text @click="$vuetify.goTo('#feed')">
           <span class="mr-2">Feed</span>
