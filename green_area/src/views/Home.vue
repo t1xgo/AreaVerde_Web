@@ -80,15 +80,14 @@
 
 <script>
 import about from "../views/AboutSection.vue";
+//import axios from "axios";
 import Navbar from "../components/Navigation.vue";
 export default {
   components: {
     about,
     Navbar,
   },
-
-  data() {
-    return {
+  data:()=> ({
       dialog: false,
       features: [
         {
@@ -110,8 +109,8 @@ export default {
             "Residuos orgánicos aprovechables. Por ejemplo: restos de comida.",
         },
       ],
-    };
-  },
+  }),
+  
 };
 </script>
 

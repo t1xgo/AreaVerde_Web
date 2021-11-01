@@ -64,7 +64,7 @@
         <v-btn text @click="$vuetify.goTo('#feed')">
           <span class="mr-2">Feed</span>
         </v-btn>
-        <v-btn rounded outlined text @click="goToLogin">
+        <v-btn rounded outlined text @click="gotoLogin()">
           <span class="mr-2">Ingreso</span>
         </v-btn>
       </div>
@@ -100,12 +100,19 @@ export default {
     color: String,
     flat: Boolean,
   },
+
   methods: {
     onResize() {
       this.isXs = window.innerWidth < 850;
     },
-    gotoLogin: function() {
-      this.$router.push({ path: "Login&Signup" });
+    async gotoLogin() {
+      try {
+
+          this.$router.push("/login");
+        
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 
