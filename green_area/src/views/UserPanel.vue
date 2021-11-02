@@ -146,7 +146,7 @@
               </v-timeline-item>
 
               <v-timeline-item color="white" small>
-                <strong>Jace 44 minutos</strong>
+                <strong>Hace 44 minutos</strong>
                 <div class="text-caption">
                   Confirmado una recolección
                 </div>

@@ -198,16 +198,25 @@
                       </v-col>
                       <br />
                     </v-row>
+                    <v-btn color="green" class="px-3 mx-3 my-3 py-3" dark tile>
+                      Cambiar tipo
+                    </v-btn>
+                    <v-btn color="green" class="px-3 mx-3 my-3 py-3" dark tile>
+                      Eliminar
+                    </v-btn>
                   </v-card>
                 </div>
-
-                <div id="popUpBox">
+                <!--
+  <div id="popUpBox">
                   <transition name="fade" appear>
-                    <div class="modal-overlay" v-if="showingModal">
-                      dgksngsjknsgksngksjdnsg
+                    <div class="modal-overlay" v-if="showingReportModal">
+                      Any
+                      text
                     </div>
+
                   </transition>
                 </div>
+-->
               </v-col>
             </v-row>
           </v-col>
@@ -227,7 +236,8 @@ export default {
       //steps that are used to manage the windows
       step: 1,
       //elements modal(popup) toggle management
-      showingModal: false,
+      showingCollectorsModal: false,
+      showingReportsModal: false,
       //SideBar links
       links: [
         ["mdi-microsoft-windows", "Tablero"],
