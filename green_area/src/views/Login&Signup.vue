@@ -130,11 +130,11 @@
                 <v-col cols="12" sm="6" class="green rounded-br-xl">
                   <div style="text-align: center; padding: 180px 0">
                     <v-card-text class="white--text">
-                      <h2 class="text-center">Already have an account?</h2>
+                      <h2 class="text-center">Ya tienes una cuenta?</h2>
                       <h4 class="text-center">
-                        Log into your account so you can make reports and view
-                        more <br />
-                        detailed information.
+                        Ingresa a para poder realizar reportes y ver
+                        <br />
+                        informacion mas detallada
                       </h4>
                     </v-card-text>
                     <div class="text-center">
@@ -144,100 +144,98 @@
                     </div>
                   </div>
                 </v-col>
+
                 <v-col cols="12" sm="6">
                   <v-card-text class="mt-12">
-                    <h2 class="text-center">Sign up for an account.</h2>
+                    <h2 class="text-center">Crea una cuenta.</h2>
                     <h4 class="text-center grey--text">
-                      Please provide the information asked for <br />
-                      below.
+                      Por favor ingresa los datos necesarios para poder crear
+                      <br />
+                      una nueva cuenta
                     </h4>
                     <v-row align="center" justify="center">
                       <v-col cols="12" sm="12">
-                        <v-row>
-                          <v-col cols="12" sm="12">
-                            <v-form
-                              ref="formRegistro"
-                              v-model="valid"
-                              class="pa-3 pt-4"
-                              lazy-validation
-                              color="#ccf2f4"
-                            >
-                              <v-text-field
-                                label="name"
-                                outlined
-                                v-model="usuario.nombre"
-                                :rules="rules.required"
-                                dense
-                                color="green"
-                                autocomplete="false"
-                                class="mt-4"
-                              >
-                              </v-text-field>
+                        <v-form
+                          ref="formRegistro"
+                          v-model="valid"
+                          class="pa-3 pt-4"
+                          lazy-validation
+                          color="#ccf2f4"
+                        >
+                          <v-text-field
+                            label="name"
+                            outlined
+                            v-model="usuario.nombre"
+                            :rules="rules.required"
+                            dense
+                            color="green"
+                            autocomplete="false"
+                            class="mt-4"
+                          >
+                          </v-text-field>
 
-                              <v-text-field
-                                label="ID"
-                                outlined
-                                v-model="usuario.cedula"
-                                :rules="rules.required"
-                                dense
-                                color="green"
-                                autocomplete="false"
-                                class="mt-4"
-                              >
-                              </v-text-field>
+                          <v-text-field
+                            label="ID"
+                            outlined
+                            v-model="usuario.cedula"
+                            :rules="rules.required"
+                            dense
+                            color="green"
+                            autocomplete="false"
+                            class="mt-4"
+                          >
+                          </v-text-field>
 
-                              <v-text-field
-                                label="Celular"
-                                outlined
-                                v-model="usuario.celular"
-                                dense
-                                :rules="rules.required"
-                                color="green"
-                                autocomplete="false"
-                                class="mt-4"
-                              >
-                              </v-text-field>
+                          <v-text-field
+                            label="Celular"
+                            outlined
+                            v-model="usuario.celular"
+                            dense
+                            :rules="rules.required"
+                            color="green"
+                            autocomplete="false"
+                            class="mt-4"
+                          >
+                          </v-text-field>
 
-                              <v-text-field
-                                label="Correo"
-                                outlined
-                                v-model="usuario.correo"
-                                dense
-                                :rules="rules.required"
-                                color="green"
-                                autocomplete="false"
-                                class="mt-4"
-                                type="email"
-                              >
-                              </v-text-field>
+                          <v-text-field
+                            label="Correo"
+                            outlined
+                            v-model="usuario.correo"
+                            dense
+                            :rules="rules.required"
+                            color="green"
+                            autocomplete="false"
+                            class="mt-4"
+                            type="email"
+                          >
+                          </v-text-field>
 
-                              <v-text-field
-                                label="Usuario"
-                                outlined
-                                dense
-                                v-model="usuario.usuario"
-                                :rules="rules.required"
-                                color="green"
-                                autocomplete="false"
-                                class="mt-4"
-                              >
-                              </v-text-field>
+                          <v-text-field
+                            label="Usuario"
+                            outlined
+                            dense
+                            v-model="usuario.usuario"
+                            :rules="rules.required"
+                            color="green"
+                            autocomplete="false"
+                            class="mt-4"
+                          >
+                          </v-text-field>
 
-                              <v-text-field
-                                label="Contraseña"
-                                v-model="usuario.password"
-                                :rules="rules.required"
-                                outlined
-                                dense
-                                color="green"
-                                autocomplete="false"
-                                class="mt-4"
-                                type="password"
-                              >
-                              </v-text-field>
-                            </v-form>
-                          </v-col>
-                        </v-row>
+                          <v-text-field
+                            label="Contraseña"
+                            v-model="usuario.password"
+                            :rules="rules.required"
+                            outlined
+                            dense
+                            color="green"
+                            autocomplete="false"
+                            class="mt-4"
+                            type="password"
+                          >
+                          </v-text-field>
+                        </v-form>
 
                         <template>
                           <div>
