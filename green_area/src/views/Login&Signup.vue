@@ -393,6 +393,7 @@ export default {
             usuario
           );
           console.log("AAAAAAAAA",response);
+          localStorage.setItem("user-id", response.content.id);
           let resp = response.data;
           console.log(resp);
           if (resp.ok == true) {
@@ -424,6 +425,7 @@ export default {
           if (usuario.ok == true) {
             let rol = usuario.content.rol;
             localStorage.setItem("user-in", rol);
+            localStorage.setItem("user-id", response.content.id);
             if (rol == 0) {
               this.$router.push("/admin");
             } else if (rol == 1) {

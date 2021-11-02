@@ -77,7 +77,7 @@
                             label="Adjuntar evidencia"
                           ></v-file-input>
                           <br />
-                          <v-btn @click="sendFiles()" color="green" dark block tile>
+                          <v-btn @click="createReport()" color="green" dark block tile>
                             Reportar
                           </v-btn>
                         </v-col>
@@ -397,28 +397,28 @@ export default {
       console.log("click on " + item.no);
     },
 
-    async sendFiles() {
+    async sendFiles(id) {
       try {
-        let url = `http://localhost:3001/createReport/${localStorage.getItem("user-id")}/archivos`;
-        // Crear el form data con el nombre del archivo y la información binaria de ese archivo
-        //let formData = new FormData(); //Lo que vamos a subir un json separado
-        console.log(this.report.rutaimagen,"fileeeeeeeeeeeeeeeeeeeeeee");
-        let { data } = await axios.post(url, this.report.rutaimagen.File);
+        //let url = `http://localhost:3001/createReport/1/archivos`;
+        let url = `http://localhost:3001/createReport/${id}/archivos`;
+        let formData = new FormData();
+        formData.append("imagen", this.report.rutaimagen);
+        console.log(formData,"IMAGEN");
+        let { data } = await axios.post(url, formData);
         console.log(data);
         if (data.ok == true) {
-          this.$swal.fire({
-            type: "success",
-            title: "Operación exitosa.",
-            text: "Los archivos se guardaron",
-          });
-          this.closeDialog();
+          console.log('Subido');
+          return await formData.get('imagen');
+
         } else {
             this.dialogError = true;
-          console.log('Error subiendo archivos');    
+          console.log('Error subiendo archivos');
+          return '';    
         }
       } catch (error) {
             this.dialogError = true;
           console.log(error);
+          return '';
       }
     },
 
@@ -434,9 +434,11 @@ export default {
           }
           let id = localStorage.getItem("user-id");
           let report = Object.assign({}, this.report);
-          this.report.id_usuario = id;
-          console.log("HOLAAAAAAAAAAAAA")
-          this.sendFiles();
+          report.id_usuario = id;
+          console.log("HOLAAAAAAAAAAAAA   ",report.id_usuario);
+           this.sendFiles(id);
+          report.rutaimagen = report.rutaimagen.name
+          console.log(report);
           let response = await axios.post(
             "http://localhost:3001/createReport/" ,report
           );
