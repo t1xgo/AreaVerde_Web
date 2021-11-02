@@ -357,7 +357,7 @@ export default {
       password: "",
       correo: "",
       celular: "",
-      fechanacimiento: ""
+      fechanacimiento: "",
     },
     rules: {
       required: [(v) => !!v || "El campo es obligatorio"],
@@ -368,10 +368,10 @@ export default {
       ],
     },
   }),
-    beforeMount() {
+  beforeMount() {
     let token = localStorage.getItem("token");
     axios.setHeader("token", token);
-  }, 
+  },
   watch: {
     menu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
@@ -392,8 +392,8 @@ export default {
             "http://localhost:3001/personaCreate",
             usuario
           );
-          console.log("AAAAAAAAA",response);
-          localStorage.setItem("user-id", response.content.id);
+          console.log("AAAAAAAAA", response);
+          localStorage.setItem("user-id", usuario.content.id);
           let resp = response.data;
           console.log(resp);
           if (resp.ok == true) {
@@ -421,16 +421,17 @@ export default {
             this.usuario
           );
           let usuario = response.data;
-          console.log("ESTE ES AAAAAAAAAAAAAAAAA", usuario);
           if (usuario.ok == true) {
             let rol = usuario.content.rol;
             localStorage.setItem("user-in", rol);
-            localStorage.setItem("user-id", response.content.id);
+            localStorage.setItem("user-id", usuario.content.id);
+            console.log(usuario.content.id);
             if (rol == 0) {
               this.$router.push("/admin");
             } else if (rol == 1) {
               this.$router.push("/collector");
             } else {
+              console.log("INGRESOOOOOOOOO");
               this.$router.push("/user");
             }
           } else {
