@@ -155,9 +155,7 @@
                 v-if="this.dialogError == true"
                 :estadoDialog="true"
                 :tituloMensaje="'Error'"
-                :mensaje="
-                  'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
-                "
+                :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
               />
               <v-row justify="center" align="center">
                 <v-col cols="12" sm="6">
@@ -165,38 +163,65 @@
                     <h2 class="text-center">Agregar un recolector</h2>
                     <h4 class="text-center grey--text">
                       Por favor ingresa la información necesaria para poder
-                      agregar crear un nuevo recolector
+                      crear un nuevo recolector
                     </h4>
                     <v-form ref="formReport" class="pa-3 pt-4" lazy-validation>
                       <v-text-field
                         :rules="rules"
-                        label="ID"
+                        label="Documento de identificación"
+                        v-model="documento"
                         outlined
                         dense
                         color="green"
                         autocomplete="false"
-                        class="mt-16"
                       >
                       </v-text-field>
                       <v-text-field
                         :rules="rules"
                         label="Nombre"
-                        height="5em"
+                        v-model="nombre"
                         outlined
                         dense
                         color="green"
                         autocomplete="false"
                       >
                       </v-text-field>
-
+                      <v-text-field
+                        :rules="rules"
+                        label="Celular"
+                        outlined
+                        v-model="celular"
+                        dense
+                        color="green"
+                        autocomplete="false"
+                      >
+                      </v-text-field>
+                      <v-text-field
+                        :rules="emailRules"
+                        label="Correo"
+                        v-model="correo"
+                        outlined
+                        dense
+                        color="green"
+                        autocomplete="false"
+                      >
+                      </v-text-field>
                       <v-select
                         :rules="rules"
-                        :items="categoria"
+                        v-model="categoria"
+                        :items="categorias"
                         label="Tipo"
                         outlined
                       ></v-select>
+
                       <br />
-                      <v-btn color="green" dark block tile>
+                      <v-btn
+                        color="green"
+                        dark
+                        block
+                        tile
+                        @click="crearRecolecor()"
+                      >
                         registrar
                       </v-btn>
                     </v-form>
@@ -221,7 +246,15 @@
                   :key="index"
                 >
                   <v-card
-                    class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n15 cardcont codneg text-center my-5"
+                    class="
+                      mx-12
+                      rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                      mt-n15
+                      cardcont
+                      codneg
+                      text-center
+                      my-5
+                    "
                     shaped
                   >
                     <v-img
@@ -286,10 +319,24 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   sideBar: "Sidebar",
   props: ["drawer"],
   name: "Dashboard",
+  documento: "",
+  nombre: "",
+  celular: "",
+  correo: "",
+  categoria: "",
+  rules: {
+    required: [(v) => !!v || "El campo es obligatorio"],
+    min: (v) => v.length >= 8 || "Min 8 characters",
+    emailRules: [
+      (v) => !!v || "El campo es obligatorio",
+      (v) => /.+@.+\..+/.test(v) || "Correo invalido",
+    ],
+  },
   data() {
     return {
       //steps that are used to manage the windows
@@ -304,7 +351,7 @@ export default {
         ["mdi-clipboard-list-outline", "Estadísticas"],
       ],
       //....................................................................
-      categoria: ["Reciclable", "Organico", "No reciclable"],
+      categorias: ["Reciclable", "Organico", "No reciclable"],
       reports: [
         {
           evidence: require("@/assets/img/basura1.jpg"),
@@ -414,6 +461,29 @@ export default {
     },
     collectorPopUp() {},
     reportPopUp() {},
+
+    async crearRecolecor() {
+      let tipo;
+      if (this.categoria == "Reciclable") {
+        tipo = 1;
+      } else if (this.categoria == "Organico") {
+        tipo = 2;
+      } else if (this.categoria == "No reciclable") {
+        tipo = 3;
+      }
+      let recolector = {
+        nombre: this.nombre,
+        cedula: this.documento,
+        celular: this.celular,
+        correo: this.correo,
+        id_categoriarecolector: tipo,
+      };
+      let response = await axios.post(
+        "http://localhost:3001/postrecolectores",
+        recolector
+      );
+      console.log(response.data);
+    },
   },
 };
 </script>
