@@ -20,7 +20,9 @@
                 v-if="this.dialogError == true"
                 :estadoDialog="true"
                 :tituloMensaje="'Error'"
-                :mensaje="'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'"
+                :mensaje="
+                  'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'
+                "
               />
               <v-row justify="center" align="center">
                 <v-col cols="12" sm="6">
@@ -37,7 +39,7 @@
                       lazy-validation
                     >
                       <v-row align="center" justify="center">
-                        <v-col cols="12" sm="8">
+                        <v-col cols="12" sm="8" align="center" justify="center">
                           <v-text-field
                             :rules="rules"
                             v-model="report.descripcion"
@@ -68,14 +70,18 @@
                             outlined
                           ></v-select>
 
-                          <v-file-input
-                            :rules="rules"
-                            v-model="report.rutaimagen"
-                            accept="image/png, image/jpeg, image/bmp"
-                            placeholder="Adjuntar"
-                            prepend-icon="mdi-camera"
-                            label="Adjuntar evidencia"
-                          ></v-file-input>
+                          <v-btn color="green" class="my-3" dark>
+                            <v-file-input
+                              :rules="rules"
+                              hide-input
+                              class="py-3 pl-2"
+                              v-model="report.rutaimagen"
+                              color="green"
+                              accept="image/png, image/jpeg, image/bmp"
+                              prepend-icon="mdi-camera"
+                            ></v-file-input>
+                          </v-btn>
+
                           <br />
                           <v-btn @click="createReport()" color="green" dark block tile>
                             Reportar
@@ -440,9 +446,10 @@ export default {
           report.rutaimagen = report.rutaimagen.name
           console.log(report);
           let response = await axios.post(
-            "http://localhost:3001/createReport/" ,report
+            "http://localhost:3001/createReport/",
+            report
           );
-          console.log("aaaaaaaaaaaaaaaaaaaa",response.data);
+          console.log("aaaaaaaaaaaaaaaaaaaa", response.data);
           //let resp = response.data;
         } catch (error) {
           this.dialogError = true;
