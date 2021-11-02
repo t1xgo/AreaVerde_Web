@@ -147,6 +147,65 @@
             </div>
           </v-col>
         </v-row>
+
+        <v-row class="formRow ml-auto mr-auto">
+          <v-col sm="12" cols="12">
+            <v-card class="elevation-6 mt-5 mb-10">
+              <componenteDialog
+                v-if="this.dialogError == true"
+                :estadoDialog="true"
+                :tituloMensaje="'Error'"
+                :mensaje="
+                  'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
+                "
+              />
+              <v-row justify="center" align="center">
+                <v-col cols="12" sm="6">
+                  <v-card-text class="mt-12">
+                    <h2 class="text-center">Agregar un recolector</h2>
+                    <h4 class="text-center grey--text">
+                      Por favor ingresa la información necesaria para poder
+                      agregar crear un nuevo recolector
+                    </h4>
+                    <v-form ref="formReport" class="pa-3 pt-4" lazy-validation>
+                      <v-text-field
+                        :rules="rules"
+                        label="ID"
+                        outlined
+                        dense
+                        color="green"
+                        autocomplete="false"
+                        class="mt-16"
+                      >
+                      </v-text-field>
+                      <v-text-field
+                        :rules="rules"
+                        label="Nombre"
+                        height="5em"
+                        outlined
+                        dense
+                        color="green"
+                        autocomplete="false"
+                      >
+                      </v-text-field>
+
+                      <v-select
+                        :rules="rules"
+                        :items="categoria"
+                        label="Tipo"
+                        outlined
+                      ></v-select>
+                      <br />
+                      <v-btn color="green" dark block tile>
+                        registrar
+                      </v-btn>
+                    </v-form>
+                  </v-card-text>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-window-item>
 
       <!-- ...............................................Seccion de administracion de reportes........................................................-->
@@ -244,6 +303,8 @@ export default {
         ["mdi-account", "Perfil"],
         ["mdi-clipboard-list-outline", "Estadísticas"],
       ],
+      //....................................................................
+      categoria: ["Reciclable", "Organico", "No reciclable"],
       reports: [
         {
           evidence: require("@/assets/img/basura1.jpg"),
@@ -377,6 +438,9 @@ export default {
 }
 .cardcont {
   padding: 2%;
+}
+.formRow {
+  width: 60%;
 }
 </style>
 
