@@ -4,6 +4,12 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="10">
         <v-card class="elevation-6 mt-10">
+          <componenteDialog
+            v-if="this.dialogError == true"
+            :estadoDialog="true"
+            :tituloMensaje="'Error'"
+            :mensaje="'Verifique que los datos sean los correctos'"
+          />
           <v-window v-model="step">
             <v-window-item :value="1">
               <v-row>
@@ -157,6 +163,18 @@
                               color="#ccf2f4"
                             >
                               <v-text-field
+                                label="name"
+                                outlined
+                                v-model="usuario.nombre"
+                                :rules="rules.required"
+                                dense
+                                color="green"
+                                autocomplete="false"
+                                class="mt-4"
+                              >
+                              </v-text-field>
+
+                              <v-text-field
                                 label="ID"
                                 outlined
                                 v-model="usuario.cedula"
@@ -183,7 +201,7 @@
                               <v-text-field
                                 label="Correo"
                                 outlined
-                                v-model="usuario.email"
+                                v-model="usuario.correo"
                                 dense
                                 :rules="rules.required"
                                 color="green"
@@ -233,7 +251,7 @@
                             >
                               <template v-slot:activator="{ on, attrs }">
                                 <v-text-field
-                                  v-model="usuario.fechaNacimiento"
+                                  v-model="usuario.fechanacimiento"
                                   label="Fecha de cumpleaños"
                                   prepend-icon="mdi-calendar"
                                   readonly
@@ -242,7 +260,7 @@
                                 ></v-text-field>
                               </template>
                               <v-date-picker
-                                v-model="usuario.fechaNacimiento"
+                                v-model="usuario.fechanacimiento"
                                 :active-picker.sync="activePicker"
                                 :max="
                                   new Date(
@@ -327,6 +345,7 @@ export default {
   components: {
     Navbar,
   },
+  dialogError: false,
   data: () => ({
     activePicker: null,
     menu: false,
@@ -338,7 +357,7 @@ export default {
       password: "",
       correo: "",
       celular: "",
-      fechaNacimiento: "",
+      fechanacimiento: ""
     },
     rules: {
       required: [(v) => !!v || "El campo es obligatorio"],
@@ -349,10 +368,10 @@ export default {
       ],
     },
   }),
-  beforeMount() {
+    beforeMount() {
     let token = localStorage.getItem("token");
-    this.$axios.setHeader("token", token);
-  },
+    axios.setHeader("token", token);
+  }, 
   watch: {
     menu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
@@ -369,15 +388,15 @@ export default {
           console.log("Inicio guardar usuario");
           let usuario = Object.assign({}, this.usuario);
           console.log(usuario);
-          let response = await this.$axios.post(
-            "http://localhost:3001/login/",
+          let response = await axios.post(
+            "http://localhost:3001/personaCreate",
             usuario
           );
-          console.log(response);
+          console.log("AAAAAAAAA",response);
           let resp = response.data;
           console.log(resp);
           if (resp.ok == true) {
-            this.$router.push("user");
+            this.$router.push("/login");
           } else {
             this.dialogError = true;
           }
@@ -402,9 +421,15 @@ export default {
           let usuario = response.data;
           console.log("ESTE ES AAAAAAAAAAAAAAAAA", usuario);
           if (usuario.ok == true) {
-            let token = usuario.content.token;
-            localStorage.setItem("token", token);
-            this.$router.push("/user");
+            let rol = usuario.content.rol;
+            localStorage.setItem("user-in", rol);
+            if (rol == 0) {
+              this.$router.push("/admin");
+            } else if (rol == 1) {
+              this.$router.push("/collector");
+            } else {
+              this.$router.push("/user");
+            }
           } else {
             this.dialogError = true;
           }
