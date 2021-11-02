@@ -396,6 +396,7 @@ export default {
           let resp = response.data;
           console.log(resp);
           if (resp.ok == true) {
+            console.log("PASAR AL LOGIN");
             this.$router.push("/login");
           } else {
             this.dialogError = true;
