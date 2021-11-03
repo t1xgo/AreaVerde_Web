@@ -396,7 +396,9 @@ export default {
           console.log(resp);
           if (resp.ok == true) {
             console.log("PASAR AL LOGIN");
-            this.$router.push("/login");
+            localStorage.setItem("user-id", usuario.content.id);
+            console.log("ESTE ES EL ID", usuario.content.id);
+            this.$router.push("/user");
           } else {
             this.dialogError = true;
           }
@@ -421,8 +423,10 @@ export default {
           let usuario = response.data;
           if (usuario.ok == true) {
             let rol = usuario.content.rol;
+            console.log("ESTE ES EL ROL", rol);
             localStorage.setItem("user-in", rol);
             localStorage.setItem("user-id", usuario.content.id);
+            console.log("ESTE ES EL ID", usuario.content.id);
             console.log(usuario.content.id);
             if (rol == 0) {
               this.$router.push("/admin");
