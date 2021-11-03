@@ -132,18 +132,60 @@
                 <thead>
                   <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Tpye</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Tipo</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="colls in collectors" :key="colls.id">
+                  <tr
+                    v-for="colls in collectors"
+                    :key="colls.id"
+                    @click="showingReportsModal = true"
+                  >
                     <td>{{ colls.id }}</td>
                     <td>{{ colls.name }}</td>
                     <td>{{ colls.type }}</td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div id="popUpBox">
+              <transition name="fade" appear>
+                <div class="modal-overlay px-5" v-if="showingReportsModal">
+                  <v-row>
+                    <v-col sm="12" cols="12">
+                      <v-text-field
+                        class="mt-10"
+                        :rules="rules"
+                        label="tipo de recolector"
+                        height="3em"
+                        outlined
+                        dense
+                        color="green"
+                        autocomplete="false"
+                      >
+                      </v-text-field>
+                    </v-col>
+                    <v-row>
+                      <v-col sm="6" cols="6">
+                        <v-btn color="green" dark tile>
+                          Actualizar
+                        </v-btn>
+                      </v-col>
+                      <v-col sm="6" cols="6">
+                        <v-btn
+                          color="green"
+                          dark
+                          tile
+                          @click="showingReportsModal = false"
+                        >
+                          Cancelar
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-row>
+                </div>
+              </transition>
             </div>
           </v-col>
         </v-row>
@@ -197,7 +239,7 @@
                       ></v-select>
                       <br />
                       <v-btn color="green" dark block tile>
-                        registrar
+                        Guardar
                       </v-btn>
                     </v-form>
                   </v-card-text>
@@ -265,17 +307,6 @@
                     </v-btn>
                   </v-card>
                 </div>
-                <!--
-  <div id="popUpBox">
-                  <transition name="fade" appear>
-                    <div class="modal-overlay" v-if="showingReportModal">
-                      Any
-                      text
-                    </div>
-
-                  </transition>
-                </div>
--->
               </v-col>
             </v-row>
           </v-col>
@@ -477,8 +508,10 @@ table tbody tr:nth-child(2n) td {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  min-height: 100vh;
+  margin: auto;
+  padding: auto;
+  width: 10px;
+  height: 10px;
   overflow: hidden;
 }
 .modal-overlay {
@@ -489,5 +522,7 @@ table tbody tr:nth-child(2n) td {
   bottom: 0;
   z-index: 98;
   background-color: rgba(0, 0, 0, 0.3);
+  height: 20%;
+  width: 30%;
 }
 </style>
