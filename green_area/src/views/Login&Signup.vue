@@ -81,27 +81,6 @@
                         <h5 class="text-center grey--text mt-4 mb-3">
                           Or log in using a social media account:
                         </h5>
-                        <div
-                          class="
-                            d-flex
-                            justify-space-between
-                            align-center
-                            mx-10
-                            mb-16
-                          "
-                        >
-                          <v-btn depressed outlined color="grey">
-                            <v-icon color="red">fab fa-google</v-icon>
-                          </v-btn>
-                          <v-btn depressed outlined color="grey">
-                            <v-icon color="blue">fab fa-facebook</v-icon>
-                          </v-btn>
-                          <v-btn depressed outlined color="grey">
-                            <v-icon color="light-blue lighten-3"
-                              >fab fa-twitter</v-icon
-                            >
-                          </v-btn>
-                        </div>
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -138,9 +117,7 @@
                       </h4>
                     </v-card-text>
                     <div class="text-center">
-                      <v-btn tile outlined dark @click="step--">
-                        Log in
-                      </v-btn>
+                      <v-btn tile outlined dark @click="step--"> Log in </v-btn>
                     </div>
                   </div>
                 </v-col>
@@ -276,12 +253,6 @@
                         </template>
                         <v-row>
                           <v-col cols="12" sm="7">
-                            <v-checkbox
-                              label="Acepto"
-                              class="mt-n1"
-                              color="green"
-                            >
-                            </v-checkbox>
                           </v-col>
                           <v-col cols="12" sm="5">
                             <span class="caption green--text ml-n4">
@@ -310,17 +281,6 @@
                               mb-11
                             "
                           >
-                            <v-btn depressed outlined color="grey">
-                              <v-icon color="red">fab fa-google</v-icon>
-                            </v-btn>
-                            <v-btn depressed outlined color="grey">
-                              <v-icon color="blue">fab fa-facebook</v-icon>
-                            </v-btn>
-                            <v-btn depressed outlined color="grey">
-                              <v-icon color="light-blue lighten-3"
-                                >fab fa-twitter</v-icon
-                              >
-                            </v-btn>
                           </div>
                         </h5>
                       </v-col>
@@ -390,8 +350,8 @@ export default {
             "http://localhost:3001/personaCreate",
             usuario
           );
-          console.log("AAAAAAAAA",response);
-          localStorage.setItem("user-id", response.content.id);
+          console.log("AAAAAAAAA", response);
+          localStorage.setItem("user-id", usuario.content.id);
           let resp = response.data;
           console.log(resp);
           if (resp.ok == true) {
@@ -419,16 +379,17 @@ export default {
             this.usuario
           );
           let usuario = response.data;
-          console.log("ESTE ES AAAAAAAAAAAAAAAAA", usuario);
           if (usuario.ok == true) {
             let rol = usuario.content.rol;
             localStorage.setItem("user-in", rol);
-            localStorage.setItem("user-id", response.content.id);
+            localStorage.setItem("user-id", usuario.content.id);
+            console.log(usuario.content.id);
             if (rol == 0) {
               this.$router.push("/admin");
             } else if (rol == 1) {
               this.$router.push("/collector");
             } else {
+              console.log("INGRESOOOOOOOOO");
               this.$router.push("/user");
             }
           } else {
