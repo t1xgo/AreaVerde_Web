@@ -20,7 +20,9 @@
                 v-if="this.dialogError == true"
                 :estadoDialog="true"
                 :tituloMensaje="'Error'"
-                :mensaje="'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'"
+                :mensaje="
+                  'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'
+                "
               />
               <v-row justify="center" align="center">
                 <v-col cols="12" sm="6">
@@ -195,10 +197,10 @@ import Swal from "sweetalert2";
 export default {
   beforeMount() {
     console.log("AAAAAAAAAAAA");
-    let token = localStorage.getItem("token");
-    axios.setHeader("token", token);
     console.log("BBBBBBBBBBBBBBBBB");
     this.loadReports();
+    let token = localStorage.getItem("token");
+    axios.setHeader("token", token);
   },
 
   components: {
