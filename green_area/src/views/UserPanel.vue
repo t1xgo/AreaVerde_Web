@@ -309,6 +309,7 @@ export default {
           console.log("HOLAAAAAAAAAAAAA   ", report.id_usuario);
           this.sendFiles(id);
           report.rutaimagen = report.rutaimagen.name;
+          console.log("REPORTE",report.rutaimagen.name);
           console.log(report);
           let response = await axios.post(
             "http://localhost:3001/createReport/",

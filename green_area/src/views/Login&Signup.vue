@@ -389,6 +389,7 @@ export default {
             console.log("ESTE ES EL ID", usuario.content.id);
             console.log(usuario.content.id);
             if (rol == 0) {
+              console.log("INGRESE PSSSSSSSS")
               this.$router.push("/admin");
             } else if (rol == 1) {
               this.$router.push("/collector");

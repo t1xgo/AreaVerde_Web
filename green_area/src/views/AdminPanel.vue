@@ -168,9 +168,7 @@
                     </v-col>
                     <v-row>
                       <v-col sm="6" cols="6">
-                        <v-btn color="green" dark tile>
-                          Actualizar
-                        </v-btn>
+                        <v-btn color="green" dark tile> Actualizar </v-btn>
                       </v-col>
                       <v-col sm="6" cols="6">
                         <v-btn
@@ -368,6 +366,12 @@ export default {
       (v) => /.+@.+\..+/.test(v) || "Correo invalido",
     ],
   },
+  beforeMount() {
+    console.log("AAAAAAAAAAAAAA");
+    this.cargarRecolectores();
+    // let token = localStorage.getItem("token");
+    // axios.setHeader("token", token);
+  },
   data() {
     return {
       //steps that are used to manage the windows
@@ -493,6 +497,10 @@ export default {
     collectorPopUp() {},
     reportPopUp() {},
 
+    async cargarRecolectores() {
+      let response = await axios.post("http://localhost:3001/getrecolectores");
+      console.log(response.data);
+    },
     async crearRecolecor() {
       let tipo;
       if (this.categoria == "Reciclable") {
