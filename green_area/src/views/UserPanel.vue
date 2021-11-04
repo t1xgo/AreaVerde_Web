@@ -129,7 +129,7 @@
                   justify="center"
                 >
                   <img
-                    :src="require(`@/assets/img/basura2.png`)"
+                    :src="`${pathImg}/${report.rutaimagen[0]}`"
                     width="90%"
                     class="d-block ml-auto mr-auto"
                   />
@@ -213,6 +213,12 @@ export default {
       dialogError: false,
       //Data spinner categorías
       categoria: ["Reciclable", "Organicos", "No reciclables"],
+      //Path static de imagenes
+      pathImg: 'http://localhost:3001/public/static',
+
+      // Iterador imagenes
+      i:0,
+
       //JSON Report para crearlo
       report: {
         descripcion: "",
@@ -245,8 +251,8 @@ export default {
 
     cleanCampos() {
       (this.report.descripcion = ""),
-        (this.report.ubicacion = ""),
-        (this.report.rutaimagen = "");
+      (this.report.ubicacion = ""),
+      (this.report.rutaimagen = "");
     },
 
     async loadReports() {
