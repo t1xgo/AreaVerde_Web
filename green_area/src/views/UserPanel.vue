@@ -330,21 +330,19 @@ export default {
         let formData = new FormData();
         formData.append("imagen", this.report.rutaimagen);
         console.log(formData,"IMAGEN");
-        let { data } = await axios.post(url, formData);
+        let { data } = await axios.post(url,formData);
         console.log(data);
         if (data.ok == true) {
           console.log('Subido');
-          return await formData.get('imagen');
+          return formData.get('imagen');
 
         } else {
-            this.dialogError = true;
           console.log('Error subiendo archivos');
-          return '';    
+          return 'NO';    
         }
       } catch (error) {
-            this.dialogError = true;
           console.log(error);
-          return '';
+          return 'RE CONTRA NO';
       }
     },
 
