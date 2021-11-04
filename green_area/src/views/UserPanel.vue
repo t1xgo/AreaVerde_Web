@@ -100,69 +100,67 @@
           </v-col>
         </v-row>
 
-        <template v-slot:default="props">
-          <v-row class="feedRow">
-            <v-col
-              sm="12"
-              cols="12"
-              v-for="report in props.reports"
-              :key="report.id_reporte"
+        <v-row class="feedRow">
+          <v-col
+            sm="12"
+            cols="12"
+            v-for="report in reports"
+            :key="report.id_reporte"
+          >
+            <v-card
+              class="
+                mx-12
+                rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                mt-n15
+                cardcont
+                codver
+                text-center
+              "
+              shaped
             >
-              <v-card
-                class="
-                  mx-12
-                  rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                  mt-n15
-                  cardcont
-                  codver
-                  text-center
-                "
-                shaped
-              >
-                <v-row align="center" justify="center">
-                  <v-col
-                    cols="12"
-                    sm="12"
-                    class="d-md-flex"
-                    align="center"
-                    justify="center"
-                  >
-                    <img
-                      :src="require(`@/assets/img/basura2.png`)"
-                      width="90%"
-                      class="d-block ml-auto mr-auto"
-                    />
-                  </v-col>
-                </v-row>
+              <v-row align="center" justify="center">
+                <v-col
+                  cols="12"
+                  sm="12"
+                  class="d-md-flex"
+                  align="center"
+                  justify="center"
+                >
+                  <img
+                    :src="require(`@/assets/img/basura2.png`)"
+                    width="90%"
+                    class="d-block ml-auto mr-auto"
+                  />
+                </v-col>
+              </v-row>
 
-                <v-row align="center" justify="center">
-                  <v-col
-                    cols="12"
-                    sm="12"
-                    class="d-md-flex text-center"
-                    align="center"
-                    justify="center"
-                  >
-                    <h4 class="font-weight-regular subtitle-1">
-                      <strong> Descripción: </strong>
-                      {{ report.descripcion }}
-                      <br />
-                      <br />
-                      <strong> Ubicación: </strong>
-                      {{ report.ubicacion }}
-                      <br />
-                      <br />
-                      <strong> Estado: </strong>
-                      {{ report.estado }}
-                    </h4>
-                  </v-col>
-                  <hr size="5px" width="50%" color="green" />
-                  <br />
-                </v-row>
-              </v-card>
-            </v-col>
-          </v-row>
-        </template>
+              <v-row align="center" justify="center">
+                <v-col
+                  cols="12"
+                  sm="12"
+                  class="d-md-flex text-center"
+                  align="center"
+                  justify="center"
+                >
+                  <h4 class="font-weight-regular subtitle-1">
+                    <strong> Descripción: </strong>
+                    {{ report.descripcion }}
+                    <br />
+                    <br />
+                    <strong> Ubicación: </strong>
+                    {{ report.ubicacion }}
+                    <br />
+                    <br />
+                    <strong> Estado: </strong>
+                    {{ report.estado }}
+                  </h4>
+                </v-col>
+                <hr size="5px" width="50%" color="green" />
+                <br />
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-col>
       <v-col cols="12" lg="5">
         <v-card>
@@ -193,11 +191,13 @@
 <script>
 import axios from "axios";
 import Sidebar from "../components/Sidebar.vue";
+import Swal from "sweetalert2";
 export default {
-
   beforeMount() {
+    console.log("AAAAAAAAAAAA");
     let token = localStorage.getItem("token");
     axios.setHeader("token", token);
+    console.log("BBBBBBBBBBBBBBBBB");
     this.loadReports();
   },
 
@@ -241,12 +241,20 @@ export default {
       console.log("click on " + item.no);
     },
 
+    cleanCampos() {
+      (this.report.descripcion = ""),
+        (this.report.ubicacion = ""),
+        (this.report.rutaimagen = "");
+    },
+
     async loadReports() {
+      console.log("this.reports");
       try {
         let id = localStorage.getItem("user-id");
         let url = `http://localhost:3001/getReport/${id}`;
         let { data } = await axios.get(url);
         this.reports = data.content;
+        console.log(this.reports);
       } catch (error) {
         this.reports = [];
         console.error(error);
@@ -299,7 +307,20 @@ export default {
             report
           );
           console.log("aaaaaaaaaaaaaaaaaaaa", response.data);
+          this.cleanCampos();
           //let resp = response.data;
+          if (response.data.ok == true) {
+            Swal.fire({
+              type: "success",
+              text: "El reporte se creó correctamente.",
+            });
+          } else {
+            Swal.fire({
+              type: "error",
+              title: "Error al crear el reporte.",
+              text: response.data.message,
+            });
+          }
         } catch (error) {
           this.dialogError = true;
           console.log(error);
