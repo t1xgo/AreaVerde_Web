@@ -20,9 +20,7 @@
                 v-if="this.dialogError == true"
                 :estadoDialog="true"
                 :tituloMensaje="'Error'"
-                :mensaje="
-                  'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'
-                "
+                :mensaje="'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'"
               />
               <v-row justify="center" align="center">
                 <v-col cols="12" sm="6">
@@ -83,7 +81,13 @@
                           </v-btn>
 
                           <br />
-                          <v-btn @click="createReport()" color="green" dark block tile>
+                          <v-btn
+                            @click="createReport()"
+                            color="green"
+                            dark
+                            block
+                            tile
+                          >
                             Reportar
                           </v-btn>
                         </v-col>
@@ -96,121 +100,69 @@
           </v-col>
         </v-row>
 
-        <v-row class="feedRow">
-          <v-col sm="12" cols="12">
-            <v-card
-              class="
-                mx-12
-                rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                mt-n15
-                cardcont
-                codneg
-                text-center
-              "
-              shaped
+        <template v-slot:default="props">
+          <v-row class="feedRow">
+            <v-col
+              sm="12"
+              cols="12"
+              v-for="report in props.reports"
+              :key="report.id_reporte"
             >
-              <v-row align="center" justify="center">
-                <v-col
-                  cols="12"
-                  sm="12"
-                  class="d-md-flex"
-                  align="center"
-                  justify="center"
-                >
-                  <img
-                    :src="require(`@/assets/img/basura1.jpg`)"
-                    width="90%"
-                    class="d-block ml-auto mr-auto"
-                  />
-                </v-col>
-              </v-row>
+              <v-card
+                class="
+                  mx-12
+                  rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                  mt-n15
+                  cardcont
+                  codver
+                  text-center
+                "
+                shaped
+              >
+                <v-row align="center" justify="center">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    class="d-md-flex"
+                    align="center"
+                    justify="center"
+                  >
+                    <img
+                      :src="require(`@/assets/img/basura2.png`)"
+                      width="90%"
+                      class="d-block ml-auto mr-auto"
+                    />
+                  </v-col>
+                </v-row>
 
-              <v-row align="center" justify="center">
-                <v-col
-                  cols="12"
-                  sm="12"
-                  class="d-md-flex text-center"
-                  align="center"
-                  justify="center"
-                >
-                  <h4 class="font-weight-regular subtitle-1">
-                    <strong> Descripción: </strong>
-                    Basura con un olor muy fuerte en el sector de los Alpes,
-                    empieza a ser incómodo para la gente del alrededor.
-                    <br />
-                    <br />
-                    <strong> Ubicación: </strong>
-                    Belen, Los Alpes.
-                    <br />
-                    <br />
-                    <strong> Estado: </strong>
-                    Pendiente de recolección.
-                  </h4>
-                </v-col>
-                <hr size="5px" width="50%" color="black" />
-                <br />
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-
-        <v-row class="feedRow">
-          <v-col sm="12" cols="12">
-            <v-card
-              class="
-                mx-12
-                rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                mt-n15
-                cardcont
-                codver
-                text-center
-              "
-              shaped
-            >
-              <v-row align="center" justify="center">
-                <v-col
-                  cols="12"
-                  sm="12"
-                  class="d-md-flex"
-                  align="center"
-                  justify="center"
-                >
-                  <img
-                    :src="require(`@/assets/img/basura2.png`)"
-                    width="90%"
-                    class="d-block ml-auto mr-auto"
-                  />
-                </v-col>
-              </v-row>
-
-              <v-row align="center" justify="center">
-                <v-col
-                  cols="12"
-                  sm="12"
-                  class="d-md-flex text-center"
-                  align="center"
-                  justify="center"
-                >
-                  <h4 class="font-weight-regular subtitle-1">
-                    <strong> Descripción: </strong>
-                    Residuos encontrados en una zona donde claramente se indica
-                    que no está permitido.
-                    <br />
-                    <br />
-                    <strong> Ubicación: </strong>
-                    Laureles, Estadio.
-                    <br />
-                    <br />
-                    <strong> Estado: </strong>
-                    Pendiente de recolección.
-                  </h4>
-                </v-col>
-                <hr size="5px" width="50%" color="green" />
-                <br />
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
+                <v-row align="center" justify="center">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    class="d-md-flex text-center"
+                    align="center"
+                    justify="center"
+                  >
+                    <h4 class="font-weight-regular subtitle-1">
+                      <strong> Descripción: </strong>
+                      {{ report.descripcion }}
+                      <br />
+                      <br />
+                      <strong> Ubicación: </strong>
+                      {{ report.ubicacion }}
+                      <br />
+                      <br />
+                      <strong> Estado: </strong>
+                      {{ report.estado }}
+                    </h4>
+                  </v-col>
+                  <hr size="5px" width="50%" color="green" />
+                  <br />
+                </v-row>
+              </v-card>
+            </v-col>
+          </v-row>
+        </template>
       </v-col>
       <v-col cols="12" lg="5">
         <v-card>
@@ -242,14 +194,24 @@
 import axios from "axios";
 import Sidebar from "../components/Sidebar.vue";
 export default {
+
+  beforeMount() {
+    let token = localStorage.getItem("token");
+    axios.setHeader("token", token);
+    this.loadReports();
+  },
+
   components: {
     Sidebar,
   },
+
   name: "Dashboard",
   data() {
     return {
       dialogError: false,
+      //Data spinner categorías
       categoria: ["Reciclable", "Organicos", "No reciclables"],
+      //JSON Report para crearlo
       report: {
         descripcion: "",
         id_categoria: "",
@@ -258,6 +220,11 @@ export default {
         rutaimagen: null,
         estado: 0,
       },
+
+      //JSON reports para listarlos
+      reports: [],
+
+      //Reglas formReport
       rules: {
         required: [(v) => !!v || "El campo es obligatorio"],
         min: (v) => v.length >= 8 || "Min 8 characters",
@@ -266,61 +233,24 @@ export default {
           (v) => /.+@.+\..+/.test(v) || "Correo invalido",
         ],
       },
-      activityLog: [
-        {
-          title: "Total Products",
-          amount: 50,
-          icon: "mdi-account",
-          color: "cyan lighten-3",
-        },
-        {
-          title: "Total Customer",
-          amount: 3433,
-          icon: "mdi-account-group-outline",
-          color: "green darken-2",
-        },
-        {
-          title: "Total Sale",
-          amount: 3433,
-          icon: "mdi-account-group-outline",
-          color: "blue-grey darken-1",
-        },
-        {
-          title: "Pending Orders",
-          amount: 3433,
-          icon: "mdi-account-group-outline",
-          color: "deep-orange darken-1",
-        },
-      ],
-      reports: [
-        {
-          evidence: require("@/assets/img/basura1.jpg"),
-          description:
-            "Basura con un olor muy fuerte en el sector de los Alpes, empieza a ser incómodo para la gente del alrededor.",
-          ubication: "Belen, Los Alpes.",
-          colorCode: "Codigo negro",
-          state: "Pendiente",
-        },
-        {
-          evidence: require("@/assets/img/basura2.png"),
-          description:
-            "Residuos encontrados en una zona donde claramente se indica que no está permitido.",
-          ubication: "Laureles, Estadio.",
-          colorCode: "Codigo verde",
-          state: "Pendiente",
-        },
-      ],
     };
-  },
-
-  beforeMount() {
-    let token = localStorage.getItem("token");
-    axios.setHeader("token", token);
   },
 
   methods: {
     onButtonClick(item) {
       console.log("click on " + item.no);
+    },
+
+    async loadReports() {
+      try {
+        let id = localStorage.getItem("user-id");
+        let url = `http://localhost:3001/getReport/${id}`;
+        let { data } = await axios.get(url);
+        this.reports = data.content;
+      } catch (error) {
+        this.reports = [];
+        console.error(error);
+      }
     },
 
     async sendFiles(id) {
@@ -329,20 +259,21 @@ export default {
         let url = `http://localhost:3001/createReport/${id}/archivos`;
         let formData = new FormData();
         formData.append("imagen", this.report.rutaimagen);
-        console.log(formData,"IMAGEN");
-        let { data } = await axios.post(url,formData);
+        console.log(formData, "IMAGEN");
+        let { data } = await axios.post(url, formData);
         console.log(data);
         if (data.ok == true) {
-          console.log('Subido');
-          return formData.get('imagen');
-
+          console.log("Subido");
+          return await formData.get("imagen");
         } else {
-          console.log('Error subiendo archivos');
-          return 'NO';    
+          this.dialogError = true;
+          console.log("Error subiendo archivos");
+          return "";
         }
       } catch (error) {
-          console.log(error);
-          return 'RE CONTRA NO';
+        this.dialogError = true;
+        console.log(error);
+        return "";
       }
     },
 
@@ -359,9 +290,9 @@ export default {
           let id = localStorage.getItem("user-id");
           let report = Object.assign({}, this.report);
           report.id_usuario = id;
-          console.log("HOLAAAAAAAAAAAAA   ",report.id_usuario);
-           this.sendFiles(id);
-          report.rutaimagen = report.rutaimagen.name
+          console.log("HOLAAAAAAAAAAAAA   ", report.id_usuario);
+          this.sendFiles(id);
+          report.rutaimagen = report.rutaimagen.name;
           console.log(report);
           let response = await axios.post(
             "http://localhost:3001/createReport/",
