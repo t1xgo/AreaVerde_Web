@@ -326,10 +326,6 @@ export default {
       ],
     },
   }),
-  beforeMount() {
-    let token = localStorage.getItem("token");
-    axios.setHeader("token", token);
-  },
   watch: {
     menu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
@@ -386,6 +382,9 @@ export default {
             console.log("ESTE ES EL ROL", rol);
             localStorage.setItem("user-in", rol);
             localStorage.setItem("user-id", usuario.content.id);
+            let token = usuario.content.token;
+            console.log(token);
+            localStorage.setItem("token",token);
             console.log("ESTE ES EL ID", usuario.content.id);
             console.log(usuario.content.id);
             if (rol == 0) {

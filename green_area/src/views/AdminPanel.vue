@@ -195,7 +195,9 @@
                 v-if="this.dialogError == true"
                 :estadoDialog="true"
                 :tituloMensaje="'Error'"
-                :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
+                :mensaje="
+                  'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
+                "
               />
               <v-row justify="center" align="center">
                 <v-col cols="12" sm="6">
@@ -369,8 +371,6 @@ export default {
   beforeMount() {
     console.log("AAAAAAAAAAAAAA");
     this.cargarRecolectores();
-    // let token = localStorage.getItem("token");
-    // axios.setHeader("token", token);
   },
   data() {
     return {
@@ -496,10 +496,13 @@ export default {
     },
     collectorPopUp() {},
     reportPopUp() {},
-
     async cargarRecolectores() {
-      let response = await axios.post("http://localhost:3001/getrecolectores");
-      console.log(response.data);
+      let token = localStorage.getItem("token");
+      console.log("ESTE ES EL TOKEN",token);
+      let response = await axios.get("http://localhost:3001/getrecolectores", {
+        headers: { token },
+      });
+      console.log("RESPONSEE",response.data);
     },
     async crearRecolecor() {
       let tipo;
