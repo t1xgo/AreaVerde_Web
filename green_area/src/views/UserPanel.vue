@@ -20,9 +20,7 @@
                 v-if="this.dialogError == true"
                 :estadoDialog="true"
                 :tituloMensaje="'Error'"
-                :mensaje="
-                  'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'
-                "
+                :mensaje="'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'"
               />
               <v-row justify="center" align="center">
                 <v-col cols="12" sm="6">
@@ -129,7 +127,7 @@
                   justify="center"
                 >
                   <img
-                    :src="require(`@/assets/img/basura2.png`)"
+                    :src="`${pathImg}/${report.rutaimagen[0]}`"
                     width="90%"
                     class="d-block ml-auto mr-auto"
                   />
@@ -196,8 +194,6 @@ import Sidebar from "../components/Sidebar.vue";
 import Swal from "sweetalert2";
 export default {
   beforeMount() {
-    console.log("AAAAAAAAAAAA");
-    console.log("BBBBBBBBBBBBBBBBB");
     this.loadReports();
     let token = localStorage.getItem("token");
     axios.setHeader("token", token);
@@ -213,6 +209,12 @@ export default {
       dialogError: false,
       //Data spinner categorías
       categoria: ["Reciclable", "Organicos", "No reciclables"],
+      //Path static de imagenes
+      pathImg: "http://localhost:3001/public/static",
+
+      // Iterador imagenes
+      i: 0,
+
       //JSON Report para crearlo
       report: {
         descripcion: "",
@@ -249,14 +251,30 @@ export default {
         (this.report.rutaimagen = "");
     },
 
+    actualizarEstado(reports) {
+      for (let i = 0; i <= reports.length; i++) {
+        if (reports[i].estado == 0) {
+          reports[i].estado = "En espera de ser aprobado";
+        } else if (reports[i].estado == 1) {
+          reports[i].estado = "En espera de recolección";
+        } else if (reports[i].estado == 2) {
+          reports[i].estado = "Recogido";
+        }
+        this.reports.push(reports[i]);
+        console.log(this.reports[i]);
+        continue;
+      }
+      console.log("REPORTES");
+      console.log(this.reports);
+    },
+
     async loadReports() {
-      console.log("this.reports");
       try {
         let id = localStorage.getItem("user-id");
         let url = `http://localhost:3001/getReport/${id}`;
         let { data } = await axios.get(url);
-        this.reports = data.content;
-        console.log(this.reports);
+        let reports = data.content;
+        this.actualizarEstado(reports);
       } catch (error) {
         this.reports = [];
         console.error(error);
@@ -303,7 +321,7 @@ export default {
           console.log("HOLAAAAAAAAAAAAA   ", report.id_usuario);
           this.sendFiles(id);
           report.rutaimagen = report.rutaimagen.name;
-          console.log("REPORTE",report.rutaimagen.name);
+          console.log("REPORTE", report.rutaimagen.name);
           console.log(report);
           let response = await axios.post(
             "http://localhost:3001/createReport/",
