@@ -495,19 +495,11 @@ export default {
     collectorPopUp() {},
     reportPopUp() {},
     async cargarRecolectores() {
-<<<<<<< HEAD
       let token = localStorage.getItem("token");
       let response = await axios.get("http://localhost:3001/getrecolectores", {
         headers: { token },
       });
       console.log(response.data);
-=======
-      let token = this.token;
-      let response = await axios.get("http://localhost:3001/getrecolectores", {
-        headers: { token },
-      });
-      console.log("RESPONSEE", response.data);
->>>>>>> da7df1bafd8dd4491d8197c584fc378e62bda40f
     },
     async crearRecolecor() {
       let tipo;
