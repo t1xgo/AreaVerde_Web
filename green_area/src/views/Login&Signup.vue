@@ -346,14 +346,10 @@ export default {
             "http://localhost:3001/personaCreate",
             usuario
           );
-          console.log("AAAAAAAAA", response);
           localStorage.setItem("user-id", usuario.content.id);
           let resp = response.data;
-          console.log(resp);
           if (resp.ok == true) {
-            console.log("PASAR AL LOGIN");
             localStorage.setItem("user-id", usuario.content.id);
-            console.log("ESTE ES EL ID", usuario.content.id);
             this.$router.push("/user");
           } else {
             this.dialogError = true;
@@ -379,21 +375,16 @@ export default {
           let usuario = response.data;
           if (usuario.ok == true) {
             let rol = usuario.content.rol;
-            console.log("ESTE ES EL ROL", rol);
+            let id = usuario.content.id;
             localStorage.setItem("user-in", rol);
-            localStorage.setItem("user-id", usuario.content.id);
+            localStorage.setItem("user-id", id);
             let token = usuario.content.token;
-            console.log(token);
             localStorage.setItem("token",token);
-            console.log("ESTE ES EL ID", usuario.content.id);
-            console.log(usuario.content.id);
             if (rol == 0) {
-              console.log("INGRESE PSSSSSSSS")
               this.$router.push("/admin");
             } else if (rol == 1) {
               this.$router.push("/collector");
-            } else {
-              console.log("INGRESOOOOOOOOO");
+            } else { 
               this.$router.push("/user");
             }
           } else {

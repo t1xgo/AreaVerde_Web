@@ -369,7 +369,6 @@ export default {
     ],
   },
   beforeMount() {
-    console.log("AAAAAAAAAAAAAA");
     this.cargarRecolectores();
   },
   data() {
@@ -498,11 +497,10 @@ export default {
     reportPopUp() {},
     async cargarRecolectores() {
       let token = localStorage.getItem("token");
-      console.log("ESTE ES EL TOKEN",token);
       let response = await axios.get("http://localhost:3001/getrecolectores", {
         headers: { token },
       });
-      console.log("RESPONSEE",response.data);
+      console.log(response.data);
     },
     async crearRecolecor() {
       let tipo;
