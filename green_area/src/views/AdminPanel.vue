@@ -115,79 +115,6 @@
       <!-- ...............................................Seccion de administracion de recolectores........................................................-->
 
       <v-window-item :value="2">
-        <v-row
-          justify="center"
-          align="center"
-          class="ml-auto mr-auto p-auto collectors"
-        >
-          <v-col
-            cols="12"
-            sm="12"
-            class="d-md-flex"
-            align="center"
-            justify="center"
-          >
-            <div class="colTable">
-              <table id="collectorsTable">
-                <thead>
-                  <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Tipo</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="colls in collectors"
-                    :key="colls.id"
-                    @click="showingReportsModal = true"
-                  >
-                    <td>{{ colls.id }}</td>
-                    <td>{{ colls.name }}</td>
-                    <td>{{ colls.type }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div id="popUpBox">
-              <transition name="fade" appear>
-                <div class="modal-overlay px-5" v-if="showingReportsModal">
-                  <v-row>
-                    <v-col sm="12" cols="12">
-                      <v-text-field
-                        class="mt-10"
-                        :rules="rules"
-                        label="tipo de recolector"
-                        height="3em"
-                        outlined
-                        dense
-                        color="green"
-                        autocomplete="false"
-                      >
-                      </v-text-field>
-                    </v-col>
-                    <v-row>
-                      <v-col sm="6" cols="6">
-                        <v-btn color="green" dark tile> Actualizar </v-btn>
-                      </v-col>
-                      <v-col sm="6" cols="6">
-                        <v-btn
-                          color="green"
-                          dark
-                          tile
-                          @click="showingReportsModal = false"
-                        >
-                          Cancelar
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-row>
-                </div>
-              </transition>
-            </div>
-          </v-col>
-        </v-row>
-
         <v-row class="formRow ml-auto mr-auto">
           <v-col sm="12" cols="12">
             <v-card class="elevation-6 mt-5 mb-10">
@@ -271,6 +198,80 @@
             </v-card>
           </v-col>
         </v-row>
+        <v-row
+          justify="center"
+          align="center"
+          class="ml-auto mr-auto p-auto collectors"
+        >
+          <v-col
+            cols="12"
+            sm="12"
+            class="d-md-flex"
+            align="center"
+            justify="center"
+          >
+            <div class="colTable">
+              <table id="collectorsTable">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Tipo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="colls in collectors"
+                    :key="colls.id"
+                    @click="showingReportsModal = true"
+                  >
+                    <td>{{ colls.cedula }}</td>
+                    <td>{{ colls.recolector }}</td>
+                    <td>{{ colls.categoria }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="popUpBox">
+              <transition name="fade" appear>
+                <div class="modal-overlay px-5" v-if="showingReportsModal">
+                  <v-row>
+                    <v-col sm="12" cols="12">
+                      <v-select
+                        class="mt-10"
+                        :rules="rules"
+                        :items="categorias"
+                        label="tipo de recolector"
+                        height="3em"
+                        outlined
+                        dense
+                        color="green"
+                        autocomplete="false"
+                      >
+                      </v-select>
+                    </v-col>
+                    <v-row>
+                      <v-col sm="6" cols="6">
+                        <v-btn color="green" dark tile> Actualizar </v-btn>
+                      </v-col>
+                      <v-col sm="6" cols="6">
+                        <v-btn
+                          color="green"
+                          dark
+                          tile
+                          @click="showingReportsModal = false"
+                        >
+                          Cancelar
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-row>
+                </div>
+              </transition>
+            </div>
+          </v-col>
+        </v-row>
+
       </v-window-item>
 
       <!-- ...............................................Seccion de administracion de reportes........................................................-->
@@ -350,6 +351,8 @@
 <script>
 import axios from "axios";
 export default {
+  //collectors table data
+  collectors: [],
   token: "",
   sideBar: "Sidebar",
   props: ["drawer"],
@@ -368,6 +371,7 @@ export default {
     ],
   },
   beforeMount() {
+    this.token = localStorage.getItem("token");
     this.cargarRecolectores();
   },
   data() {
@@ -480,26 +484,16 @@ export default {
           Poblado: 11,
         },
       ],
-      //collectors table data
-      collectors: [
-        { id: "123", name: "EmVarias", type: "guasacaca" },
-        { id: "456", name: "EmPocas", type: "cacaguasa" },
-        { id: "789", name: "EmMuchas", type: "sacaguaca" },
-      ],
     };
   },
   methods: {
-    onButtonClick(item) {
-      console.log("click on " + item.no);
-    },
-    collectorPopUp() {},
-    reportPopUp() {},
     async cargarRecolectores() {
-      let token = localStorage.getItem("token");
+      let token = this.token;
       let response = await axios.get("http://localhost:3001/getrecolectores", {
         headers: { token },
       });
-      console.log(response.data);
+      this.collectors = response.data.content;
+      console.log("RESPONSEE", response.data.content);
     },
     async crearRecolecor() {
       let tipo;
