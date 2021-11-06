@@ -350,6 +350,8 @@ export default {
           let resp = response.data;
           if (resp.ok == true) {
             localStorage.setItem("user-id", usuario.content.id);
+            let token = usuario.content.token;
+            localStorage.setItem("token",token);
             this.$router.push("/user");
           } else {
             this.dialogError = true;

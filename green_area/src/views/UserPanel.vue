@@ -195,8 +195,6 @@ import Swal from "sweetalert2";
 export default {
   beforeMount() {
     this.loadReports();
-    let token = localStorage.getItem("token");
-    axios.setHeader("token", token);
   },
 
   components: {
@@ -271,8 +269,9 @@ export default {
     async loadReports() {
       try {
         let id = localStorage.getItem("user-id");
+        let token = localStorage.getItem("token");
         let url = `http://localhost:3001/getReport/${id}`;
-        let { data } = await axios.get(url);
+        let { data } = await axios.get(url,{headers:{token}});
         let reports = data.content;
         this.actualizarEstado(reports);
       } catch (error) {
