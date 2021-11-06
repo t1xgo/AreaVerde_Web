@@ -501,8 +501,6 @@ export default {
       window.location.reload();
     },
     async actualizarRecolector() {
-      console.log(this.recolectorSeleccionado.id_personal);
-      console.log(this.Cambiocategoria);
       if (
         this.recolectorSeleccionado.id_personal != undefined &&
         this.recolectorSeleccionado.id_personal != "" &&
