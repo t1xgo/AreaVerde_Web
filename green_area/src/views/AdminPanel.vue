@@ -223,7 +223,7 @@
                   <tr
                     v-for="colls in collectors"
                     :key="colls.id"
-                    @click="showingReportsModal = true"
+                    @click="RecolectorSele(colls)"
                   >
                     <td>{{ colls.cedula }}</td>
                     <td>{{ colls.recolector }}</td>
@@ -243,6 +243,7 @@
                         :items="categorias"
                         label="tipo de recolector"
                         height="3em"
+                        v-model="Cambiocategoria"
                         outlined
                         dense
                         color="green"
@@ -252,7 +253,7 @@
                     </v-col>
                     <v-row>
                       <v-col sm="6" cols="6">
-                        <v-btn color="green" dark tile> Actualizar </v-btn>
+                        <v-btn color="green" @click="actualizarRecolector" dark tile> Actualizar </v-btn>
                       </v-col>
                       <v-col sm="6" cols="6">
                         <v-btn
@@ -351,6 +352,8 @@
 <script>
 import axios from "axios";
 export default {
+  recolectorSeleccionado: "",
+  Cambiocategoria: "",
   //collectors table data
   collectors: [],
   token: "",
@@ -487,6 +490,14 @@ export default {
     };
   },
   methods: {
+    async actualizarRecolector(){
+      console.log(this.recolectorSeleccionado.id_personal)
+      console.log(this.Cambiocategoria)
+    },
+    RecolectorSele(colls){
+      this.showingReportsModal = true;
+      this.recolectorSeleccionado = colls;
+    },
     async cargarRecolectores() {
       let token = this.token;
       let response = await axios.get("http://localhost:3001/getrecolectores", {
