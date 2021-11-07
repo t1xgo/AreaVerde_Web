@@ -216,9 +216,6 @@ export default {
   },
 
   methods: {
-    onButtonClick(item) {
-      console.log("click on " + item.no);
-    },
 
     cleanCampos() {
       (this.report.descripcion = ""),
@@ -262,7 +259,6 @@ export default {
         let formData = new FormData();
         formData.append("imagen", this.report.rutaimagen);
         let { data } = await axios.post(url, formData);
-        console.log(data);
         if (data.ok == true) {
           console.log("Subido");
           return await formData.get("imagen");
