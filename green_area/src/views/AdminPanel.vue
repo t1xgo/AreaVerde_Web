@@ -1,5 +1,52 @@
 <template>
   <div class="dashboard">
+    <transition name="fade" appear>
+      <div id="popUpBox" v-if="showingReportsModal">
+        <v-row class="ml-auto mr-auto">
+          <v-col sm="12" cols="12">
+            <div
+              class="modal sul-box-raised-2 with-hover"
+              justify="center"
+              align="center"
+              v-if="showingReportsModal"
+            >
+              <v-row class="ml-auto mr-auto">
+                <v-col sm="12" cols="12">
+                  <v-select
+                    class="mt-10 sul-select"
+                    :rules="rules"
+                    :items="categorias"
+                    label="tipo de recolector"
+                    height="3em"
+                    v-model="Cambiocategoria"
+                    outlined
+                    dense
+                    color="green"
+                    autocomplete="false"
+                  >
+                  </v-select>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col sm="6" cols="6">
+                  <v-btn class="modalButton" @click="actualizarRecolector">
+                    Actualizar
+                  </v-btn>
+                </v-col>
+                <v-col sm="6" cols="6">
+                  <v-btn
+                    class="modalButton"
+                    @click="showingReportsModal = false"
+                  >
+                    Cancelar
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </div>
+          </v-col>
+        </v-row>
+      </div>
+    </transition>
     <!-- ...............................................Side bar........................................................-->
     <nav>
       <v-navigation-drawer v-model="drawer" app>
@@ -113,7 +160,6 @@
       </v-window-item>
 
       <!-- ...............................................Seccion de administracion de recolectores........................................................-->
-
       <v-window-item :value="2">
         <v-row class="formRow ml-auto mr-auto">
           <v-col sm="12" cols="12">
@@ -122,7 +168,9 @@
                 v-if="this.dialogError == true"
                 :estadoDialog="true"
                 :tituloMensaje="'Error'"
-                :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
+                :mensaje="
+                  'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
+                "
               />
               <v-row justify="center" align="center">
                 <v-col cols="12" sm="6">
@@ -232,47 +280,12 @@
                 </tbody>
               </table>
             </div>
-            <div id="popUpBox">
-              <transition name="fade" appear>
-                <div class="modal-overlay px-5" v-if="showingReportsModal">
-                  <v-row>
-                    <v-col sm="12" cols="12">
-                      <v-select
-                        class="mt-10"
-                        :rules="rules"
-                        :items="categorias"
-                        label="tipo de recolector"
-                        height="3em"
-                        v-model="Cambiocategoria"
-                        outlined
-                        dense
-                        color="green"
-                        autocomplete="false"
-                      >
-                      </v-select>
-                    </v-col>
-                    <v-row>
-                      <v-col sm="6" cols="6">
-                        <v-btn color="green" @click="actualizarRecolector" dark tile> Actualizar </v-btn>
-                      </v-col>
-                      <v-col sm="6" cols="6">
-                        <v-btn
-                          color="green"
-                          dark
-                          tile
-                          @click="showingReportsModal = false"
-                        >
-                          Cancelar
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-row>
-                </div>
-              </transition>
-            </div>
+
+            <v-button @click="showingReportsModal = true">
+              Cclikc meneene
+            </v-button>
           </v-col>
         </v-row>
-
       </v-window-item>
 
       <!-- ...............................................Seccion de administracion de reportes........................................................-->
@@ -384,6 +397,7 @@ export default {
       //elements modal(popup) toggle management
       showingCollectorsModal: false,
       showingReportsModal: false,
+      showingTestModal: false,
       //SideBar links
       links: [
         ["mdi-microsoft-windows", "Tablero"],
@@ -490,11 +504,11 @@ export default {
     };
   },
   methods: {
-    async actualizarRecolector(){
-      console.log(this.recolectorSeleccionado.id_personal)
-      console.log(this.Cambiocategoria)
+    async actualizarRecolector() {
+      console.log(this.recolectorSeleccionado.id_personal);
+      console.log(this.Cambiocategoria);
     },
-    RecolectorSele(colls){
+    RecolectorSele(colls) {
       this.showingReportsModal = true;
       this.recolectorSeleccionado = colls;
     },
@@ -593,15 +607,6 @@ table tbody tr:nth-child(2n) td {
 }
 #popUpBox {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-  padding: auto;
-  width: 10px;
-  height: 10px;
-  overflow: hidden;
-}
-.modal-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -609,7 +614,47 @@ table tbody tr:nth-child(2n) td {
   bottom: 0;
   z-index: 98;
   background-color: rgba(0, 0, 0, 0.3);
-  height: 20%;
-  width: 30%;
+  overflow: hidden;
+  width: 100vw;
+  min-height: 100vh;
+}
+.modal {
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  z-index: 99;
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 25px;
+}
+.modalButton {
+  appearance: none;
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: inline-block;
+  padding: 15px 25px;
+  background-image: linear-gradient(to right, #80ff72, #7ee8fa);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  transition: 0.4s ease-out;
+}
+.modalButton:hover {
+  box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
