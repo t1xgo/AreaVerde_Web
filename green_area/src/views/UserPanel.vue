@@ -260,7 +260,6 @@ export default {
         }
         this.reports.push(reports[i]);
         console.log(this.reports[i]);
-        continue;
       }
       console.log("REPORTES");
       console.log(this.reports);
@@ -271,9 +270,10 @@ export default {
         let id = localStorage.getItem("user-id");
         let token = localStorage.getItem("token");
         let url = `http://localhost:3001/getReport/${id}`;
-        let { data } = await axios.get(url,{headers:{token}});
-        let reports = data.content;
-        this.actualizarEstado(reports);
+        let response = await axios.get(url,{headers:{token}});
+        console.log("HOLIIII");
+        this.reports = response.data.content;
+        this.actualizarEstado(this.reports);
       } catch (error) {
         this.reports = [];
         console.error(error);
@@ -286,7 +286,6 @@ export default {
         let url = `http://localhost:3001/createReport/${id}/archivos`;
         let formData = new FormData();
         formData.append("imagen", this.report.rutaimagen);
-        console.log(formData, "IMAGEN");
         let { data } = await axios.post(url, formData);
         console.log(data);
         if (data.ok == true) {
@@ -317,33 +316,32 @@ export default {
           let id = localStorage.getItem("user-id");
           let report = Object.assign({}, this.report);
           report.id_usuario = id;
-          console.log("HOLAAAAAAAAAAAAA   ", report.id_usuario);
           this.sendFiles(id);
           report.rutaimagen = report.rutaimagen.name;
-          console.log("REPORTE", report.rutaimagen.name);
-          console.log(report);
           let response = await axios.post(
             "http://localhost:3001/createReport/",
             report
           );
-          console.log("aaaaaaaaaaaaaaaaaaaa", response.data);
           this.cleanCampos();
-          //let resp = response.data;
           if (response.data.ok == true) {
             Swal.fire({
               type: "success",
+              title: "Ok...",
               text: "El reporte se creó correctamente.",
             });
           } else {
             Swal.fire({
               type: "error",
-              title: "Error al crear el reporte.",
+              title: "Ups...",
               text: response.data.message,
             });
           }
         } catch (error) {
-          this.dialogError = true;
-          console.log(error);
+          Swal.fire({
+              type: "error",
+              title: "Ups...",
+              text: error,
+            })
         }
       }
     },

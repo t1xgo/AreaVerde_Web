@@ -6,13 +6,11 @@
           <h1>Tablero</h1>
         </v-subheader>
         <br />
-
         <v-col lg="7" cols="12">
           <v-alert dense text type="success">
             Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
           </v-alert>
         </v-col>
-
         <v-row align="center" justify="center" class="mx-3">
           <v-col lg="6" cols="12" align="center" justify="center">
             <v-card elevation="2" class="rounded-lg">
@@ -24,11 +22,11 @@
               <v-card-actions class="d-flex justify-space-between">
               </v-card-actions>
             </v-card>
-
             <v-row class="my-5">
               <v-col sm="12" cols="12">
                 <v-row align="center" justify="center">
-                  <v-col>
+                  <v-col
+                  >
                     <div
                       id="reportesRecogidos"
                       class="my-5 py-5"
@@ -40,7 +38,7 @@
                         shaped
                       >
                         <v-img
-                          :src="report.evidence"
+                          :src="report.rutaimagen"
                           width="60%"
                           max-height="50%"
                           class="d-block ml-auto mr-auto py-5"
@@ -98,7 +96,6 @@
               </v-col>
             </v-row>
           </v-col>
-
           <v-col lg="6" cols="12" align="center" justify="center">
             <v-card elevation="2" class="rounded-lg">
               <v-card-text class="d-flex justify-space-between align-center">
@@ -123,7 +120,7 @@
                         shaped
                       >
                         <v-img
-                          :src="report.evidence"
+                          :src="reports.rutaimagen"
                           width="60%"
                           max-height="50%"
                           class="d-block ml-auto mr-auto py-5"
@@ -190,6 +187,7 @@
 
 <script>
 import Sidebar from "../components/Sidebar.vue";
+import axios from "axios";
 export default {
   components: {
     Sidebar,
@@ -198,24 +196,7 @@ export default {
   data() {
     return {
       step: 1,
-      reports: [
-        {
-          evidence: require("@/assets/img/basura1.jpg"),
-          description:
-            "Basura con un olor muy fuerte en el sector de los Alpes, empieza a ser incómodo para la gente del alrededor.",
-          ubication: "Belen, Los Alpes.",
-          colorCode: "Codigo negro",
-          state: "Pendiente",
-        },
-        {
-          evidence: require("@/assets/img/basura2.png"),
-          description:
-            "Residuos encontrados en una zona donde claramente se indica que no está permitido.",
-          ubication: "Laureles, Estadio.",
-          colorCode: "Codigo verde",
-          state: "Pendiente",
-        },
-      ],
+
       activityLog: [
         {
           title: "Recogidos",
@@ -228,11 +209,29 @@ export default {
           color: "deep-orange darken-1",
         },
       ],
+      items: [],
+      reports: [],
     };
+  },
+  beforeMount() {
+    this.getReportes();
+    console.log("ACAAAAAAA");
   },
   methods: {
     onButtonClick(item) {
       console.log("click on " + item.no);
+    },
+    async getReportes() {
+      try {
+        let token = localStorage.getItem("token");
+        let response = await axios.get("http://localhost:3001/getReports", {
+          headers: { token },
+        });
+        this.reports = response.data.content;
+        console.log("LOS REPORTES", this.reports);
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 };
