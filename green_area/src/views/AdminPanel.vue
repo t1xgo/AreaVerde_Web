@@ -13,7 +13,7 @@
               <v-row class="ml-auto mr-auto">
                 <v-col sm="12" cols="12">
                   <v-select
-                    class="mt-10 sul-select"
+                    class="mt-10"
                     :rules="rules"
                     :items="categorias"
                     label="tipo de recolector"
@@ -280,53 +280,9 @@
                 </tbody>
               </table>
             </div>
-            <div id="popUpBox">
-              <transition name="fade" appear>
-                <div class="modal-overlay px-5" v-if="showingReportsModal">
-                  <v-row>
-                    <v-col sm="12" cols="12">
-                      <v-select
-                        class="mt-10"
-                        :rules="rules"
-                        :items="categorias"
-                        label="tipo de recolector"
-                        height="3em"
-                        v-model="Cambiocategoria"
-                        outlined
-                        dense
-                        color="green"
-                        autocomplete="false"
-                      >
-                      </v-select>
-                    </v-col>
-                    <v-row>
-                      <v-col sm="6" cols="6">
-                        <v-btn
-                          color="green"
-                          @click="actualizarRecolector"
-                          dark
-                          tile
-                        >
-                          Actualizar
-                        </v-btn>
-                      </v-col>
-                      <v-col sm="6" cols="6">
-                        <v-btn
-                          color="green"
-                          dark
-                          tile
-                          @click="showingReportsModal = false"
-                        >
-                          Cancelar
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-row>
-                </div>
-              </transition>
-            </div>
           </v-col>
         </v-row>
+        <v-button @click="showingReportsModal = true"> Touch me </v-button>
       </v-window-item>
 
       <!-- ...............................................Seccion de administracion de reportes........................................................-->
@@ -405,7 +361,7 @@
 
 <script>
 import axios from "axios";
-import Swal from 'sweetalert2/src/sweetalert2.js';
+import Swal from "sweetalert2/src/sweetalert2.js";
 export default {
   recolectorSeleccionado: "",
   Cambiocategoria: "",
