@@ -73,7 +73,7 @@
                                 {{ report.estado }}
                                 <br />
                                 <br />
-                                <strong> Tipo: </strong>
+                                <strong> Categoria: </strong>
                                 {{ report.id_categoria }}
                               </h4>
                             </v-col>
@@ -147,7 +147,7 @@
                                 {{ report.estado }}
                                 <br />
                                 <br />
-                                <strong> Tipo: </strong>
+                                <strong> Categoria: </strong>
                                 {{ report.id_categoria }}
                               </h4>
                             </v-col>
