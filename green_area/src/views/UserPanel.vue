@@ -6,12 +6,12 @@
     </v-subheader>
     <br />
     <v-row>
-      <v-col lg="7" cols="12">
-        <v-row>
+      <v-col sm="6" cols="12">
+        <div class="sul-box-raised-1 with-hover">
           <v-alert dense text type="success">
             Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
           </v-alert>
-        </v-row>
+        </div>
       </v-col>
     </v-row>
 
@@ -64,23 +64,26 @@
                           class="sul-select"
                         ></v-select>
 
-                        <v-btn color="green" class="my-3" dark>
+                        <v-btn
+                          color="green"
+                          class="my-3 pb-5 perpendButton"
+                          dark
+                        >
                           <v-file-input
                             :rules="rules"
                             hide-input
-                            class="py-3 pl-2"
+                            class="pt-4 pl-2"
                             v-model="report.rutaimagen"
                             color="green"
                             accept="image/png, image/jpeg, image/bmp"
-                            prepend-icon="mdi-camera"
+                            prepend-inner-icon="mdi-camera"
                           ></v-file-input>
                         </v-btn>
 
                         <br />
                         <v-btn
                           @click="createReport()"
-                          color="green"
-                          dark
+                          class="modalButton"
                           block
                           tile
                         >
@@ -346,5 +349,20 @@ export default {
 .dashboard {
   margin-left: 10px;
   padding: 10px;
+}
+.perpendButton {
+  appearance: none;
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  background-image: linear-gradient(to right, #20bf55, #7ee8fa);
+  color: #44475c;
+  font-size: 25px;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  transition: 0.4s ease-out;
+}
+.perpendButton:hover {
+  box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
 }
 </style>

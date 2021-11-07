@@ -6,23 +6,29 @@
           <h1>Tablero</h1>
         </v-subheader>
         <br />
-        <v-col lg="7" cols="12">
-          <v-alert dense text type="success">
-            Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
-          </v-alert>
-        </v-col>
+        <v-row>
+          <v-col sm="6" cols="12">
+            <div class="sul-box-raised-1 with-hover">
+              <v-alert dense text type="success">
+                Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
+              </v-alert>
+            </div>
+          </v-col>
+        </v-row>
+
         <v-row align="center" justify="center" class="mx-3">
-          <v-col lg="6" cols="12" align="center" justify="center">
-            <v-card elevation="2" class="rounded-lg">
-              <v-card-text
-                class="d-flex justify-space-between align-center px-5"
-              >
-                <div><strong>No Recogidos</strong> <br /></div>
-              </v-card-text>
-              <v-card-actions class="d-flex justify-space-between">
-              </v-card-actions>
+          <v-col sm="6" cols="12" align="center" justify="center">
+            <v-card class="rounded-lg">
+              <div class="sul-box-raised-1 with-hover">
+                <v-card-text class="d-flex justify-space-between align-center">
+                  <div><strong>No Recogidos</strong> <br /></div>
+                </v-card-text>
+                <v-card-actions class="d-flex justify-space-between">
+                </v-card-actions>
+              </div>
             </v-card>
-            <v-row class="my-5">
+
+            <v-row>
               <v-col sm="12" cols="12">
                 <v-row align="center" justify="center">
                   <v-col>
@@ -33,53 +39,51 @@
                       :key="index"
                     >
                       <v-card
-                        class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n15 cardcont codneg text-center my-5 py-5 px-3"
+                        class=" rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl cardcont codneg text-center "
                         shaped
                       >
-                        <v-img
-                          :src="`${rutaimagen}${report.rutaimagen}`"
-                          width="60%"
-                          max-height="50%"
-                          class="d-block ml-auto mr-auto py-5"
-                        ></v-img>
+                        <div class="sul-box-inset-1 with-hover py-7">
+                          <v-img
+                            :src="`${rutaimagen}${report.rutaimagen}`"
+                            width="60%"
+                            max-height="50%"
+                            class="ml-auto mr-auto py-5"
+                          ></v-img>
 
-                        <v-row align="center" justify="center" class="mt-5">
-                          <v-col
-                            cols="12"
-                            sm="8"
-                            class="d-md-flex text-center"
-                            align="center"
-                            justify="center"
-                          >
-                            <h4
-                              class="font-weight-regular subtitle-1 text-center"
+                          <v-row align="center" justify="center" class="mt-5">
+                            <v-col
+                              cols="12"
+                              sm="8"
+                              class="text-center"
+                              align="center"
+                              justify="center"
                             >
-                              <strong> Descripción: </strong>
-                              {{ report.descripcion }}
-                              <br />
-                              <br />
-                              <strong> Ubicación: </strong>
-                              {{ report.ubicacion }}
-                              <br />
-                              <br />
-                              <strong> Estado: </strong>
-                              {{ report.estado }}
-                              <br />
-                              <br />
-                              <strong> Tipo: </strong>
-                              {{ report.id_categoria }}
-                            </h4>
-                          </v-col>
-                          <br />
-                        </v-row>
-                        <v-btn
-                          color="green"
-                          class="px-3 mx-3 my-3 py-3"
-                          dark
-                          tile
-                        >
-                          Cambiar tipo
-                        </v-btn>
+                              <h4
+                                class="font-weight-regular subtitle-1 text-center"
+                              >
+                                <strong> Descripción: </strong>
+                                {{ report.descripcion }}
+                                <br />
+                                <br />
+                                <strong> Ubicación: </strong>
+                                {{ report.ubicacion }}
+                                <br />
+                                <br />
+                                <strong> Estado: </strong>
+                                {{ report.estado }}
+                                <br />
+                                <br />
+                                <strong> Tipo: </strong>
+                                {{ report.id_categoria }}
+                              </h4>
+                            </v-col>
+                            <br />
+                          </v-row>
+
+                          <v-btn color="green" class=" mt-6 modalButton" tile>
+                            Cambiar estado
+                          </v-btn>
+                        </div>
                       </v-card>
                     </div>
                   </v-col>
@@ -87,16 +91,18 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col lg="6" cols="12" align="center" justify="center">
-            <v-card elevation="2" class="rounded-lg">
-              <v-card-text class="d-flex justify-space-between align-center">
-                <div><strong>Recogidos</strong> <br /></div>
-              </v-card-text>
-              <v-card-actions class="d-flex justify-space-between">
-              </v-card-actions>
-            </v-card>
 
-            <v-row class="my-5">
+          <v-col sm="6" cols="12" align="center" justify="center">
+            <v-card class="rounded-lg">
+              <div class="sul-box-raised-1 with-hover">
+                <v-card-text class="d-flex justify-space-between align-center">
+                  <div><strong>No Recogidos</strong> <br /></div>
+                </v-card-text>
+                <v-card-actions class="d-flex justify-space-between">
+                </v-card-actions>
+              </div>
+            </v-card>
+            <v-row>
               <v-col sm="12" cols="12">
                 <v-row align="center" justify="center">
                   <v-col>
@@ -107,53 +113,51 @@
                       :key="index"
                     >
                       <v-card
-                        class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n15 cardcont codneg text-center my-5 py-5 px-3"
+                        class=" rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl cardcont codneg text-center "
                         shaped
                       >
-                        <v-img
-                          :src="`${rutaimagen}${report.rutaimagen}`"
-                          width="60%"
-                          max-height="50%"
-                          class="d-block ml-auto mr-auto py-5"
-                        ></v-img>
+                        <div class="sul-box-inset-1 with-hover py-7">
+                          <v-img
+                            :src="`${rutaimagen}${report.rutaimagen}`"
+                            width="60%"
+                            max-height="50%"
+                            class="ml-auto mr-auto py-5"
+                          ></v-img>
 
-                        <v-row align="center" justify="center" class="mt-5">
-                          <v-col
-                            cols="12"
-                            sm="8"
-                            class="d-md-flex text-center"
-                            align="center"
-                            justify="center"
-                          >
-                            <h4
-                              class="font-weight-regular subtitle-1 text-center"
+                          <v-row align="center" justify="center" class="mt-5">
+                            <v-col
+                              cols="12"
+                              sm="8"
+                              class="text-center"
+                              align="center"
+                              justify="center"
                             >
-                              <strong> Descripción: </strong>
-                              {{ report.descripcion }}
-                              <br />
-                              <br />
-                              <strong> Ubicación: </strong>
-                              {{ report.ubicacion }}
-                              <br />
-                              <br />
-                              <strong> Estado: </strong>
-                              {{ report.estado }}
-                              <br />
-                              <br />
-                              <strong> Tipo: </strong>
-                              {{ report.id_categoria }}
-                            </h4>
-                          </v-col>
-                          <br />
-                        </v-row>
-                        <v-btn
-                          color="green"
-                          class="px-3 mx-3 my-3 py-3"
-                          dark
-                          tile
-                        >
-                          Cambiar tipo
-                        </v-btn>
+                              <h4
+                                class="font-weight-regular subtitle-1 text-center"
+                              >
+                                <strong> Descripción: </strong>
+                                {{ report.descripcion }}
+                                <br />
+                                <br />
+                                <strong> Ubicación: </strong>
+                                {{ report.ubicacion }}
+                                <br />
+                                <br />
+                                <strong> Estado: </strong>
+                                {{ report.estado }}
+                                <br />
+                                <br />
+                                <strong> Tipo: </strong>
+                                {{ report.id_categoria }}
+                              </h4>
+                            </v-col>
+                            <br />
+                          </v-row>
+
+                          <v-btn color="green" class="mt-6 modalButton" tile>
+                            Cambiar estado
+                          </v-btn>
+                        </div>
                       </v-card>
                     </div>
                   </v-col>
@@ -178,7 +182,7 @@ export default {
   name: "Dashboard",
   data() {
     return {
-      rutaimagen:"http://localhost:3001/public/static/",
+      rutaimagen: "http://localhost:3001/public/static/",
       step: 1,
       activityLog: [
         {
@@ -193,7 +197,7 @@ export default {
         },
       ],
       reports: [],
-      reportsNorecogidos:[]
+      reportsNorecogidos: [],
     };
   },
   beforeMount() {
@@ -204,29 +208,26 @@ export default {
     onButtonClick(item) {
       console.log("click on " + item.no);
     },
-    getUserLogeado(){
+    getUserLogeado() {
       this.id = localStorage.getItem("user-id");
     },
-    async loadCategorias(id_categoria)
-    {
+    async loadCategorias(id_categoria) {
       if (id_categoria == 1) {
-            id_categoria = "Reciclable";
-          } else if (id_categoria == 2) {
-            id_categoria = "Organicos";
-          } else if (id_categoria == 3) {
-            id_categoria = "No reciclables";
-          }
-    }
-    ,
+        id_categoria = "Reciclable";
+      } else if (id_categoria == 2) {
+        id_categoria = "Organicos";
+      } else if (id_categoria == 3) {
+        id_categoria = "No reciclables";
+      }
+    },
     async getReportes() {
       try {
         let token = localStorage.getItem("token");
         let response = await axios.get("http://localhost:3001/getReports", {
-          headers: { token }
+          headers: { token },
         });
         this.reports = response.data.content;
         console.log("LOS REPORTES", this.reports.length);
-
       } catch (error) {
         console.log(error);
       }
