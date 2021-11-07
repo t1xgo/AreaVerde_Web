@@ -178,9 +178,7 @@
                   v-if="this.dialogError == true"
                   :estadoDialog="true"
                   :tituloMensaje="'Error'"
-                  :mensaje="
-                    'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
-                  "
+                  :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
                 />
                 <v-row justify="center" align="center">
                   <v-col cols="12" sm="6">
@@ -305,14 +303,23 @@
           <v-col sm="12" cols="12">
             <v-row align="center" justify="center">
               <v-col>
-                <div
-                  class="my-5 py-5"
-                  v-for="report in reports"
-                  :key="report.id_reporte"
-                >
+                <div class="my-5 py-5" v-for="report in reports" :key="report.id_reporte">
                   <v-card
-                    color="#ebecf0"
                     class="
+                      mx-12
+                      rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                      mt-n15
+                      cardcont
+                      codneg
+                      text-center
+                      my-5
+                      py-10
+                    "
+                    shaped
+                  >
+                    <v-card
+                      color="#ebecf0"
+                      class="
                         mx-12
                         rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
                         mt-n15
@@ -321,55 +328,56 @@
                         text-center
                         my-5
                       "
-                    shaped
-                  >
-                    <div class="sul-box-inset-1 with-hover with-hover py-10">
-                      <v-img
-                        :src="`${pathImg}${report.rutaimagen}`"
-                        width="60%"
-                        class="d-block ml-auto mr-auto"
-                      ></v-img>
+                      shaped
+                    >
+                      <div class="sul-box-inset-1 with-hover with-hover py-10">
+                        <v-img
+                          :src="`${pathImg}${report.rutaimagen}`"
+                          width="60%"
+                          class="d-block ml-auto mr-auto"
+                        ></v-img>
 
-                      <v-row align="center" justify="center" class="mt-5">
-                        <v-col
-                          cols="12"
-                          sm="8"
-                          class="d-md-flex text-center"
-                          align="center"
-                          justify="center"
-                        >
-                          <h4
-                            class="font-weight-regular subtitle-1 text-center"
+                        <v-row align="center" justify="center" class="mt-5">
+                          <v-col
+                            cols="12"
+                            sm="8"
+                            class="d-md-flex text-center"
+                            align="center"
+                            justify="center"
                           >
-                            <strong> Descripción: </strong>
-                            {{ report.descripcion }}
-                            <br />
-                            <br />
-                            <strong> Ubicación: </strong>
-                            {{ report.ubicacion }}
-                            <br />
-                            <br />
-                            <strong> Estado: </strong>
-                            {{ report.estado }}
-                            <br />
-                            <br />
-                            <strong> Tipo: </strong>
-                            {{ report.categoria }}
-                          </h4>
-                        </v-col>
-                        <br />
-                      </v-row>
-                      <v-btn
-                        color="green"
-                        class="px-3 mx-3 my-3 py-3 modalButton"
-                        tile
-                      >
-                        Cambiar tipo
-                      </v-btn>
-                      <v-btn class="px-3 mx-3 my-3 py-3 modalButton" tile>
-                        Eliminar
-                      </v-btn>
-                    </div>
+                            <h4
+                              class="font-weight-regular subtitle-1 text-center"
+                            >
+                              <strong> Descripción: </strong>
+                              {{ report.descripcion }}
+                              <br />
+                              <br />
+                              <strong> Ubicación: </strong>
+                              {{ report.ubicacion }}
+                              <br />
+                              <br />
+                              <strong> Estado: </strong>
+                              {{ report.estado }}
+                              <br />
+                              <br />
+                              <strong> Tipo: </strong>
+                              {{ report.categoria }}
+                            </h4>
+                          </v-col>
+                          <br />
+                        </v-row>
+                        <v-btn
+                          color="green"
+                          class="px-3 mx-3 my-3 py-3 modalButton"
+                          tile
+                        >
+                          Cambiar tipo
+                        </v-btn>
+                        <v-btn class="px-3 mx-3 my-3 py-3 modalButton" tile>
+                          Eliminar
+                        </v-btn>
+                      </div>
+                    </v-card>
                   </v-card>
                 </div>
               </v-col>
@@ -409,6 +417,7 @@ export default {
   beforeMount() {
     this.token = localStorage.getItem("token");
     this.cargarRecolectores();
+    this.getReports();
   },
   data() {
     return {
@@ -428,24 +437,7 @@ export default {
       ],
       //....................................................................
       categorias: ["Reciclable", "Organico", "No reciclable"],
-      reports: [
-        {
-          evidence: require("@/assets/img/basura1.jpg"),
-          description:
-            "Basura con un olor muy fuerte en el sector de los Alpes, empieza a ser incómodo para la gente del alrededor.",
-          ubication: "Belen, Los Alpes.",
-          colorCode: "Codigo negro",
-          state: "Pendiente",
-        },
-        {
-          evidence: require("@/assets/img/basura2.png"),
-          description:
-            "Residuos encontrados en una zona donde claramente se indica que no está permitido.",
-          ubication: "Laureles, Estadio.",
-          colorCode: "Codigo verde",
-          state: "Pendiente",
-        },
-      ],
+      reports: [],
       //general information
       activityLog: [
         {
@@ -534,6 +526,21 @@ export default {
     reloadPage() {
       window.location.reload();
     },
+
+    async getReports() {
+      try {
+        let token = localStorage.getItem("token");
+        let url = `http://localhost:3001/getReports`;
+        let reesponse = await axios.get(url, {
+          headers: { token },
+        });
+        this.reports = reesponse.data.content;
+      } catch (error) {
+        this.reports = [];
+        console.error(error);
+      }
+    },
+
     async actualizarRecolector() {
       if (
         this.recolectorSeleccionado.id_personal != undefined &&
