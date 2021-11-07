@@ -16,12 +16,6 @@
         <v-row class="formRow">
           <v-col sm="12" cols="12">
             <v-card class="elevation-6 mt-5 mb-10">
-              <componenteDialog
-                v-if="this.dialogError == true"
-                :estadoDialog="true"
-                :tituloMensaje="'Error'"
-                :mensaje="'Ocurrió un error registrando el usuario, verifique que todos los campos estén ingresados y/o que la información sea valida'"
-              />
               <v-row justify="center" align="center">
                 <v-col cols="12" sm="6">
                   <v-card-text class="mt-12">
@@ -127,7 +121,7 @@
                   justify="center"
                 >
                   <img
-                    :src="`${pathImg}/${report.rutaimagen[0]}`"
+                    :src="`${pathImg}${report.rutaimagen}`"
                     width="90%"
                     class="d-block ml-auto mr-auto"
                   />
@@ -208,10 +202,7 @@ export default {
       //Data spinner categorías
       categoria: ["Reciclable", "Organicos", "No reciclables"],
       //Path static de imagenes
-      pathImg: "http://localhost:3001/public/static",
-
-      // Iterador imagenes
-      i: 0,
+      pathImg: "http://localhost:3001/public/static/",
 
       //JSON Report para crearlo
       report: {
@@ -267,13 +258,13 @@ export default {
 
     async loadReports() {
       try {
-        let id = localStorage.getItem("user-id");
         let token = localStorage.getItem("token");
-        let url = `http://localhost:3001/getReport/${id}`;
-        let response = await axios.get(url,{headers:{token}});
-        console.log("HOLIIII");
-        this.reports = response.data.content;
-        this.actualizarEstado(this.reports);
+        let id = localStorage.getItem("user-id");
+        let url = `http://localhost:3001/getReports/${id}`;
+        let reesponse = await axios.get(url, {
+          headers: { token },
+        });
+        this.reports = reesponse.data.content;
       } catch (error) {
         this.reports = [];
         console.error(error);
@@ -325,23 +316,23 @@ export default {
           this.cleanCampos();
           if (response.data.ok == true) {
             Swal.fire({
-              type: "success",
+              icon: "success",
               title: "Ok...",
-              text: "El reporte se creó correctamente.",
+              text: "El reporte se creó correctamente",
             });
           } else {
             Swal.fire({
-              type: "error",
+              icon: "error",
               title: "Ups...",
-              text: response.data.message,
+              text: "Error creando el reporte",
             });
           }
         } catch (error) {
           Swal.fire({
-              type: "error",
-              title: "Ups...",
-              text: error,
-            })
+            type: "error",
+            title: "Ups...",
+            text: error,
+          });
         }
       }
     },
