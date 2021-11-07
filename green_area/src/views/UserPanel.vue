@@ -127,7 +127,7 @@
                   justify="center"
                 >
                   <img
-                    :src="`${pathImg}/${report.rutaimagen[0]}`"
+                    :src="`${pathImg}/${report.id_usuario}/${report.rutaimagen[0]}`"
                     width="90%"
                     class="d-block ml-auto mr-auto"
                   />
@@ -245,8 +245,8 @@ export default {
 
     cleanCampos() {
       (this.report.descripcion = ""),
-        (this.report.ubicacion = ""),
-        (this.report.rutaimagen = "");
+      (this.report.ubicacion = ""),
+      (this.report.rutaimagen = "");
     },
 
     actualizarEstado(reports) {
@@ -268,12 +268,9 @@ export default {
     async loadReports() {
       try {
         let id = localStorage.getItem("user-id");
-        let token = localStorage.getItem("token");
-        let url = `http://localhost:3001/getReport/${id}`;
-        let response = await axios.get(url,{headers:{token}});
-        console.log("HOLIIII");
-        this.reports = response.data.content;
-        this.actualizarEstado(this.reports);
+        let url = `http://localhost:3001/getReports/${id}`;
+        let { data } = await axios.get(url);
+        this.reports = data.content;
       } catch (error) {
         this.reports = [];
         console.error(error);
