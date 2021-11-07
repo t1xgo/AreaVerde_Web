@@ -5,7 +5,7 @@
         <v-row class="ml-auto mr-auto">
           <v-col sm="12" cols="12">
             <div
-              class="modal sul-box-raised-2 with-hover"
+              class="modal sul-box-inset-1 with-hover"
               justify="center"
               align="center"
               v-if="showingReportsModal"
@@ -13,7 +13,7 @@
               <v-row class="ml-auto mr-auto">
                 <v-col sm="12" cols="12">
                   <v-select
-                    class="mt-10"
+                    class="mt-10 sul-select"
                     :rules="rules"
                     :items="categorias"
                     label="tipo de recolector"
@@ -49,31 +49,38 @@
     </transition>
     <!-- ...............................................Side bar........................................................-->
     <nav>
-      <v-navigation-drawer v-model="drawer" app>
-        <v-img
-          height="140"
-          class="pa-4"
-          src="https://preview.pixlr.com/images/800wm/1439/2/1439104804.jpg"
-        >
-          <div class="text-center">
-            <v-avatar class="mb-4" color="grey darken-1" size="64">
-              <v-img aspect-ratio="30" src="@/assets/img/logo.png" />
-            </v-avatar>
-            <h2 class="white--text">Area verde</h2>
-          </div>
-        </v-img>
-        <v-divider></v-divider>
-        <v-list>
-          <v-list-item v-for="[icon, text] in links" :key="icon" link>
-            <v-list-item-icon>
-              <v-icon>{{ icon }}</v-icon>
-            </v-list-item-icon>
+      <v-navigation-drawer v-model="drawer" color="#ebecf0" app>
+        <div class="sul-box-raised-2 with-hover">
+          <v-img
+            height="140"
+            class="pa-4"
+            src="https://preview.pixlr.com/images/800wm/1439/2/1439104804.jpg"
+          >
+            <div class="text-center">
+              <v-avatar class="mb-4" color="grey darken-1" size="64">
+                <v-img aspect-ratio="30" src="@/assets/img/logo.png" />
+              </v-avatar>
+              <h2 class="white--text">Area verde</h2>
+            </div>
+          </v-img>
+          <v-divider></v-divider>
+          <v-list>
+            <v-list-item
+              v-for="[icon, text] in links"
+              :key="icon"
+              link
+              @click="goBack(icon)"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ icon }}</v-icon>
+              </v-list-item-icon>
 
-            <v-list-item-content>
-              <v-list-item-title>{{ text }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
+              <v-list-item-content>
+                <v-list-item-title>{{ text }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </div>
       </v-navigation-drawer>
     </nav>
 
@@ -87,37 +94,11 @@
         <br />
         <v-row>
           <v-col lg="7" cols="12">
-            <v-alert dense text type="success">
-              Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
-            </v-alert>
-            <v-row>
-              <v-col
-                lg="6"
-                cols="12"
-                v-for="(item, index) in activityLog"
-                :key="index"
-              >
-                <v-card elevation="2" class="rounded-lg">
-                  <v-card-text
-                    class="d-flex justify-space-between align-center"
-                  >
-                    <div>
-                      <strong>{{ item.title }}</strong> <br />
-                      <span>{{ item.time }}</span>
-                    </div>
-                    <v-avatar
-                      size="60"
-                      :color="item.color"
-                      style="border: 3px solid #444"
-                    >
-                      <span style="color: white">{{ item.amount }} +</span>
-                    </v-avatar>
-                  </v-card-text>
-                  <v-card-actions class="d-flex justify-space-between">
-                  </v-card-actions>
-                </v-card>
-              </v-col>
-            </v-row>
+            <div class="sul-box-raised-1 with-hover">
+              <v-alert dense text type="success">
+                Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
+              </v-alert>
+            </div>
           </v-col>
 
           <v-col
@@ -128,32 +109,60 @@
             align="center"
             class="text-center"
           >
-            <v-card class="elevation-6 mt-5 mb-10">
-              <v-row justify="center" align="center" class="text-center">
-                <v-col cols="12" sm="6">
-                  <v-card-title> Panel administrativo </v-card-title>
-                  <v-btn color="#546E7A" dark block tile @click="step = 2">
-                    Administrar recolectores
-                  </v-btn>
-                  <br />
-                  <v-btn color="#546E7A" dark block tile @click="step = 3">
-                    administrar reportes
-                  </v-btn>
-                </v-col>
-              </v-row>
+          </v-col>
+        </v-row>
+
+        <v-row justify="center" align="center">
+          <v-col sm="10" cols="12">
+            <v-card class="mt-5 mb-10" color="#ebecf0">
+              <div class="sul-box-raised-2 with-hover">
+                <v-row justify="center" align="center" class="text-center">
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    justify="center"
+                    align="center"
+                    class="pb-10"
+                  >
+                    <h2 class="pb-10">Panel administrativo</h2>
+                    <v-btn
+                      class="modalButton mb-10"
+                      block
+                      tile
+                      @click="step = 2"
+                    >
+                      Administrar recolectores
+                    </v-btn>
+                    <br />
+                    <v-btn
+                      class="modalButton"
+                      color="#44475c"
+                      block
+                      tile
+                      @click="step = 3"
+                    >
+                      administrar reportes
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </div>
             </v-card>
           </v-col>
+        </v-row>
 
-          <v-col>
-            <v-card>
-              <v-data-table
-                caption="Segumiento"
-                :headers="headers"
-                :items="statistics"
-                :items-per-page="5"
-                class="elevation-1"
-              >
-              </v-data-table>
+        <v-row justify="center" align="center">
+          <v-col sm="10" cols="12">
+            <v-card color="#ebecf0">
+              <div class="sul-box-raised-2 with-hover py-10 mb-10">
+                <v-data-table
+                  caption="Segumiento"
+                  :headers="headers"
+                  :items="statistics"
+                  :items-per-page="5"
+                  class="elevation-1 px-10 py-5 my-10 mx-5"
+                >
+                </v-data-table>
+              </div>
             </v-card>
           </v-col>
         </v-row>
@@ -163,86 +172,91 @@
       <v-window-item :value="2">
         <v-row class="formRow ml-auto mr-auto">
           <v-col sm="12" cols="12">
-            <v-card class="elevation-6 mt-5 mb-10">
-              <componenteDialog
-                v-if="this.dialogError == true"
-                :estadoDialog="true"
-                :tituloMensaje="'Error'"
-                :mensaje="
-                  'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
-                "
-              />
-              <v-row justify="center" align="center">
-                <v-col cols="12" sm="6">
-                  <v-card-text class="mt-12">
-                    <h2 class="text-center">Agregar un recolector</h2>
-                    <h4 class="text-center grey--text">
-                      Por favor ingresa la información necesaria para poder
-                      crear un nuevo recolector
-                    </h4>
-                    <v-form ref="formReport" class="pa-3 pt-4" lazy-validation>
-                      <v-text-field
-                        :rules="rules"
-                        label="Documento de identificación"
-                        v-model="documento"
-                        outlined
-                        dense
-                        color="green"
-                        autocomplete="false"
+            <v-card class="mt-5 mb-10">
+              <div class="sul-box-inset-1 with-hover with-hover">
+                <componenteDialog
+                  v-if="this.dialogError == true"
+                  :estadoDialog="true"
+                  :tituloMensaje="'Error'"
+                  :mensaje="
+                    'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
+                  "
+                />
+                <v-row justify="center" align="center">
+                  <v-col cols="12" sm="6">
+                    <v-card-text class="mt-12">
+                      <h2 class="text-center">Agregar un recolector</h2>
+                      <h4 class="text-center grey--text">
+                        Por favor ingresa la información necesaria para poder
+                        crear un nuevo recolector
+                      </h4>
+                      <v-form
+                        ref="formReport"
+                        class="pa-3 pt-4"
+                        lazy-validation
                       >
-                      </v-text-field>
-                      <v-text-field
-                        :rules="rules"
-                        label="Nombre"
-                        v-model="nombre"
-                        outlined
-                        dense
-                        color="green"
-                        autocomplete="false"
-                      >
-                      </v-text-field>
-                      <v-text-field
-                        :rules="rules"
-                        label="Celular"
-                        outlined
-                        v-model="celular"
-                        dense
-                        color="green"
-                        autocomplete="false"
-                      >
-                      </v-text-field>
-                      <v-text-field
-                        :rules="emailRules"
-                        label="Correo"
-                        v-model="correo"
-                        outlined
-                        dense
-                        color="green"
-                        autocomplete="false"
-                      >
-                      </v-text-field>
-                      <v-select
-                        :rules="rules"
-                        v-model="categoria"
-                        :items="categorias"
-                        label="Tipo"
-                        outlined
-                      ></v-select>
+                        <v-text-field
+                          :rules="rules"
+                          class="sul-text-field mb-5"
+                          label="Documento de identificación"
+                          v-model="documento"
+                          color="green"
+                          autocomplete="false"
+                        >
+                        </v-text-field>
+                        <v-text-field
+                          :rules="rules"
+                          class="sul-text-field mb-5"
+                          label="Nombre"
+                          v-model="nombre"
+                          color="green"
+                          autocomplete="false"
+                        >
+                        </v-text-field>
+                        <v-text-field
+                          :rules="rules"
+                          class="sul-text-field mb-5"
+                          label="Celular"
+                          v-model="celular"
+                          color="green"
+                          autocomplete="false"
+                        >
+                        </v-text-field>
+                        <v-text-field
+                          :rules="emailRules"
+                          class="sul-text-field mb-5"
+                          label="Correo"
+                          v-model="correo"
+                          color="green"
+                          autocomplete="false"
+                        >
+                        </v-text-field>
+                        <v-select
+                          :rules="rules"
+                          class="sul-select"
+                          v-model="categoria"
+                          :items="categorias"
+                          label="Tipo"
+                          outlined
+                          color="green"
+                        ></v-select>
 
-                      <br />
-                      <v-btn
-                        color="green"
-                        dark
-                        block
-                        tile
-                        @click="crearRecolecor()"
-                      >
-                        registrar
-                      </v-btn>
-                    </v-form>
-                  </v-card-text>
-                </v-col>
-              </v-row>
+                        <br />
+                        <v-btn
+                          color="green"
+                          class="modalButton"
+                          dark
+                          block
+                          tile
+                          @click="crearRecolecor()"
+                        >
+                          registrar
+                        </v-btn>
+                      </v-form>
+                    </v-card-text>
+                  </v-col>
+                </v-row>
+              </div>
             </v-card>
           </v-col>
         </v-row>
@@ -282,7 +296,6 @@
             </div>
           </v-col>
         </v-row>
-        <v-button @click="showingReportsModal = true"> Touch me </v-button>
       </v-window-item>
 
       <!-- ...............................................Seccion de administracion de reportes........................................................-->
@@ -298,6 +311,7 @@
                   :key="index"
                 >
                   <v-card
+                    color="#ebecf0"
                     class="
                       mx-12
                       rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
@@ -309,45 +323,53 @@
                     "
                     shaped
                   >
-                    <v-img
-                      :src="report.evidence"
-                      width="60%"
-                      class="d-block ml-auto mr-auto"
-                    ></v-img>
+                    <div class="sul-box-inset-1 with-hover with-hover py-10">
+                      <v-img
+                        :src="report.evidence"
+                        width="60%"
+                        class="d-block ml-auto mr-auto"
+                      ></v-img>
 
-                    <v-row align="center" justify="center" class="mt-5">
-                      <v-col
-                        cols="12"
-                        sm="8"
-                        class="d-md-flex text-center"
-                        align="center"
-                        justify="center"
+                      <v-row align="center" justify="center" class="mt-5">
+                        <v-col
+                          cols="12"
+                          sm="8"
+                          class="d-md-flex text-center"
+                          align="center"
+                          justify="center"
+                        >
+                          <h4
+                            class="font-weight-regular subtitle-1 text-center"
+                          >
+                            <strong> Descripción: </strong>
+                            {{ report.description }}
+                            <br />
+                            <br />
+                            <strong> Ubicación: </strong>
+                            {{ report.ubication }}
+                            <br />
+                            <br />
+                            <strong> Estado: </strong>
+                            {{ report.state }}
+                            <br />
+                            <br />
+                            <strong> Tipo: </strong>
+                            {{ report.colorCode }}
+                          </h4>
+                        </v-col>
+                        <br />
+                      </v-row>
+                      <v-btn
+                        color="green"
+                        class="px-3 mx-3 my-3 py-3 modalButton"
+                        tile
                       >
-                        <h4 class="font-weight-regular subtitle-1 text-center">
-                          <strong> Descripción: </strong>
-                          {{ report.description }}
-                          <br />
-                          <br />
-                          <strong> Ubicación: </strong>
-                          {{ report.ubication }}
-                          <br />
-                          <br />
-                          <strong> Estado: </strong>
-                          {{ report.state }}
-                          <br />
-                          <br />
-                          <strong> Tipo: </strong>
-                          {{ report.colorCode }}
-                        </h4>
-                      </v-col>
-                      <br />
-                    </v-row>
-                    <v-btn color="green" class="px-3 mx-3 my-3 py-3" dark tile>
-                      Cambiar tipo
-                    </v-btn>
-                    <v-btn color="green" class="px-3 mx-3 my-3 py-3" dark tile>
-                      Eliminar
-                    </v-btn>
+                        Cambiar tipo
+                      </v-btn>
+                      <v-btn class="px-3 mx-3 my-3 py-3 modalButton" tile>
+                        Eliminar
+                      </v-btn>
+                    </div>
                   </v-card>
                 </div>
               </v-col>
@@ -502,6 +524,11 @@ export default {
     };
   },
   methods: {
+    goBack(item) {
+      if (item == "mdi-microsoft-windows") {
+        this.step = 1;
+      }
+    },
     reloadPage() {
       window.location.reload();
     },
@@ -618,7 +645,7 @@ table th {
   text-transform: uppercase;
   text-align: left;
   background: #44475c;
-  color: #fff;
+  color: #ebecf0;
   padding: 8px;
   min-width: 30px;
 }
@@ -654,7 +681,7 @@ table tbody tr:nth-child(2n) td {
   z-index: 99;
   width: 100%;
   max-width: 400px;
-  background-color: #fff;
+  background-color: #ebecf0;
   border-radius: 16px;
   padding: 25px;
 }
@@ -666,10 +693,10 @@ table tbody tr:nth-child(2n) td {
   cursor: pointer;
   display: inline-block;
   padding: 15px 25px;
-  background-image: linear-gradient(to right, #80ff72, #7ee8fa);
-  color: #fff;
-  font-size: 18px;
-  font-weight: 700;
+  background-image: linear-gradient(to right, #20bf55, #7ee8fa);
+  color: #44475c;
+  font-size: 25px;
+  font-weight: 2000;
   box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
   transition: 0.4s ease-out;
 }
