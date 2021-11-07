@@ -21,7 +21,7 @@
             <v-card class="rounded-lg">
               <div class="sul-box-raised-1 with-hover">
                 <v-card-text class="d-flex justify-space-between align-center">
-                  <div><strong>No Recogidos</strong> <br /></div>
+                  <div><strong>Recogidos</strong> <br /></div>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-space-between">
                 </v-card-actions>
@@ -107,7 +107,7 @@
                 <v-row align="center" justify="center">
                   <v-col>
                     <div
-                      id="reportesRecogidos"
+                      id="reportesNoRecogidos"
                       class="my-5 py-5"
                       v-for="(report, index) in reports"
                       :key="index"
