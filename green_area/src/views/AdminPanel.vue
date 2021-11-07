@@ -172,7 +172,6 @@
       <v-window-item :value="2">
         <v-row class="formRow ml-auto mr-auto">
           <v-col sm="12" cols="12">
-<<<<<<< HEAD
             <v-card class="mt-5 mb-10">
               <div class="sul-box-inset-1 with-hover with-hover">
                 <componenteDialog
@@ -195,62 +194,6 @@
                         ref="formReport"
                         class="pa-3 pt-4"
                         lazy-validation
-=======
-            <v-card class="elevation-6 mt-5 mb-10">
-              <componenteDialog
-                v-if="this.dialogError == true"
-                :estadoDialog="true"
-                :tituloMensaje="'Error'"
-                :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
-              />
-              <v-row justify="center" align="center">
-                <v-col cols="12" sm="6">
-                  <v-card-text class="mt-12">
-                    <h2 class="text-center">Agregar un recolector</h2>
-                    <h4 class="text-center grey--text">
-                      Por favor ingresa la información necesaria para poder
-                      crear un nuevo recolector
-                    </h4>
-                    <v-form ref="formReport" class="pa-3 pt-4" lazy-validation>
-                      <v-text-field
-                        :rules="rules"
-                        label="Documento de identificación"
-                        v-model="documento"
-                        outlined
-                        dense
-                        color="green"
-                        autocomplete="false"
-                      >
-                      </v-text-field>
-                      <v-text-field
-                        :rules="rules"
-                        label="Nombre"
-                        v-model="nombre"
-                        outlined
-                        dense
-                        color="green"
-                        autocomplete="false"
-                      >
-                      </v-text-field>
-                      <v-text-field
-                        :rules="rules"
-                        label="Celular"
-                        outlined
-                        v-model="celular"
-                        dense
-                        color="green"
-                        autocomplete="false"
-                      >
-                      </v-text-field>
-                      <v-text-field
-                        :rules="emailRules"
-                        label="Correo"
-                        v-model="correo"
-                        outlined
-                        dense
-                        color="green"
-                        autocomplete="false"
->>>>>>> 6414ad61217798ad6740dc222a4868c84ab4dd5e
                       >
                         <v-text-field
                           :rules="rules"
@@ -361,23 +304,12 @@
         <v-row class="my-5">
           <v-col sm="12" cols="12">
             <v-row align="center" justify="center">
-              <v-col
-                v-for="report in reports"
-                :key="report.id_reporte"
-              >
-                <v-card
-                  class="
-                    mx-12
-                    rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                    mt-n15
-                    cardcont
-                    codneg
-                    text-center
-                    my-5
-                  "
-                  shaped
+              <v-col>
+                <div
+                  class="my-5 py-5"
+                  v-for="(report, index) in reports"
+                  :key="index"
                 >
-<<<<<<< HEAD
                   <v-card
                     color="#ebecf0"
                     class="
@@ -440,48 +372,6 @@
                     </div>
                   </v-card>
                 </div>
-=======
-                  <v-img
-                    :src="report.evidence"
-                    width="60%"
-                    class="d-block ml-auto mr-auto"
-                  ></v-img>
-
-                  <v-row align="center" justify="center" class="mt-5">
-                    <v-col
-                      cols="12"
-                      sm="8"
-                      class="d-md-flex text-center"
-                      align="center"
-                      justify="center"
-                    >
-                      <h4 class="font-weight-regular subtitle-1 text-center">
-                        <strong> Descripción: </strong>
-                        {{ report.descripcion }}
-                        <br />
-                        <br />
-                        <strong> Ubicación: </strong>
-                        {{ report.ubicacion }}
-                        <br />
-                        <br />
-                        <strong> Estado: </strong>
-                        {{ report.estado }}
-                        <br />
-                        <br />
-                        <strong> Tipo: </strong>
-                        {{ report.categoria }}
-                      </h4>
-                    </v-col>
-                    <br />
-                  </v-row>
-                  <v-btn color="green" class="px-3 mx-3 my-3 py-3" dark tile>
-                    Cambiar tipo
-                  </v-btn>
-                  <v-btn color="green" class="px-3 mx-3 my-3 py-3" dark tile>
-                    Eliminar
-                  </v-btn>
-                </v-card>
->>>>>>> 6414ad61217798ad6740dc222a4868c84ab4dd5e
               </v-col>
             </v-row>
           </v-col>
@@ -519,7 +409,6 @@ export default {
   beforeMount() {
     this.token = localStorage.getItem("token");
     this.cargarRecolectores();
-    this.getReports();
   },
   data() {
     return {
@@ -537,7 +426,24 @@ export default {
       ],
       //....................................................................
       categorias: ["Reciclable", "Organico", "No reciclable"],
-      reports: [],
+      reports: [
+        {
+          evidence: require("@/assets/img/basura1.jpg"),
+          description:
+            "Basura con un olor muy fuerte en el sector de los Alpes, empieza a ser incómodo para la gente del alrededor.",
+          ubication: "Belen, Los Alpes.",
+          colorCode: "Codigo negro",
+          state: "Pendiente",
+        },
+        {
+          evidence: require("@/assets/img/basura2.png"),
+          description:
+            "Residuos encontrados en una zona donde claramente se indica que no está permitido.",
+          ubication: "Laureles, Estadio.",
+          colorCode: "Codigo verde",
+          state: "Pendiente",
+        },
+      ],
       //general information
       activityLog: [
         {
@@ -626,21 +532,6 @@ export default {
     reloadPage() {
       window.location.reload();
     },
-
-    async getReports() {
-      try {
-        let token = localStorage.getItem("token");
-        let url = `http://localhost:3001/getReports`;
-        let reesponse = await axios.get(url, {
-          headers: { token },
-        });
-        this.reports = reesponse.data.content;
-      } catch (error) {
-        this.reports = [];
-        console.error(error);
-      }
-    },
-
     async actualizarRecolector() {
       if (
         this.recolectorSeleccionado.id_personal != undefined &&
