@@ -304,11 +304,21 @@
         <v-row class="my-5">
           <v-col sm="12" cols="12">
             <v-row align="center" justify="center">
-              <v-col>
-                <div
-                  class="my-5 py-5"
-                  v-for="(report, index) in reports"
-                  :key="index"
+              <v-col
+                v-for="report in reports"
+                :key="report.id_reporte"
+              >
+                <v-card
+                  class="
+                    mx-12
+                    rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                    mt-n15
+                    cardcont
+                    codneg
+                    text-center
+                    my-5
+                  "
+                  shaped
                 >
                   <v-card
                     color="#ebecf0"
@@ -409,6 +419,7 @@ export default {
   beforeMount() {
     this.token = localStorage.getItem("token");
     this.cargarRecolectores();
+    this.getReports();
   },
   data() {
     return {
@@ -426,24 +437,7 @@ export default {
       ],
       //....................................................................
       categorias: ["Reciclable", "Organico", "No reciclable"],
-      reports: [
-        {
-          evidence: require("@/assets/img/basura1.jpg"),
-          description:
-            "Basura con un olor muy fuerte en el sector de los Alpes, empieza a ser incómodo para la gente del alrededor.",
-          ubication: "Belen, Los Alpes.",
-          colorCode: "Codigo negro",
-          state: "Pendiente",
-        },
-        {
-          evidence: require("@/assets/img/basura2.png"),
-          description:
-            "Residuos encontrados en una zona donde claramente se indica que no está permitido.",
-          ubication: "Laureles, Estadio.",
-          colorCode: "Codigo verde",
-          state: "Pendiente",
-        },
-      ],
+      reports: [],
       //general information
       activityLog: [
         {
@@ -532,6 +526,21 @@ export default {
     reloadPage() {
       window.location.reload();
     },
+
+    async getReports() {
+      try {
+        let token = localStorage.getItem("token");
+        let url = `http://localhost:3001/getReports`;
+        let reesponse = await axios.get(url, {
+          headers: { token },
+        });
+        this.reports = reesponse.data.content;
+      } catch (error) {
+        this.reports = [];
+        console.error(error);
+      }
+    },
+
     async actualizarRecolector() {
       if (
         this.recolectorSeleccionado.id_personal != undefined &&
