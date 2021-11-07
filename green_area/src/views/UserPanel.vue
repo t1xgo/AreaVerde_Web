@@ -121,7 +121,7 @@
                   justify="center"
                 >
                   <img
-                    :src="`${pathImg}/${id}/${report.rutaimagen[i++]}`"
+                    :src="`${pathImg}${report.rutaimagen}`"
                     width="90%"
                     class="d-block ml-auto mr-auto"
                   />
@@ -189,7 +189,6 @@ import Swal from "sweetalert2";
 export default {
   beforeMount() {
     this.loadReports();
-    this.getUserLogeado();
   },
 
   components: {
@@ -204,12 +203,6 @@ export default {
       categoria: ["Reciclable", "Organicos", "No reciclables"],
       //Path static de imagenes
       pathImg: "http://localhost:3001/public/static/",
-
-      // Iterador imagenes
-      i: 0,
-
-      //User logeado
-      id: 0,
 
       //JSON Report para crearlo
       report: {
@@ -261,10 +254,6 @@ export default {
       }
       console.log("REPORTES");
       console.log(this.reports);
-    },
-
-    getUserLogeado() {
-      this.id = localStorage.getItem("user-id");
     },
 
     async loadReports() {

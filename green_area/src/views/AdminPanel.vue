@@ -307,25 +307,25 @@
               <v-col>
                 <div
                   class="my-5 py-5"
-                  v-for="(report, index) in reports"
-                  :key="index"
+                  v-for="report in reports"
+                  :key="report.id_reporte"
                 >
                   <v-card
                     color="#ebecf0"
                     class="
-                      mx-12
-                      rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                      mt-n15
-                      cardcont
-                      codneg
-                      text-center
-                      my-5
-                    "
+                        mx-12
+                        rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                        mt-n15
+                        cardcont
+                        codneg
+                        text-center
+                        my-5
+                      "
                     shaped
                   >
                     <div class="sul-box-inset-1 with-hover with-hover py-10">
                       <v-img
-                        :src="report.evidence"
+                        :src="`${pathImg}${report.rutaimagen}`"
                         width="60%"
                         class="d-block ml-auto mr-auto"
                       ></v-img>
@@ -342,19 +342,19 @@
                             class="font-weight-regular subtitle-1 text-center"
                           >
                             <strong> Descripción: </strong>
-                            {{ report.description }}
+                            {{ report.descripcion }}
                             <br />
                             <br />
                             <strong> Ubicación: </strong>
-                            {{ report.ubication }}
+                            {{ report.ubicacion }}
                             <br />
                             <br />
                             <strong> Estado: </strong>
-                            {{ report.state }}
+                            {{ report.estado }}
                             <br />
                             <br />
                             <strong> Tipo: </strong>
-                            {{ report.colorCode }}
+                            {{ report.categoria }}
                           </h4>
                         </v-col>
                         <br />
@@ -414,6 +414,8 @@ export default {
     return {
       //steps that are used to manage the windows
       step: 1,
+      //Path static de imagenes
+      pathImg: "http://localhost:3001/public/static/",
       //elements modal(popup) toggle management
       showingCollectorsModal: false,
       showingReportsModal: false,
