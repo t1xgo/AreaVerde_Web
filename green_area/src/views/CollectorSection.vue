@@ -17,7 +17,7 @@
               <v-card-text
                 class="d-flex justify-space-between align-center px-5"
               >
-                <div><strong>Recogidos</strong> <br /></div>
+                <div><strong>No Recogidos</strong> <br /></div>
               </v-card-text>
               <v-card-actions class="d-flex justify-space-between">
               </v-card-actions>
@@ -25,8 +25,7 @@
             <v-row class="my-5">
               <v-col sm="12" cols="12">
                 <v-row align="center" justify="center">
-                  <v-col
-                  >
+                  <v-col>
                     <div
                       id="reportesRecogidos"
                       class="my-5 py-5"
@@ -38,7 +37,7 @@
                         shaped
                       >
                         <v-img
-                          :src="report.rutaimagen"
+                          :src="`${rutaimagen}${report.rutaimagen}`"
                           width="60%"
                           max-height="50%"
                           class="d-block ml-auto mr-auto py-5"
@@ -56,19 +55,19 @@
                               class="font-weight-regular subtitle-1 text-center"
                             >
                               <strong> Descripción: </strong>
-                              {{ report.description }}
+                              {{ report.descripcion }}
                               <br />
                               <br />
                               <strong> Ubicación: </strong>
-                              {{ report.ubication }}
+                              {{ report.ubicacion }}
                               <br />
                               <br />
                               <strong> Estado: </strong>
-                              {{ report.state }}
+                              {{ report.estado }}
                               <br />
                               <br />
                               <strong> Tipo: </strong>
-                              {{ report.colorCode }}
+                              {{ report.id_categoria }}
                             </h4>
                           </v-col>
                           <br />
@@ -80,14 +79,6 @@
                           tile
                         >
                           Cambiar tipo
-                        </v-btn>
-                        <v-btn
-                          color="green"
-                          class="px-3 mx-3 my-3 py-3"
-                          dark
-                          tile
-                        >
-                          Eliminar
                         </v-btn>
                       </v-card>
                     </div>
@@ -99,7 +90,7 @@
           <v-col lg="6" cols="12" align="center" justify="center">
             <v-card elevation="2" class="rounded-lg">
               <v-card-text class="d-flex justify-space-between align-center">
-                <div><strong>No recogidos</strong> <br /></div>
+                <div><strong>Recogidos</strong> <br /></div>
               </v-card-text>
               <v-card-actions class="d-flex justify-space-between">
               </v-card-actions>
@@ -110,7 +101,7 @@
                 <v-row align="center" justify="center">
                   <v-col>
                     <div
-                      id="reportesNoRecogidos"
+                      id="reportesRecogidos"
                       class="my-5 py-5"
                       v-for="(report, index) in reports"
                       :key="index"
@@ -120,7 +111,7 @@
                         shaped
                       >
                         <v-img
-                          :src="reports.rutaimagen"
+                          :src="`${rutaimagen}${report.rutaimagen}`"
                           width="60%"
                           max-height="50%"
                           class="d-block ml-auto mr-auto py-5"
@@ -138,19 +129,19 @@
                               class="font-weight-regular subtitle-1 text-center"
                             >
                               <strong> Descripción: </strong>
-                              {{ report.description }}
+                              {{ report.descripcion }}
                               <br />
                               <br />
                               <strong> Ubicación: </strong>
-                              {{ report.ubication }}
+                              {{ report.ubicacion }}
                               <br />
                               <br />
                               <strong> Estado: </strong>
-                              {{ report.state }}
+                              {{ report.estado }}
                               <br />
                               <br />
                               <strong> Tipo: </strong>
-                              {{ report.colorCode }}
+                              {{ report.id_categoria }}
                             </h4>
                           </v-col>
                           <br />
@@ -162,14 +153,6 @@
                           tile
                         >
                           Cambiar tipo
-                        </v-btn>
-                        <v-btn
-                          color="green"
-                          class="px-3 mx-3 my-3 py-3"
-                          dark
-                          tile
-                        >
-                          Eliminar
                         </v-btn>
                       </v-card>
                     </div>
@@ -195,8 +178,8 @@ export default {
   name: "Dashboard",
   data() {
     return {
+      rutaimagen:"http://localhost:3001/public/static/",
       step: 1,
-
       activityLog: [
         {
           title: "Recogidos",
@@ -209,8 +192,8 @@ export default {
           color: "deep-orange darken-1",
         },
       ],
-      items: [],
       reports: [],
+      reportsNorecogidos:[]
     };
   },
   beforeMount() {
@@ -221,16 +204,31 @@ export default {
     onButtonClick(item) {
       console.log("click on " + item.no);
     },
+    getUserLogeado(){
+      this.id = localStorage.getItem("user-id");
+    },
+    async loadCategorias(id_categoria)
+    {
+      if (id_categoria == 1) {
+            id_categoria = "Reciclable";
+          } else if (id_categoria == 2) {
+            id_categoria = "Organicos";
+          } else if (id_categoria == 3) {
+            id_categoria = "No reciclables";
+          }
+    }
+    ,
     async getReportes() {
       try {
         let token = localStorage.getItem("token");
         let response = await axios.get("http://localhost:3001/getReports", {
-          headers: { token },
+          headers: { token }
         });
         this.reports = response.data.content;
-        console.log("LOS REPORTES", this.reports);
+        console.log("LOS REPORTES", this.reports.length);
+
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     },
   },
