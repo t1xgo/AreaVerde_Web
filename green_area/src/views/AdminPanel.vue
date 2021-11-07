@@ -302,21 +302,9 @@
         <v-row class="my-5">
           <v-col sm="12" cols="12">
             <v-row align="center" justify="center">
-              <v-col v-for="report in reports" :key="report.id_reporte">
-                <v-card
-                  class="
-                    mx-12
-                    rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                    mt-n15
-                    cardcont
-                    codneg
-                    text-center
-                    my-5
-                  "
-                  shaped
-                >
+              <v-col>
+                <div class="my-5 py-5" v-for="report in reports" :key="report.id_reporte">
                   <v-card
-                    color="#ebecf0"
                     class="
                       mx-12
                       rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
@@ -325,58 +313,73 @@
                       codneg
                       text-center
                       my-5
+                      py-10
                     "
                     shaped
                   >
-                    <div class="sul-box-inset-1 with-hover with-hover py-10">
-                      <v-img
-                        :src="report.evidence"
-                        width="60%"
-                        class="d-block ml-auto mr-auto"
-                      ></v-img>
+                    <v-card
+                      color="#ebecf0"
+                      class="
+                        mx-12
+                        rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                        mt-n15
+                        cardcont
+                        codneg
+                        text-center
+                        my-5
+                      "
+                      shaped
+                    >
+                      <div class="sul-box-inset-1 with-hover with-hover py-10">
+                        <v-img
+                          :src="`${pathImg}${report.rutaimagen}`"
+                          width="60%"
+                          class="d-block ml-auto mr-auto"
+                        ></v-img>
 
-                      <v-row align="center" justify="center" class="mt-5">
-                        <v-col
-                          cols="12"
-                          sm="8"
-                          class="d-md-flex text-center"
-                          align="center"
-                          justify="center"
-                        >
-                          <h4
-                            class="font-weight-regular subtitle-1 text-center"
+                        <v-row align="center" justify="center" class="mt-5">
+                          <v-col
+                            cols="12"
+                            sm="8"
+                            class="d-md-flex text-center"
+                            align="center"
+                            justify="center"
                           >
-                            <strong> Descripción: </strong>
-                            {{ report.descripcion }}
-                            <br />
-                            <br />
-                            <strong> Ubicación: </strong>
-                            {{ report.ubicacion }}
-                            <br />
-                            <br />
-                            <strong> Estado: </strong>
-                            {{ report.estado }}
-                            <br />
-                            <br />
-                            <strong> Tipo: </strong>
-                            {{ report.categoria }}
-                          </h4>
-                        </v-col>
-                        <br />
-                      </v-row>
-                      <v-btn
-                        color="green"
-                        class="px-3 mx-3 my-3 py-3 modalButton"
-                        tile
-                      >
-                        Cambiar tipo
-                      </v-btn>
-                      <v-btn class="px-3 mx-3 my-3 py-3 modalButton" tile>
-                        Eliminar
-                      </v-btn>
-                    </div>
+                            <h4
+                              class="font-weight-regular subtitle-1 text-center"
+                            >
+                              <strong> Descripción: </strong>
+                              {{ report.descripcion }}
+                              <br />
+                              <br />
+                              <strong> Ubicación: </strong>
+                              {{ report.ubicacion }}
+                              <br />
+                              <br />
+                              <strong> Estado: </strong>
+                              {{ report.estado }}
+                              <br />
+                              <br />
+                              <strong> Tipo: </strong>
+                              {{ report.categoria }}
+                            </h4>
+                          </v-col>
+                          <br />
+                        </v-row>
+                        <v-btn
+                          color="green"
+                          class="px-3 mx-3 my-3 py-3 modalButton"
+                          tile
+                        >
+                          Cambiar tipo
+                        </v-btn>
+                        <v-btn class="px-3 mx-3 my-3 py-3 modalButton" tile>
+                          Eliminar
+                        </v-btn>
+                      </div>
+                    </v-card>
                   </v-card>
-                </v-card>
+                </div>
               </v-col>
             </v-row>
           </v-col>
@@ -420,6 +423,8 @@ export default {
     return {
       //steps that are used to manage the windows
       step: 1,
+      //Path static de imagenes
+      pathImg: "http://localhost:3001/public/static/",
       //elements modal(popup) toggle management
       showingCollectorsModal: false,
       showingReportsModal: false,
