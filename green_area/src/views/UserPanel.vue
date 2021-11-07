@@ -17,7 +17,7 @@
 
     <v-row justify="center" align="center">
       <v-col sm="12" cols="12">
-        <v-card class=" mt-5 mb-10 mx-10">
+        <v-card class="mt-5 mb-10 mx-10">
           <div class="sul-box-inset-1 with-hover">
             <v-row justify="center" align="center">
               <v-col cols="12" sm="6">
@@ -109,15 +109,15 @@
       >
         <v-card
           class="
-                mx-12
-                rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                mt-n15
-                cardcont
-                codver
-                text-center
-                py-7
-                my-15
-              "
+            mx-12
+            rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+            mt-n15
+            cardcont
+            codver
+            text-center
+            py-7
+            my-15
+          "
           color="#ebecf0"
           shaped
         >
@@ -219,9 +219,6 @@ export default {
   },
 
   methods: {
-    onButtonClick(item) {
-      console.log("click on " + item.no);
-    },
 
     cleanCampos() {
       (this.report.descripcion = ""),
@@ -230,19 +227,16 @@ export default {
     },
 
     actualizarEstado(reports) {
-      for (let i = 0; i <= reports.length; i++) {
-        if (reports[i].estado == 0) {
+      for (let i = 0; i < reports.length; i++) {
+        if(reports[i].estado == 0){
           reports[i].estado = "En espera de ser aprobado";
-        } else if (reports[i].estado == 1) {
+        }else if(reports[i].estado == 1){
           reports[i].estado = "En espera de recolección";
-        } else if (reports[i].estado == 2) {
+        }else if(reports[i].estado == 2){
           reports[i].estado = "Recogido";
         }
         this.reports.push(reports[i]);
-        console.log(this.reports[i]);
       }
-      console.log("REPORTES");
-      console.log(this.reports);
     },
 
     async loadReports() {
@@ -253,7 +247,8 @@ export default {
         let reesponse = await axios.get(url, {
           headers: { token },
         });
-        this.reports = reesponse.data.content;
+        this.actualizarEstado(reesponse.data.content);
+        //this.reports = reesponse.data.content;
       } catch (error) {
         this.reports = [];
         console.error(error);
@@ -267,7 +262,6 @@ export default {
         let formData = new FormData();
         formData.append("imagen", this.report.rutaimagen);
         let { data } = await axios.post(url, formData);
-        console.log(data);
         if (data.ok == true) {
           console.log("Subido");
           return await formData.get("imagen");
