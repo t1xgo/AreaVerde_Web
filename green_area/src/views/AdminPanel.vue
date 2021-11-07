@@ -280,10 +280,51 @@
                 </tbody>
               </table>
             </div>
-
-            <v-button @click="showingReportsModal = true">
-              Cclikc meneene
-            </v-button>
+            <div id="popUpBox">
+              <transition name="fade" appear>
+                <div class="modal-overlay px-5" v-if="showingReportsModal">
+                  <v-row>
+                    <v-col sm="12" cols="12">
+                      <v-select
+                        class="mt-10"
+                        :rules="rules"
+                        :items="categorias"
+                        label="tipo de recolector"
+                        height="3em"
+                        v-model="Cambiocategoria"
+                        outlined
+                        dense
+                        color="green"
+                        autocomplete="false"
+                      >
+                      </v-select>
+                    </v-col>
+                    <v-row>
+                      <v-col sm="6" cols="6">
+                        <v-btn
+                          color="green"
+                          @click="actualizarRecolector"
+                          dark
+                          tile
+                        >
+                          Actualizar
+                        </v-btn>
+                      </v-col>
+                      <v-col sm="6" cols="6">
+                        <v-btn
+                          color="green"
+                          dark
+                          tile
+                          @click="showingReportsModal = false"
+                        >
+                          Cancelar
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-row>
+                </div>
+              </transition>
+            </div>
           </v-col>
         </v-row>
       </v-window-item>
@@ -364,6 +405,7 @@
 
 <script>
 import axios from "axios";
+import Swal from 'sweetalert2/src/sweetalert2.js';
 export default {
   recolectorSeleccionado: "",
   Cambiocategoria: "",
@@ -504,9 +546,45 @@ export default {
     };
   },
   methods: {
+    reloadPage() {
+      window.location.reload();
+    },
     async actualizarRecolector() {
-      console.log(this.recolectorSeleccionado.id_personal);
-      console.log(this.Cambiocategoria);
+      if (
+        this.recolectorSeleccionado.id_personal != undefined &&
+        this.recolectorSeleccionado.id_personal != "" &&
+        this.Cambiocategoria != undefined &&
+        this.Cambiocategoria != ""
+      ) {
+        let token = this.token;
+        let recolector = {
+          id_personal: this.recolectorSeleccionado.id_personal,
+          id_categoriarecolector: "",
+        };
+        if (this.Cambiocategoria == "Reciclable") {
+          recolector.id_categoriarecolector = 1;
+        } else if (this.Cambiocategoria == "Organico") {
+          recolector.id_categoriarecolector = 2;
+        } else if (this.Cambiocategoria == "No reciclable") {
+          recolector.id_categoriarecolector = 3;
+        }
+        await axios.put("http://localhost:3001/putrecolectores", recolector, {
+          headers: { token },
+        });
+        Swal.fire({
+          icon: "success",
+          title: "Ok...",
+          text: "Categoria actualizada",
+        });
+        this.reloadPage();
+      } else {
+        console.log("Variables indefinidas");
+        Swal.fire({
+          icon: "error",
+          title: "Ups...",
+          text: "Recolector o Categoría indefinidos",
+        });
+      }
     },
     RecolectorSele(colls) {
       this.showingReportsModal = true;
@@ -518,7 +596,6 @@ export default {
         headers: { token },
       });
       this.collectors = response.data.content;
-      console.log("RESPONSEE", response.data.content);
     },
     async crearRecolecor() {
       let tipo;
@@ -537,14 +614,10 @@ export default {
         id_categoriarecolector: tipo,
       };
       let token = this.token;
-      let response = await axios.post(
-        "http://localhost:3001/postrecolectores",
-        recolector,
-        {
-          headers: { token },
-        }
-      );
-      console.log(response.data);
+      await axios.post("http://localhost:3001/postrecolectores", recolector, {
+        headers: { token },
+      });
+      this.reloadPage();
     },
   },
 };
