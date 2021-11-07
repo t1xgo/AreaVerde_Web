@@ -383,6 +383,13 @@
                       >
                         Aprobar
                       </v-btn>
+                      <v-btn
+                        class="px-3 mx-3 my-3 py-3 modalButton"
+                        tile
+                        @click="eliminarReporte(report)"
+                      >
+                        Eliminar
+                      </v-btn>
                     </div>
                   </v-card>
                 </div>
@@ -534,6 +541,41 @@ export default {
       this.Cambiocategoria = "";
       window.location.reload();
     },
+    eliminarReporte(report) {
+      Swal.fire({
+        icon: "question",
+        title: "¿Está seguro?",
+        text: `Desea eliminar este reporte?`,
+        showDenyButton: true,
+        confirmButtonText: "Si",
+        denyButtonText: `No`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.eliminar(report);
+        } else if (result.isDenied) {
+          //Sin accion
+        }
+      });
+    },
+    async eliminar(report) {
+      let token = this.token;
+      try {
+        await axios.delete(
+          `http://localhost:3001/eliminarReporte/${report.id_reporte}`,
+          {
+            headers: { token },
+          }
+        );
+        Swal.fire({
+          icon: "success",
+          title: "Ok...",
+          text: "Reporte eliminado",
+        });
+        this.reloadPage();
+      } catch (error) {
+        console.error(error);
+      }
+    },
     editarReporte(report) {
       this.showingReportsModal = true;
       this.reporteEnEdicion = report;
@@ -566,7 +608,32 @@ export default {
     async actualizarReporte(report) {
       if (this.Cambiocategoria != "" && this.Cambiocategoria != null) {
         //Cambiar categoria y estado
-        console.log("Cambiar categoria y estado", report);
+        if (this.Cambiocategoria == "Reciclable") {
+          report.id_categoria = 1;
+        } else if (this.Cambiocategoria == "Organico") {
+          report.id_categoria = 2;
+        } else if (this.Cambiocategoria == "No reciclable") {
+          report.id_categoria = 3;
+        }
+        let token = this.token;
+        try {
+          await axios.put(
+            "http://localhost:3001/estadoAprobadoCategoria",
+            report,
+            {
+              headers: { token },
+            }
+          );
+          this.showingReportsModal = false;
+          Swal.fire({
+            icon: "success",
+            title: "Ok...",
+            text: "Reporte actualizado",
+          });
+          this.reloadPage();
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         //Cambiar estado
         Swal.fire({
@@ -578,16 +645,27 @@ export default {
           denyButtonText: `No`,
         }).then((result) => {
           if (result.isConfirmed) {
+            this.putEstado(report);
+          } else if (result.isDenied) {
+            //Sin accion
+          }
+        });
+      }
+    },
+    async putEstado(report) {
+      let token = this.token;
+      try {
+        await axios.put("http://localhost:3001/estadoAprobado", report, {
+          headers: { token },
+        });
         Swal.fire({
           icon: "success",
           title: "Ok...",
           text: "Reporte actualizado",
         });
-          } else if (result.isDenied) {
-            //Sin accion
-          }
-        });
-        console.log("Cambiar estado", report);
+        this.reloadPage();
+      } catch (error) {
+        console.log(error);
       }
     },
     async actualizarRecolector() {
@@ -609,15 +687,19 @@ export default {
         } else if (this.Cambiocategoria == "No reciclable") {
           recolector.id_categoriarecolector = 3;
         }
-        await axios.put("http://localhost:3001/putrecolectores", recolector, {
-          headers: { token },
-        });
-        Swal.fire({
-          icon: "success",
-          title: "Ok...",
-          text: "Categoria actualizada",
-        });
-        this.reloadPage();
+        try {
+          await axios.put("http://localhost:3001/putrecolectores", recolector, {
+            headers: { token },
+          });
+          Swal.fire({
+            icon: "success",
+            title: "Ok...",
+            text: "Categoria actualizada",
+          });
+          this.reloadPage();
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         console.log("Variables indefinidas");
         Swal.fire({
@@ -633,10 +715,17 @@ export default {
     },
     async cargarRecolectores() {
       let token = this.token;
-      let response = await axios.get("http://localhost:3001/getrecolectores", {
-        headers: { token },
-      });
-      this.collectors = response.data.content;
+      try {
+        let response = await axios.get(
+          "http://localhost:3001/getrecolectores",
+          {
+            headers: { token },
+          }
+        );
+        this.collectors = response.data.content;
+      } catch (error) {
+        console.log(error);
+      }
     },
     async crearRecolecor() {
       let tipo;
@@ -655,10 +744,14 @@ export default {
         id_categoriarecolector: tipo,
       };
       let token = this.token;
-      await axios.post("http://localhost:3001/postrecolectores", recolector, {
-        headers: { token },
-      });
-      this.reloadPage();
+      try {
+        await axios.post("http://localhost:3001/postrecolectores", recolector, {
+          headers: { token },
+        });
+        this.reloadPage();
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
