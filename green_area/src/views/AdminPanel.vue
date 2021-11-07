@@ -16,7 +16,7 @@
                     class="mt-10 sul-select"
                     :rules="rules"
                     :items="categorias"
-                    label="tipo de recolector"
+                    label="Categoría"
                     height="3em"
                     v-model="Cambiocategoria"
                     outlined
@@ -29,8 +29,19 @@
               </v-row>
               <v-row>
                 <v-col sm="6" cols="6">
-                  <v-btn class="modalButton" @click="actualizarRecolector">
+                  <v-btn
+                    v-if="step == 2"
+                    class="modalButton"
+                    @click="actualizarRecolector"
+                  >
                     Actualizar
+                  </v-btn>
+                  <v-btn
+                    v-else-if="step == 3"
+                    class="modalButton"
+                    @click="actualizarReporte(reporteEnEdicion)"
+                  >
+                    Aprobar
                   </v-btn>
                 </v-col>
                 <v-col sm="6" cols="6">
@@ -178,9 +189,7 @@
                   v-if="this.dialogError == true"
                   :estadoDialog="true"
                   :tituloMensaje="'Error'"
-                  :mensaje="
-                    'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
-                  "
+                  :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
                 />
                 <v-row justify="center" align="center">
                   <v-col cols="12" sm="6">
@@ -313,14 +322,14 @@
                   <v-card
                     color="#ebecf0"
                     class="
-                        mx-12
-                        rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                        mt-n15
-                        cardcont
-                        codneg
-                        text-center
-                        my-5
-                      "
+                      mx-12
+                      rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                      mt-n15
+                      cardcont
+                      codneg
+                      text-center
+                      my-5
+                    "
                     shaped
                   >
                     <div class="sul-box-inset-1 with-hover py-10">
@@ -334,7 +343,7 @@
                         <v-col
                           cols="12"
                           sm="12"
-                          class=" text-center px-auto"
+                          class="text-center px-auto"
                           align="center"
                           justify="center"
                         >
@@ -363,11 +372,16 @@
                         color="green"
                         class="px-3 mx-3 my-3 py-3 modalButton"
                         tile
+                        @click="editarReporte(report)"
                       >
                         Cambiar tipo
                       </v-btn>
-                      <v-btn class="px-3 mx-3 my-3 py-3 modalButton" tile>
-                        Eliminar
+                      <v-btn
+                        class="px-3 mx-3 my-3 py-3 modalButton"
+                        tile
+                        @click="actualizarReporte(report)"
+                      >
+                        Aprobar
                       </v-btn>
                     </div>
                   </v-card>
@@ -385,6 +399,7 @@
 import axios from "axios";
 import Swal from "sweetalert2/src/sweetalert2.js";
 export default {
+  reporteEnEdicion: "",
   recolectorSeleccionado: "",
   Cambiocategoria: "",
   //collectors table data
@@ -516,9 +531,13 @@ export default {
       }
     },
     reloadPage() {
+      this.Cambiocategoria = "";
       window.location.reload();
     },
-
+    editarReporte(report) {
+      this.showingReportsModal = true;
+      this.reporteEnEdicion = report;
+    },
     async getReports() {
       try {
         let token = localStorage.getItem("token");
@@ -526,13 +545,51 @@ export default {
         let reesponse = await axios.get(url, {
           headers: { token },
         });
-        this.reports = reesponse.data.content;
+        this.actualizarEstado(reesponse.data.content);
       } catch (error) {
         this.reports = [];
         console.error(error);
       }
     },
-
+    actualizarEstado(reports) {
+      for (let i = 0; i < reports.length; i++) {
+        if (reports[i].estado == 0) {
+          reports[i].estado = "En espera de ser aprobado";
+        } else if (reports[i].estado == 1) {
+          reports[i].estado = "En espera de recolección";
+        } else if (reports[i].estado == 2) {
+          reports[i].estado = "Recogido";
+        }
+        this.reports.push(reports[i]);
+      }
+    },
+    async actualizarReporte(report) {
+      if (this.Cambiocategoria != "" && this.Cambiocategoria != null) {
+        //Cambiar categoria y estado
+        console.log("Cambiar categoria y estado", report);
+      } else {
+        //Cambiar estado
+        Swal.fire({
+          icon: "question",
+          title: "¿Está seguro?",
+          text: `Desea mantener la categoria ${report.categoria}`,
+          showDenyButton: true,
+          confirmButtonText: "Si",
+          denyButtonText: `No`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+        Swal.fire({
+          icon: "success",
+          title: "Ok...",
+          text: "Reporte actualizado",
+        });
+          } else if (result.isDenied) {
+            //Sin accion
+          }
+        });
+        console.log("Cambiar estado", report);
+      }
+    },
     async actualizarRecolector() {
       if (
         this.recolectorSeleccionado.id_personal != undefined &&
