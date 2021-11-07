@@ -12,170 +12,156 @@
             Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
           </v-alert>
         </v-row>
+      </v-col>
+    </v-row>
 
-        <v-row class="formRow">
-          <v-col sm="12" cols="12">
-            <v-card class="elevation-6 mt-5 mb-10">
-              <v-row justify="center" align="center">
-                <v-col cols="12" sm="6">
-                  <v-card-text class="mt-12">
-                    <h2 class="text-center">Agregar un reporte</h2>
-                    <h4 class="text-center grey--text">
-                      Por favor ingresa la información necesaria para poder
-                      hacer un reporte
-                    </h4>
-                    <v-form
-                      ref="formReport"
-                      v-model="valid"
-                      class="pa-3 pt-4"
-                      lazy-validation
-                    >
-                      <v-row align="center" justify="center">
-                        <v-col cols="12" sm="8" align="center" justify="center">
-                          <v-text-field
+    <v-row justify="center" align="center">
+      <v-col sm="12" cols="12">
+        <v-card class=" mt-5 mb-10 mx-10">
+          <div class="sul-box-inset-1 with-hover">
+            <v-row justify="center" align="center">
+              <v-col cols="12" sm="6">
+                <v-card-text class="mt-12">
+                  <h2 class="text-center">Agregar un reporte</h2>
+                  <h4 class="text-center grey--text">
+                    Por favor ingresa la información necesaria para poder hacer
+                    un reporte
+                  </h4>
+                  <v-form
+                    ref="formReport"
+                    v-model="valid"
+                    class="pa-3 pt-4"
+                    lazy-validation
+                  >
+                    <v-row align="center" justify="center">
+                      <v-col cols="12" sm="8" align="center" justify="center">
+                        <v-text-field
+                          :rules="rules"
+                          v-model="report.descripcion"
+                          label="Descripción (opcional)"
+                          color="green"
+                          autocomplete="false"
+                          class="my-5 sul-text-field"
+                        >
+                        </v-text-field>
+                        <v-text-field
+                          :rules="rules"
+                          class="my-5 sul-text-field"
+                          v-model="report.ubicacion"
+                          label="Ubicación"
+                          color="green"
+                          autocomplete="false"
+                        >
+                        </v-text-field>
+
+                        <v-select
+                          :rules="rules"
+                          v-model="report.id_categoria"
+                          :items="categoria"
+                          label="Categoría"
+                          color="green"
+                          outlined
+                          class="sul-select"
+                        ></v-select>
+
+                        <v-btn color="green" class="my-3" dark>
+                          <v-file-input
                             :rules="rules"
-                            v-model="report.descripcion"
-                            label="Descripción (opcional)"
-                            outlined
-                            dense
+                            hide-input
+                            class="py-3 pl-2"
+                            v-model="report.rutaimagen"
                             color="green"
-                            autocomplete="false"
-                            class="mt-16"
-                          >
-                          </v-text-field>
-                          <v-text-field
-                            :rules="rules"
-                            v-model="report.ubicacion"
-                            label="Ubicación"
-                            outlined
-                            dense
-                            color="green"
-                            autocomplete="false"
-                          >
-                          </v-text-field>
+                            accept="image/png, image/jpeg, image/bmp"
+                            prepend-icon="mdi-camera"
+                          ></v-file-input>
+                        </v-btn>
 
-                          <v-select
-                            :rules="rules"
-                            v-model="report.id_categoria"
-                            :items="categoria"
-                            label="Categoría"
-                            outlined
-                          ></v-select>
+                        <br />
+                        <v-btn
+                          @click="createReport()"
+                          color="green"
+                          dark
+                          block
+                          tile
+                        >
+                          Reportar
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-form>
+                </v-card-text>
+              </v-col>
+            </v-row>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
 
-                          <v-btn color="green" class="my-3" dark>
-                            <v-file-input
-                              :rules="rules"
-                              hide-input
-                              class="py-3 pl-2"
-                              v-model="report.rutaimagen"
-                              color="green"
-                              accept="image/png, image/jpeg, image/bmp"
-                              prepend-icon="mdi-camera"
-                            ></v-file-input>
-                          </v-btn>
-
-                          <br />
-                          <v-btn
-                            @click="createReport()"
-                            color="green"
-                            dark
-                            block
-                            tile
-                          >
-                            Reportar
-                          </v-btn>
-                        </v-col>
-                      </v-row>
-                    </v-form>
-                  </v-card-text>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-
-        <v-row class="feedRow">
-          <v-col
-            sm="12"
-            cols="12"
-            v-for="report in reports"
-            :key="report.id_reporte"
-          >
-            <v-card
-              class="
+    <v-row class="feedRow">
+      <v-col
+        sm="12"
+        cols="12"
+        v-for="report in reports"
+        :key="report.id_reporte"
+      >
+        <v-card
+          class="
                 mx-12
                 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
                 mt-n15
                 cardcont
                 codver
                 text-center
+                py-7
+                my-15
               "
-              shaped
-            >
-              <v-row align="center" justify="center">
-                <v-col
-                  cols="12"
-                  sm="12"
-                  class="d-md-flex"
-                  align="center"
-                  justify="center"
-                >
-                  <img
-                    :src="`${pathImg}${report.rutaimagen}`"
-                    width="90%"
-                    class="d-block ml-auto mr-auto"
-                  />
-                </v-col>
-              </v-row>
-
-              <v-row align="center" justify="center">
-                <v-col
-                  cols="12"
-                  sm="12"
-                  class="d-md-flex text-center"
-                  align="center"
-                  justify="center"
-                >
-                  <h4 class="font-weight-regular subtitle-1">
-                    <strong> Descripción: </strong>
-                    {{ report.descripcion }}
-                    <br />
-                    <br />
-                    <strong> Ubicación: </strong>
-                    {{ report.ubicacion }}
-                    <br />
-                    <br />
-                    <strong> Estado: </strong>
-                    {{ report.estado }}
-                  </h4>
-                </v-col>
-                <hr size="5px" width="50%" color="green" />
-                <br />
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col cols="12" lg="5">
-        <v-card>
-          <v-card-title>Historial en vivo</v-card-title>
-          <v-card-text class="py-0">
-            <v-timeline align-top dense>
-              <v-timeline-item color="black" small>
-                <strong>Hace 5 minutos</strong>
-                <div class="text-caption">Confirmado una recolección</div>
-              </v-timeline-item>
-              <v-timeline-item color="green" small>
-                <strong>Hace 35 minutos</strong>
-                <div class="text-caption mb-2">Confirmado una recolección</div>
-              </v-timeline-item>
-
-              <v-timeline-item color="white" small>
-                <strong>Jace 44 minutos</strong>
-                <div class="text-caption">Confirmado una recolección</div>
-              </v-timeline-item>
-            </v-timeline>
-          </v-card-text>
+          color="#ebecf0"
+          shaped
+        >
+          <div class="sul-box-inset-1 with-hover">
+            <v-row align="center" justify="center">
+              <v-col
+                cols="12"
+                sm="12"
+                class="d-md-flex"
+                align="center"
+                justify="center"
+              >
+                <img
+                  :src="`${pathImg}${report.rutaimagen}`"
+                  width="70%"
+                  class="d-block ml-auto mr-auto pt-5"
+                />
+              </v-col>
+            </v-row>
+            <v-row align="center" justify="center">
+              <v-col
+                cols="12"
+                sm="8"
+                class="text-center"
+                align="center"
+                justify="center"
+              >
+                <h4 class="font-weight-regular subtitle-1 text-center mb-5">
+                  <strong> Descripción: </strong>
+                  {{ report.descripcion }}
+                  <br />
+                  <br />
+                  <strong> Ubicación: </strong>
+                  {{ report.ubicacion }}
+                  <br />
+                  <br />
+                  <strong> Estado: </strong>
+                  {{ report.estado }}
+                  <br />
+                  <br />
+                  <strong> Categoria: </strong>
+                  {{ report.categoria }}
+                </h4>
+              </v-col>
+              <br />
+            </v-row>
+          </div>
         </v-card>
       </v-col>
     </v-row>
