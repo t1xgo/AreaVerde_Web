@@ -25,8 +25,7 @@
             <v-row class="my-5">
               <v-col sm="12" cols="12">
                 <v-row align="center" justify="center">
-                  <v-col
-                  >
+                  <v-col>
                     <div
                       id="reportesRecogidos"
                       class="my-5 py-5"
@@ -56,19 +55,19 @@
                               class="font-weight-regular subtitle-1 text-center"
                             >
                               <strong> Descripción: </strong>
-                              {{ report.description }}
+                              {{ report.descripcion }}
                               <br />
                               <br />
                               <strong> Ubicación: </strong>
-                              {{ report.ubication }}
+                              {{ report.ubicacion }}
                               <br />
                               <br />
                               <strong> Estado: </strong>
-                              {{ report.state }}
+                              {{ report.estado }}
                               <br />
                               <br />
                               <strong> Tipo: </strong>
-                              {{ report.colorCode }}
+                              {{ report.id_categoria }}
                             </h4>
                           </v-col>
                           <br />
@@ -80,14 +79,6 @@
                           tile
                         >
                           Cambiar tipo
-                        </v-btn>
-                        <v-btn
-                          color="green"
-                          class="px-3 mx-3 my-3 py-3"
-                          dark
-                          tile
-                        >
-                          Eliminar
                         </v-btn>
                       </v-card>
                     </div>
@@ -120,7 +111,7 @@
                         shaped
                       >
                         <v-img
-                          :src="reports.rutaimagen"
+                          :src="report.rutaimagen"
                           width="60%"
                           max-height="50%"
                           class="d-block ml-auto mr-auto py-5"
@@ -196,7 +187,6 @@ export default {
   data() {
     return {
       step: 1,
-
       activityLog: [
         {
           title: "Recogidos",
@@ -209,7 +199,6 @@ export default {
           color: "deep-orange darken-1",
         },
       ],
-      items: [],
       reports: [],
     };
   },
@@ -221,13 +210,25 @@ export default {
     onButtonClick(item) {
       console.log("click on " + item.no);
     },
+    async loadCategorias(id_categoria)
+    {
+      if (id_categoria == "1") {
+            id_categoria = "Reciclable1";
+          } else if (id_categoria == "2") {
+            id_categoria = "Organicos";
+          } else if (id_categoria == "3") {
+            id_categoria = "No reciclables";
+          }
+    }
+    ,
     async getReportes() {
       try {
         let token = localStorage.getItem("token");
         let response = await axios.get("http://localhost:3001/getReports", {
-          headers: { token },
-        });
+          headers: { token }
+        },{params:1});
         this.reports = response.data.content;
+        this.loadCategorias(this.reports.id_categoria);
         console.log("LOS REPORTES", this.reports);
       } catch (error) {
         console.error(error);
