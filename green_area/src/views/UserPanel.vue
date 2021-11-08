@@ -6,176 +6,165 @@
     </v-subheader>
     <br />
     <v-row>
-      <v-col lg="7" cols="12">
-        <v-row>
+      <v-col sm="6" cols="12">
+        <div class="sul-box-raised-1 with-hover">
           <v-alert dense text type="success">
             Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
           </v-alert>
-        </v-row>
-
-        <v-row class="formRow">
-          <v-col sm="12" cols="12">
-            <v-card class="elevation-6 mt-5 mb-10">
-              <v-row justify="center" align="center">
-                <v-col cols="12" sm="6">
-                  <v-card-text class="mt-12">
-                    <h2 class="text-center">Agregar un reporte</h2>
-                    <h4 class="text-center grey--text">
-                      Por favor ingresa la información necesaria para poder
-                      hacer un reporte
-                    </h4>
-                    <v-form
-                      ref="formReport"
-                      v-model="valid"
-                      class="pa-3 pt-4"
-                      lazy-validation
-                    >
-                      <v-row align="center" justify="center">
-                        <v-col cols="12" sm="8" align="center" justify="center">
-                          <v-text-field
-                            :rules="rules"
-                            v-model="report.descripcion"
-                            label="Descripción (opcional)"
-                            outlined
-                            dense
-                            color="green"
-                            autocomplete="false"
-                            class="mt-16"
-                          >
-                          </v-text-field>
-                          <v-text-field
-                            :rules="rules"
-                            v-model="report.ubicacion"
-                            label="Ubicación"
-                            outlined
-                            dense
-                            color="green"
-                            autocomplete="false"
-                          >
-                          </v-text-field>
-
-                          <v-select
-                            :rules="rules"
-                            v-model="report.id_categoria"
-                            :items="categoria"
-                            label="Categoría"
-                            outlined
-                          ></v-select>
-
-                          <v-btn color="green" class="my-3" dark>
-                            <v-file-input
-                              :rules="rules"
-                              hide-input
-                              class="py-3 pl-2"
-                              v-model="report.rutaimagen"
-                              color="green"
-                              accept="image/png, image/jpeg, image/bmp"
-                              prepend-icon="mdi-camera"
-                            ></v-file-input>
-                          </v-btn>
-
-                          <br />
-                          <v-btn
-                            @click="createReport()"
-                            color="green"
-                            dark
-                            block
-                            tile
-                          >
-                            Reportar
-                          </v-btn>
-                        </v-col>
-                      </v-row>
-                    </v-form>
-                  </v-card-text>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-
-        <v-row class="feedRow">
-          <v-col
-            sm="12"
-            cols="12"
-            v-for="report in reports"
-            :key="report.id_reporte"
-          >
-            <v-card
-              class="
-                mx-12
-                rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                mt-n15
-                cardcont
-                codver
-                text-center
-              "
-              shaped
-            >
-              <v-row align="center" justify="center">
-                <v-col
-                  cols="12"
-                  sm="12"
-                  class="d-md-flex"
-                  align="center"
-                  justify="center"
-                >
-                  <img
-                    :src="`${pathImg}${report.rutaimagen}`"
-                    width="90%"
-                    class="d-block ml-auto mr-auto"
-                  />
-                </v-col>
-              </v-row>
-
-              <v-row align="center" justify="center">
-                <v-col
-                  cols="12"
-                  sm="12"
-                  class="d-md-flex text-center"
-                  align="center"
-                  justify="center"
-                >
-                  <h4 class="font-weight-regular subtitle-1">
-                    <strong> Descripción: </strong>
-                    {{ report.descripcion }}
-                    <br />
-                    <br />
-                    <strong> Ubicación: </strong>
-                    {{ report.ubicacion }}
-                    <br />
-                    <br />
-                    <strong> Estado: </strong>
-                    {{ report.estado }}
-                  </h4>
-                </v-col>
-                <hr size="5px" width="50%" color="green" />
-                <br />
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
+        </div>
       </v-col>
-      <v-col cols="12" lg="5">
-        <v-card>
-          <v-card-title>Historial en vivo</v-card-title>
-          <v-card-text class="py-0">
-            <v-timeline align-top dense>
-              <v-timeline-item color="black" small>
-                <strong>Hace 5 minutos</strong>
-                <div class="text-caption">Confirmado una recolección</div>
-              </v-timeline-item>
-              <v-timeline-item color="green" small>
-                <strong>Hace 35 minutos</strong>
-                <div class="text-caption mb-2">Confirmado una recolección</div>
-              </v-timeline-item>
+    </v-row>
 
-              <v-timeline-item color="white" small>
-                <strong>Jace 44 minutos</strong>
-                <div class="text-caption">Confirmado una recolección</div>
-              </v-timeline-item>
-            </v-timeline>
-          </v-card-text>
+    <v-row justify="center" align="center">
+      <v-col sm="12" cols="12">
+        <v-card class="mt-5 mb-10 mx-10">
+          <div class="sul-box-inset-1 with-hover">
+            <v-row justify="center" align="center">
+              <v-col cols="12" sm="6">
+                <v-card-text class="mt-12">
+                  <h2 class="text-center">Agregar un reporte</h2>
+                  <h4 class="text-center grey--text">
+                    Por favor ingresa la información necesaria para poder hacer
+                    un reporte
+                  </h4>
+                  <v-form
+                    ref="formReport"
+                    v-model="valid"
+                    class="pa-3 pt-4"
+                    lazy-validation
+                  >
+                    <v-row align="center" justify="center">
+                      <v-col cols="12" sm="8" align="center" justify="center">
+                        <v-text-field
+                          :rules="rules"
+                          v-model="report.descripcion"
+                          label="Descripción (opcional)"
+                          color="green"
+                          autocomplete="false"
+                          class="my-5 sul-text-field"
+                        >
+                        </v-text-field>
+                        <v-text-field
+                          :rules="rules"
+                          class="my-5 sul-text-field"
+                          v-model="report.ubicacion"
+                          label="Ubicación"
+                          color="green"
+                          autocomplete="false"
+                        >
+                        </v-text-field>
+
+                        <v-select
+                          :rules="rules"
+                          v-model="report.id_categoria"
+                          :items="categoria"
+                          label="Categoría"
+                          color="green"
+                          outlined
+                          class="sul-select"
+                        ></v-select>
+
+                        <v-btn
+                          color="green"
+                          class="my-3 pb-5 perpendButton"
+                          dark
+                        >
+                          <v-file-input
+                            :rules="rules"
+                            hide-input
+                            class="pt-4 pl-2"
+                            v-model="report.rutaimagen"
+                            color="green"
+                            accept="image/png, image/jpeg, image/bmp"
+                            prepend-inner-icon="mdi-camera"
+                          ></v-file-input>
+                        </v-btn>
+
+                        <br />
+                        <v-btn
+                          @click="createReport()"
+                          class="modalButton"
+                          block
+                          tile
+                        >
+                          Reportar
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-form>
+                </v-card-text>
+              </v-col>
+            </v-row>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row class="feedRow">
+      <v-col
+        sm="12"
+        cols="12"
+        v-for="report in reports"
+        :key="report.id_reporte"
+      >
+        <v-card
+          class="
+            mx-12
+            rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+            mt-n15
+            cardcont
+            codver
+            text-center
+            py-7
+            my-15
+          "
+          color="#ebecf0"
+          shaped
+        >
+          <div class="sul-box-inset-1 with-hover">
+            <v-row align="center" justify="center">
+              <v-col
+                cols="12"
+                sm="12"
+                class="d-md-flex"
+                align="center"
+                justify="center"
+              >
+                <img
+                  :src="`${pathImg}${report.rutaimagen}`"
+                  width="70%"
+                  class="d-block ml-auto mr-auto pt-5"
+                />
+              </v-col>
+            </v-row>
+            <v-row align="center" justify="center">
+              <v-col
+                cols="12"
+                sm="8"
+                class="text-center"
+                align="center"
+                justify="center"
+              >
+                <h4 class="font-weight-regular subtitle-1 text-center mb-5">
+                  <strong> Descripción: </strong>
+                  {{ report.descripcion }}
+                  <br />
+                  <br />
+                  <strong> Ubicación: </strong>
+                  {{ report.ubicacion }}
+                  <br />
+                  <br />
+                  <strong> Estado: </strong>
+                  {{ report.estado }}
+                  <br />
+                  <br />
+                  <strong> Categoria: </strong>
+                  {{ report.categoria }}
+                </h4>
+              </v-col>
+              <br />
+            </v-row>
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -230,9 +219,6 @@ export default {
   },
 
   methods: {
-    onButtonClick(item) {
-      console.log("click on " + item.no);
-    },
 
     cleanCampos() {
       (this.report.descripcion = ""),
@@ -241,19 +227,16 @@ export default {
     },
 
     actualizarEstado(reports) {
-      for (let i = 0; i <= reports.length; i++) {
-        if (reports[i].estado == 0) {
+      for (let i = 0; i < reports.length; i++) {
+        if(reports[i].estado == 0){
           reports[i].estado = "En espera de ser aprobado";
-        } else if (reports[i].estado == 1) {
+        }else if(reports[i].estado == 1){
           reports[i].estado = "En espera de recolección";
-        } else if (reports[i].estado == 2) {
+        }else if(reports[i].estado == 2){
           reports[i].estado = "Recogido";
         }
         this.reports.push(reports[i]);
-        console.log(this.reports[i]);
       }
-      console.log("REPORTES");
-      console.log(this.reports);
     },
 
     async loadReports() {
@@ -264,7 +247,8 @@ export default {
         let reesponse = await axios.get(url, {
           headers: { token },
         });
-        this.reports = reesponse.data.content;
+        this.actualizarEstado(reesponse.data.content);
+        //this.reports = reesponse.data.content;
       } catch (error) {
         this.reports = [];
         console.error(error);
@@ -278,7 +262,6 @@ export default {
         let formData = new FormData();
         formData.append("imagen", this.report.rutaimagen);
         let { data } = await axios.post(url, formData);
-        console.log(data);
         if (data.ok == true) {
           console.log("Subido");
           return await formData.get("imagen");
@@ -360,5 +343,20 @@ export default {
 .dashboard {
   margin-left: 10px;
   padding: 10px;
+}
+.perpendButton {
+  appearance: none;
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  background-image: linear-gradient(to right, #20bf55, #7ee8fa);
+  color: #44475c;
+  font-size: 25px;
+  box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+  transition: 0.4s ease-out;
+}
+.perpendButton:hover {
+  box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
 }
 </style>

@@ -16,7 +16,7 @@
                     class="mt-10 sul-select"
                     :rules="rules"
                     :items="categorias"
-                    label="tipo de recolector"
+                    label="Categoría"
                     height="3em"
                     v-model="Cambiocategoria"
                     outlined
@@ -29,8 +29,19 @@
               </v-row>
               <v-row>
                 <v-col sm="6" cols="6">
-                  <v-btn class="modalButton" @click="actualizarRecolector">
+                  <v-btn
+                    v-if="step == 2"
+                    class="modalButton"
+                    @click="actualizarRecolector"
+                  >
                     Actualizar
+                  </v-btn>
+                  <v-btn
+                    v-else-if="step == 3"
+                    class="modalButton"
+                    @click="actualizarReporte(reporteEnEdicion)"
+                  >
+                    Aprobar
                   </v-btn>
                 </v-col>
                 <v-col sm="6" cols="6">
@@ -299,12 +310,17 @@
       <!-- ...............................................Seccion de administracion de reportes........................................................-->
 
       <v-window-item :value="3">
-        <v-row class="my-5">
+        <v-row class="my-5 py-10">
           <v-col sm="12" cols="12">
             <v-row align="center" justify="center">
-              <v-col>
-                <div class="my-5 py-5" v-for="report in reports" :key="report.id_reporte">
+              <v-col align="center" justify="center">
+                <div
+                  class="my-5 py-5"
+                  v-for="report in reports"
+                  :key="report.id_reporte"
+                >
                   <v-card
+                    color="#ebecf0"
                     class="
                       mx-12
                       rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
@@ -313,71 +329,68 @@
                       codneg
                       text-center
                       my-5
-                      py-10
                     "
                     shaped
                   >
-                    <v-card
-                      color="#ebecf0"
-                      class="
-                        mx-12
-                        rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                        mt-n15
-                        cardcont
-                        codneg
-                        text-center
-                        my-5
-                      "
-                      shaped
-                    >
-                      <div class="sul-box-inset-1 with-hover with-hover py-10">
-                        <v-img
-                          :src="`${pathImg}${report.rutaimagen}`"
-                          width="60%"
-                          class="d-block ml-auto mr-auto"
-                        ></v-img>
+                    <div class="sul-box-inset-1 with-hover py-10">
+                      <v-img
+                        :src="`${pathImg}${report.rutaimagen}`"
+                        width="60%"
+                        class="d-block ml-auto mr-auto"
+                      ></v-img>
 
-                        <v-row align="center" justify="center" class="mt-5">
-                          <v-col
-                            cols="12"
-                            sm="8"
-                            class="d-md-flex text-center"
-                            align="center"
-                            justify="center"
-                          >
-                            <h4
-                              class="font-weight-regular subtitle-1 text-center"
-                            >
-                              <strong> Descripción: </strong>
-                              {{ report.descripcion }}
-                              <br />
-                              <br />
-                              <strong> Ubicación: </strong>
-                              {{ report.ubicacion }}
-                              <br />
-                              <br />
-                              <strong> Estado: </strong>
-                              {{ report.estado }}
-                              <br />
-                              <br />
-                              <strong> Tipo: </strong>
-                              {{ report.categoria }}
-                            </h4>
-                          </v-col>
-                          <br />
-                        </v-row>
-                        <v-btn
-                          color="green"
-                          class="px-3 mx-3 my-3 py-3 modalButton"
-                          tile
+                      <v-row align="center" justify="center" class="mt-5">
+                        <v-col
+                          cols="12"
+                          sm="12"
+                          class="text-center px-auto"
+                          align="center"
+                          justify="center"
                         >
-                          Cambiar tipo
-                        </v-btn>
-                        <v-btn class="px-3 mx-3 my-3 py-3 modalButton" tile>
-                          Eliminar
-                        </v-btn>
-                      </div>
-                    </v-card>
+                          <h4
+                            class="font-weight-regular subtitle-1 px-10 mb-10"
+                          >
+                            <strong> Descripción: </strong>
+                            {{ report.descripcion }}
+                            <br />
+                            <br />
+                            <strong> Ubicación: </strong>
+                            {{ report.ubicacion }}
+                            <br />
+                            <br />
+                            <strong> Estado: </strong>
+                            {{ report.estado }}
+                            <br />
+                            <br />
+                            <strong> Tipo: </strong>
+                            {{ report.categoria }}
+                          </h4>
+                        </v-col>
+                        <br />
+                      </v-row>
+                      <v-btn
+                        color="green"
+                        class="px-3 mx-3 my-3 py-3 modalButton"
+                        tile
+                        @click="editarReporte(report)"
+                      >
+                        Cambiar tipo
+                      </v-btn>
+                      <v-btn
+                        class="px-3 mx-3 my-3 py-3 modalButton"
+                        tile
+                        @click="actualizarReporte(report)"
+                      >
+                        Aprobar
+                      </v-btn>
+                      <v-btn
+                        class="px-3 mx-3 my-3 py-3 modalButton"
+                        tile
+                        @click="eliminarReporte(report)"
+                      >
+                        Eliminar
+                      </v-btn>
+                    </div>
                   </v-card>
                 </div>
               </v-col>
@@ -393,6 +406,7 @@
 import axios from "axios";
 import Swal from "sweetalert2/src/sweetalert2.js";
 export default {
+  reporteEnEdicion: "",
   recolectorSeleccionado: "",
   Cambiocategoria: "",
   //collectors table data
@@ -524,9 +538,48 @@ export default {
       }
     },
     reloadPage() {
+      this.Cambiocategoria = "";
       window.location.reload();
     },
-
+    eliminarReporte(report) {
+      Swal.fire({
+        icon: "question",
+        title: "¿Está seguro?",
+        text: `Desea eliminar este reporte?`,
+        showDenyButton: true,
+        confirmButtonText: "Si",
+        denyButtonText: `No`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.eliminar(report);
+        } else if (result.isDenied) {
+          //Sin accion
+        }
+      });
+    },
+    async eliminar(report) {
+      let token = this.token;
+      try {
+        await axios.delete(
+          `http://localhost:3001/eliminarReporte/${report.id_reporte}`,
+          {
+            headers: { token },
+          }
+        );
+        Swal.fire({
+          icon: "success",
+          title: "Ok...",
+          text: "Reporte eliminado",
+        });
+        this.reloadPage();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    editarReporte(report) {
+      this.showingReportsModal = true;
+      this.reporteEnEdicion = report;
+    },
     async getReports() {
       try {
         let token = localStorage.getItem("token");
@@ -534,13 +587,87 @@ export default {
         let reesponse = await axios.get(url, {
           headers: { token },
         });
-        this.reports = reesponse.data.content;
+        this.actualizarEstado(reesponse.data.content);
       } catch (error) {
         this.reports = [];
         console.error(error);
       }
     },
-
+    actualizarEstado(reports) {
+      for (let i = 0; i < reports.length; i++) {
+        if (reports[i].estado == 0) {
+          reports[i].estado = "En espera de ser aprobado";
+        } else if (reports[i].estado == 1) {
+          reports[i].estado = "En espera de recolección";
+        } else if (reports[i].estado == 2) {
+          reports[i].estado = "Recogido";
+        }
+        this.reports.push(reports[i]);
+      }
+    },
+    async actualizarReporte(report) {
+      if (this.Cambiocategoria != "" && this.Cambiocategoria != null) {
+        //Cambiar categoria y estado
+        if (this.Cambiocategoria == "Reciclable") {
+          report.id_categoria = 1;
+        } else if (this.Cambiocategoria == "Organico") {
+          report.id_categoria = 2;
+        } else if (this.Cambiocategoria == "No reciclable") {
+          report.id_categoria = 3;
+        }
+        let token = this.token;
+        try {
+          await axios.put(
+            "http://localhost:3001/estadoAprobadoCategoria",
+            report,
+            {
+              headers: { token },
+            }
+          );
+          this.showingReportsModal = false;
+          Swal.fire({
+            icon: "success",
+            title: "Ok...",
+            text: "Reporte actualizado",
+          });
+          this.reloadPage();
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        //Cambiar estado
+        Swal.fire({
+          icon: "question",
+          title: "¿Está seguro?",
+          text: `Desea mantener la categoria ${report.categoria}`,
+          showDenyButton: true,
+          confirmButtonText: "Si",
+          denyButtonText: `No`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.putEstado(report);
+          } else if (result.isDenied) {
+            //Sin accion
+          }
+        });
+      }
+    },
+    async putEstado(report) {
+      let token = this.token;
+      try {
+        await axios.put("http://localhost:3001/estadoAprobado", report, {
+          headers: { token },
+        });
+        Swal.fire({
+          icon: "success",
+          title: "Ok...",
+          text: "Reporte actualizado",
+        });
+        this.reloadPage();
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async actualizarRecolector() {
       if (
         this.recolectorSeleccionado.id_personal != undefined &&
@@ -560,15 +687,19 @@ export default {
         } else if (this.Cambiocategoria == "No reciclable") {
           recolector.id_categoriarecolector = 3;
         }
-        await axios.put("http://localhost:3001/putrecolectores", recolector, {
-          headers: { token },
-        });
-        Swal.fire({
-          icon: "success",
-          title: "Ok...",
-          text: "Categoria actualizada",
-        });
-        this.reloadPage();
+        try {
+          await axios.put("http://localhost:3001/putrecolectores", recolector, {
+            headers: { token },
+          });
+          Swal.fire({
+            icon: "success",
+            title: "Ok...",
+            text: "Categoria actualizada",
+          });
+          this.reloadPage();
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         console.log("Variables indefinidas");
         Swal.fire({
@@ -584,10 +715,17 @@ export default {
     },
     async cargarRecolectores() {
       let token = this.token;
-      let response = await axios.get("http://localhost:3001/getrecolectores", {
-        headers: { token },
-      });
-      this.collectors = response.data.content;
+      try {
+        let response = await axios.get(
+          "http://localhost:3001/getrecolectores",
+          {
+            headers: { token },
+          }
+        );
+        this.collectors = response.data.content;
+      } catch (error) {
+        console.log(error);
+      }
     },
     async crearRecolecor() {
       let tipo;
@@ -606,10 +744,14 @@ export default {
         id_categoriarecolector: tipo,
       };
       let token = this.token;
-      await axios.post("http://localhost:3001/postrecolectores", recolector, {
-        headers: { token },
-      });
-      this.reloadPage();
+      try {
+        await axios.post("http://localhost:3001/postrecolectores", recolector, {
+          headers: { token },
+        });
+        this.reloadPage();
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

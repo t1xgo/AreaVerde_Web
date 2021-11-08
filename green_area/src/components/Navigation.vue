@@ -58,10 +58,10 @@
         v-if="isXs"
       />
       <div v-else>
-        <v-btn text @click="imprimirRecolectores()">
+        <v-btn text @click="gotoInicio()">
           <span class="mr-2">Inicio</span>
         </v-btn>
-        <v-btn text @click="$vuetify.goTo('#feed')">
+        <v-btn text @click="gotoFeed()">
           <span class="mr-2">Feed</span>
         </v-btn>
         <v-btn rounded outlined text @click="gotoLogin()">
@@ -105,10 +105,25 @@ export default {
     onResize() {
       this.isXs = window.innerWidth < 850;
     },
+    async gotoInicio() {
+      try {
+          this.$router.push("/");
+        
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async gotoLogin() {
       try {
-
           this.$router.push("/login");
+        
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async gotoFeed() {
+      try {
+          this.$router.push("/feed");
         
       } catch (error) {
         console.log(error);
