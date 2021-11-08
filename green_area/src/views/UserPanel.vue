@@ -302,6 +302,7 @@ export default {
               title: "Ok...",
               text: "El reporte se creó correctamente",
             });
+            window.location.reload();
           } else {
             Swal.fire({
               icon: "error",
