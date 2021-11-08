@@ -227,7 +227,6 @@ export default {
           headers: { token },
         });
         this.reports = response.data.content;
-        console.log("LOS REPORTES", this.reports.length);
       } catch (error) {
         console.log(error);
       }
