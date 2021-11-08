@@ -309,6 +309,7 @@
           <v-col sm="12" cols="12">
             <v-row align="center" justify="center">
               <v-col align="center" justify="center">
+                
                 <div
                   class="my-5 py-5"
                   v-for="report in reports"

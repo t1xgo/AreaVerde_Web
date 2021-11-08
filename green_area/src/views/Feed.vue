@@ -216,11 +216,11 @@ export default {
             headers: { token },
           });
           let valor = response.data.content.rows[0].count;
-          console.log(valor)
-          let porcentaje = 0
-          if(valor != 0){
-          porcentaje = (valor * 100) / this.estadisticas[i].total;
-          porcentaje = porcentaje.toFixed(2);
+          console.log(valor);
+          let porcentaje = 0;
+          if (valor != 0) {
+            porcentaje = (valor * 100) / this.estadisticas[i].total;
+            porcentaje = porcentaje.toFixed(2);
           }
           this.estadisticas[i].recogidos = `${porcentaje}%`;
         } catch (error) {
