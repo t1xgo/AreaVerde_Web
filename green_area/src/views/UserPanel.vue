@@ -132,7 +132,7 @@
               >
                 <img
                   :src="`${pathImg}${report.rutaimagen}`"
-                  width="70%"
+                  width="60%"
                   class="d-block ml-auto mr-auto pt-5"
                 />
               </v-col>
@@ -219,7 +219,6 @@ export default {
   },
 
   methods: {
-
     cleanCampos() {
       (this.report.descripcion = ""),
         (this.report.ubicacion = ""),
@@ -228,11 +227,11 @@ export default {
 
     actualizarEstado(reports) {
       for (let i = 0; i < reports.length; i++) {
-        if(reports[i].estado == 0){
+        if (reports[i].estado == 0) {
           reports[i].estado = "En espera de ser aprobado";
-        }else if(reports[i].estado == 1){
+        } else if (reports[i].estado == 1) {
           reports[i].estado = "En espera de recolección";
-        }else if(reports[i].estado == 2){
+        } else if (reports[i].estado == 2) {
           reports[i].estado = "Recogido";
         }
         this.reports.push(reports[i]);
