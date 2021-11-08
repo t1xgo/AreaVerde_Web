@@ -1,37 +1,37 @@
 <template>
-  <v-parallax dark src="@/assets/img/bg.png" height="100vh">
+  <section id="statistics">
     <navbar :color="color" :flat="flat" />
-    <section id="statistics">
-      <v-container fluid id="about" class="mt-2 cont">
-        <v-row align="center" justify="center">
-          <v-col cols="12" sm="12" xl="8" justify="center" align="center">
-            <v-card
-              class="mx-12 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl mt-n15 cardcont text-center"
-              shaped
-            >
-              <v-row align="center" justify="center">
-                <h2
-                  class="display-1 font-weight-bold mb-4 titleh2"
-                  align="center"
-                >
-                  Resumen estadístico
-                </h2>
-                <v-col cols="10">
-                  <v-row align="center" justify="space-around">
-                    <v-col
-                      cols="12"
-                      sm="4"
-                      class="text-center"
-                      v-for="(feature, i) in features"
-                      :key="i"
-                    >
-                      <v-hover v-slot:default="{ hover }">
-                        <v-card
-                          class="card"
-                          shaped
-                          :elevation="hover ? 10 : 4"
-                          :class="{ up: hover }"
-                        >
+
+    <v-row class="mx-10">
+      <v-col cols="12" sm="12">
+        <v-card
+          class="rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl c text-center"
+          shaped
+        >
+          <div class="sul-box-raised-1 with-hover py-10 pb-15">
+            <v-row align="center" justify="center">
+              <h2
+                class="display-1 font-weight-bold mb-4 titleh2"
+                align="center"
+              >
+                Resumen estadístico
+              </h2>
+              <v-col cols="10">
+                <v-row align="center" justify="space-around">
+                  <v-col
+                    cols="12"
+                    sm="4"
+                    class="text-center"
+                    v-for="(feature, i) in features"
+                    :key="i"
+                  >
+                    <v-hover v-slot:default="{ hover }">
+                      <v-card
+                        shaped
+                        :elevation="hover ? 10 : 4"
+                        :class="{ up: hover }"
+                      >
+                        <div class="sul-box-inset-1 with-hover py-10">
                           <v-img
                             :src="feature.img"
                             max-width="100px"
@@ -41,38 +41,108 @@
                           <h1 class="font-weight-regular">
                             {{ feature.title }}
                           </h1>
-                        </v-card>
-                      </v-hover>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
-              <v-row align="center" justify="center">
-                <v-col cols="10">
-                  <v-row align="center" justify="space-around">
-                    <v-col>
-                      <img :src="require(`@/assets/img/chart.png`)" />
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
+                        </div>
+                      </v-card>
+                    </v-hover>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
 
-      <v-container fluid id="about" class="mt-2"> </v-container>
-    </section>
-  </v-parallax>
+    <v-row class="mx-10 mt-10">
+      <v-col sm="12" cols="12">
+        <v-col align="center" justify="center">
+          <div
+            class="my-5 py-5"
+            v-for="report in reports"
+            :key="report.id_reporte"
+          >
+            <v-card
+              color="#ebecf0"
+              class="
+                      mx-12
+                      rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                      mt-n15
+                      cardcont
+                      codneg
+                      text-center
+                      my-5
+                    "
+              shaped
+            >
+              <div class="sul-box-inset-1 with-hover py-10">
+                <v-img
+                  :src="`${pathImg}${report.rutaimagen}`"
+                  width="60%"
+                  class="d-block ml-auto mr-auto"
+                ></v-img>
+
+                <v-row align="center" justify="center" class="mt-5">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    class="text-center px-auto"
+                    align="center"
+                    justify="center"
+                  >
+                    <h4 class="font-weight-regular subtitle-1 px-10 mb-10">
+                      <strong> Descripción: </strong>
+                      {{ report.descripcion }}
+                      <br />
+                      <br />
+                      <strong> Ubicación: </strong>
+                      {{ report.ubicacion }}
+                      <br />
+                      <br />
+                      <strong> Estado: </strong>
+                      {{ report.estado }}
+                      <br />
+                      <br />
+                      <strong> Tipo: </strong>
+                      {{ report.categoria }}
+                    </h4>
+                  </v-col>
+                  <br />
+                </v-row>
+              </div>
+            </v-card>
+          </div>
+        </v-col>
+      </v-col>
+    </v-row>
+  </section>
 </template>
 
 <script>
 import Navbar from "../components/Navigation.vue";
 export default {
   components: { Navbar },
-
   data() {
     return {
+      reports: [
+        {
+          descripcion: "sklg",
+          ubicacion: "injognl",
+          estado: "sjngsjl",
+          categoria: "sldmsgld",
+        },
+        {
+          descripcion: "sklg",
+          ubicacion: "injognl",
+          estado: "sjngsjl",
+          categoria: "sldmsgld",
+        },
+        {
+          descripcion: "sklg",
+          ubicacion: "injognl",
+          estado: "sjngsjl",
+          categoria: "sldmsgld",
+        },
+      ],
       dialog: false,
       features: [
         {
