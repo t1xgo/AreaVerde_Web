@@ -5,7 +5,11 @@
     <v-row class="mx-10">
       <v-col cols="12" sm="12">
         <v-card
-          class="rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl c text-center"
+          class="
+            rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+            c
+            text-center
+          "
           shaped
         >
           <div class="sul-box-raised-1 with-hover py-10 pb-15">
@@ -14,7 +18,8 @@
                 class="display-1 font-weight-bold mb-4 titleh2"
                 align="center"
               >
-                Resumen estadístico
+                Total de reportes:
+                {{ totalReportes }}
               </h2>
               <v-col cols="10">
                 <v-row align="center" justify="space-around">
@@ -22,7 +27,7 @@
                     cols="12"
                     sm="4"
                     class="text-center"
-                    v-for="(feature, i) in features"
+                    v-for="(feature, i) in estadisticas"
                     :key="i"
                   >
                     <v-hover v-slot:default="{ hover }">
@@ -39,8 +44,11 @@
                             :class="{ 'zoom-efect': hover }"
                           ></v-img>
                           <h1 class="font-weight-regular">
-                            {{ feature.title }}
+                            {{ feature.total }}
                           </h1>
+                          <h3 class="font-weight-regular">
+                            Recogidos: {{ feature.recogidos }}
+                          </h3>
                         </div>
                       </v-card>
                     </v-hover>
@@ -64,14 +72,14 @@
             <v-card
               color="#ebecf0"
               class="
-                      mx-12
-                      rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                      mt-n15
-                      cardcont
-                      codneg
-                      text-center
-                      my-5
-                    "
+                mx-12
+                rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                mt-n15
+                cardcont
+                codneg
+                text-center
+                my-5
+              "
               shaped
             >
               <div class="sul-box-inset-1 with-hover py-10">
@@ -119,10 +127,17 @@
 
 <script>
 import Navbar from "../components/Navigation.vue";
+import axios from "axios";
 export default {
   components: { Navbar },
+  beforeMount() {
+    this.gettotalReportes();
+    this.getTotalCategorias();
+    this.getporcentajeRecogidos();
+  },
   data() {
     return {
+      totalReportes: "",
       reports: [
         {
           descripcion: "sklg",
@@ -144,21 +159,75 @@ export default {
         },
       ],
       dialog: false,
-      features: [
+      estadisticas: [
         {
           img: require("@/assets/img/Garbage_bins/whiteBin.png"),
-          title: "26%",
-        },
-        {
-          img: require("@/assets/img/Garbage_bins/blackBin.png"),
-          title: "44%",
+          recogidos: "0%",
+          total: "0",
         },
         {
           img: require("@/assets/img/Garbage_bins/greenBin.png"),
-          title: "30%",
+          recogidos: "0%",
+          total: "0",
+        },
+        {
+          img: require("@/assets/img/Garbage_bins/blackBin.png"),
+          recogidos: "0%",
+          total: "0",
         },
       ],
     };
+  },
+  methods: {
+    async gettotalReportes() {
+      try {
+        let token = localStorage.getItem("token");
+        let url = `http://localhost:3001/totalreportes`;
+        let response = await axios.get(url, {
+          headers: { token },
+        });
+        this.totalReportes = response.data.content.rows[0].count;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getTotalCategorias() {
+      let categorias = [1, 2, 3];
+      for (let i = 0; i < categorias.length; i++) {
+        try {
+          let token = localStorage.getItem("token");
+          let url = `http://localhost:3001/totalreportesCategoria/${categorias[i]}`;
+          let response = await axios.get(url, {
+            headers: { token },
+          });
+          this.estadisticas[i].total = response.data.content.rows[0].count;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    },
+    async getporcentajeRecogidos() {
+      let categorias = [1, 2, 3];
+      for (let i = 0; i < categorias.length; i++) {
+        try {
+          let token = localStorage.getItem("token");
+          let url = `http://localhost:3001/porcentajeCategoria/${categorias[i]}/`;
+          let response = await axios.get(url, {
+            headers: { token },
+          });
+          let valor = response.data.content.rows[0].count;
+          console.log(valor)
+          let porcentaje = 0
+          if(valor != 0){
+          porcentaje = (valor * 100) / this.estadisticas[i].total;
+          porcentaje = porcentaje.toFixed(2);
+          }
+          this.estadisticas[i].recogidos = `${porcentaje}%`;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    },
   },
   watch: {
     dialog(value) {
