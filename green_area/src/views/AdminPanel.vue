@@ -179,9 +179,7 @@
                   v-if="this.dialogError == true"
                   :estadoDialog="true"
                   :tituloMensaje="'Error'"
-                  :mensaje="
-                    'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
-                  "
+                  :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
                 />
                 <v-row justify="center" align="center">
                   <v-col cols="12" sm="6">
@@ -197,49 +195,54 @@
                         lazy-validation
                       >
                         <v-text-field
-                          :rules="rules"
+                          :rules="rules.doc"
                           class="sul-text-field mb-5"
                           label="Documento de identificación"
                           v-model="documento"
                           color="green"
                           autocomplete="false"
+                          required
                         >
                         </v-text-field>
                         <v-text-field
-                          :rules="rules"
+                          :rules="rules.texto"
                           class="sul-text-field mb-5"
                           label="Nombre"
                           v-model="nombre"
                           color="green"
                           autocomplete="false"
+                          required
                         >
                         </v-text-field>
                         <v-text-field
-                          :rules="rules"
+                          :rules="rules.celular"
                           class="sul-text-field mb-5"
                           label="Celular"
                           v-model="celular"
                           color="green"
                           autocomplete="false"
+                          required
                         >
                         </v-text-field>
                         <v-text-field
-                          :rules="emailRules"
+                          :rules="rules.emailRules"
                           class="sul-text-field mb-5"
                           label="Correo"
                           v-model="correo"
                           color="green"
                           autocomplete="false"
+                          required
                         >
                         </v-text-field>
                         <v-select
-                          :rules="rules"
+                          :rules="rules.required"
                           class="sul-select"
                           v-model="categoria"
                           :items="categorias"
                           label="Tipo"
                           outlined
                           color="green"
+                          required
                         ></v-select>
 
                         <br />
@@ -412,14 +415,7 @@ export default {
   celular: "",
   correo: "",
   categoria: "",
-  rules: {
-    required: [(v) => !!v || "El campo es obligatorio"],
-    min: (v) => v.length >= 8 || "Min 8 characters",
-    emailRules: [
-      (v) => !!v || "El campo es obligatorio",
-      (v) => /.+@.+\..+/.test(v) || "Correo invalido",
-    ],
-  },
+
   beforeMount() {
     this.token = localStorage.getItem("token");
     this.cargarRecolectores();
@@ -428,6 +424,28 @@ export default {
   },
   data() {
     return {
+      rules: {
+        required: [(v) => !!v || "El campo es obligatorio"],
+        min: (v) => v.length >= 8 || "Min 8 characters",
+        emailRules: [
+          (v) => !!v || "El campo es obligatorio",
+          (v) => /.+@.+\..+/.test(v) || "Correo invalido",
+        ],
+        doc: [
+          (v) => !!v || "El campo es obligatorio",
+          (v) => /[0-9+]/.test(v) || "Ingrese solo numeros",
+          (v) => v.length <= 20 || "Max 20 caracteres",
+        ],
+        texto: [
+          (v) => !!v || "El campo es obligatorio",
+          (v) => /[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(v) || "Ingrese solo letras",
+        ],
+        celular: [
+          (v) => !!v || "El campo es obligatorio",
+          (v) => /[0-9+]/.test(v) || "Ingrese solo numeros",
+          (v) => v.length == 10 || "Debe ingresar 10 caracteres",
+        ],
+      },
       //steps that are used to manage the windows
       step: 1,
       //Path static de imagenes
@@ -527,7 +545,6 @@ export default {
                 headers: { token },
               }
             );
-            console.log(estado, categoria, response.data.content[0].count);
             let valor = response.data.content[0].count;
             if (i == 0) {
               if (j == 0) {
@@ -748,29 +765,51 @@ export default {
       }
     },
     async crearRecolecor() {
-      let tipo;
-      if (this.categoria == "Reciclable") {
-        tipo = 1;
-      } else if (this.categoria == "Organico") {
-        tipo = 2;
-      } else if (this.categoria == "No reciclable") {
-        tipo = 3;
-      }
-      let recolector = {
-        nombre: this.nombre,
-        cedula: this.documento,
-        celular: this.celular,
-        correo: this.correo,
-        id_categoriarecolector: tipo,
-      };
-      let token = this.token;
-      try {
-        await axios.post("http://localhost:3001/postrecolectores", recolector, {
-          headers: { token },
+      if (this.$refs.formReport.validate()) {
+        let tipo;
+        if (this.categoria == "Reciclable") {
+          tipo = 1;
+        } else if (this.categoria == "Organico") {
+          tipo = 2;
+        } else if (this.categoria == "No reciclable") {
+          tipo = 3;
+        }
+        let recolector = {
+          nombre: this.nombre,
+          cedula: this.documento,
+          celular: this.celular,
+          correo: this.correo,
+          id_categoriarecolector: tipo,
+        };
+        let token = this.token;
+        try {
+          await axios.post(
+            "http://localhost:3001/postrecolectores",
+            recolector,
+            {
+              headers: { token },
+            }
+          );
+          Swal.fire({
+            icon: "success",
+            title: "Ok...",
+            text: "Categoria actualizada",
+          });
+          this.reloadPage();
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Diligencie correctamente el formulario",
+          });
+          console.log(error);
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Ups...",
+          text: "Diligencie correctamente el formulario",
         });
-        this.reloadPage();
-      } catch (error) {
-        console.log(error);
       }
     },
   },

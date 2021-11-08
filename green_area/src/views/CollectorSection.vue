@@ -101,7 +101,7 @@
                     <div
                       id="reportesNoRecogidos"
                       class="my-5 py-5"
-                      v-for="(report, index) in reports"
+                      v-for="(report, index) in reportsNorecogidos"
                       :key="index"
                     >
                       <v-card
@@ -193,7 +193,10 @@ export default {
     };
   },
   beforeMount() {
-    this.getReportes();
+    let id = localStorage.getItem("user-id");
+    console.log("ESTE ES EL ID",id);
+    this.getReportesPendientes();
+    this.getReportesRecogidos();
     console.log("ACAAAAAAA");
   },
   methods: {
@@ -212,10 +215,25 @@ export default {
         id_categoria = "No reciclables";
       }
     },
-    async getReportes() {
+    async getReportesPendientes()
+    {
       try {
         let token = localStorage.getItem("token");
-        let response = await axios.get("http://localhost:3001/getReports", {
+        let id = localStorage.getItem("user-id");
+        let response = await axios.get(`http://localhost:3001/getReportsPendientes/${id}`, {
+          headers: { token },
+        });
+        console.log(response);
+        this.reportsNorecogidos = response.data.content;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getReportesRecogidos() {
+      try {
+        let token = localStorage.getItem("token");
+        let id = localStorage.getItem("user-id");
+        let response = await axios.get(`http://localhost:3001/getReportsRecogidos/${id}`, {
           headers: { token },
         });
         this.reports = response.data.content;
