@@ -82,11 +82,11 @@
               "
               shaped
             >
-              <div class="sul-box-inset-1 with-hover py-10">
+            <div class="sul-box-inset-1 with-hover py-10">
                 <v-img
                   :src="`${pathImg}${report.rutaimagen}`"
                   width="60%"
-                  class="d-block ml-auto mr-auto"
+                  class="ml-auto mr-auto"
                 ></v-img>
 
                 <v-row align="center" justify="center" class="mt-5">
@@ -131,32 +131,16 @@ import axios from "axios";
 export default {
   components: { Navbar },
   beforeMount() {
+    this.getReportesRecogidos();
     this.gettotalReportes();
     this.getTotalCategorias();
     this.getporcentajeRecogidos();
   },
   data() {
     return {
+      rutaimagen: "http://localhost:3001/public/static/",
       totalReportes: "",
       reports: [
-        {
-          descripcion: "sklg",
-          ubicacion: "injognl",
-          estado: "sjngsjl",
-          categoria: "sldmsgld",
-        },
-        {
-          descripcion: "sklg",
-          ubicacion: "injognl",
-          estado: "sjngsjl",
-          categoria: "sldmsgld",
-        },
-        {
-          descripcion: "sklg",
-          ubicacion: "injognl",
-          estado: "sjngsjl",
-          categoria: "sldmsgld",
-        },
       ],
       dialog: false,
       estadisticas: [
@@ -189,6 +173,22 @@ export default {
         this.totalReportes = response.data.content.rows[0].count;
       } catch (error) {
         console.error(error);
+      }
+    },
+    async getReportesRecogidos() {
+      try {
+        let token = localStorage.getItem("token");
+        let id = undefined
+        console.log(id);
+        let response = await axios.get(
+          `http://localhost:3001/getReportsRecogidos/${id}`,
+          {
+            headers: { token },
+          }
+        );
+        this.reports = response.data.content;
+      } catch (error) {
+        console.log(error);
       }
     },
     async getTotalCategorias() {
