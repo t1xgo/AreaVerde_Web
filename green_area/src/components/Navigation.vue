@@ -107,24 +107,21 @@ export default {
     },
     async gotoInicio() {
       try {
-          this.$router.push("/");
-        
+        this.$router.push("/");
       } catch (error) {
         console.log(error);
       }
     },
     async gotoLogin() {
       try {
-          this.$router.push("/login");
-        
+        this.$router.push("/login");
       } catch (error) {
         console.log(error);
       }
     },
     async gotoFeed() {
       try {
-          this.$router.push("/feed");
-        
+        this.$router.push("/feed");
       } catch (error) {
         console.log(error);
       }
