@@ -158,7 +158,7 @@
                 <v-data-table
                   caption="Segumiento"
                   :headers="headers"
-                  :items="statistics"
+                  :items="estadisticas"
                   :items-per-page="5"
                   class="elevation-1 px-10 py-5 my-10 mx-5"
                 >
@@ -424,6 +424,7 @@ export default {
     this.token = localStorage.getItem("token");
     this.cargarRecolectores();
     this.getReports();
+    this.calcularEstadisticas();
   },
   data() {
     return {
@@ -469,52 +470,34 @@ export default {
       ],
       headers: [
         {
-          text: "zona metropolitana",
+          text: "Reportes",
           align: "start",
           sortable: false,
           value: "name",
         },
-        { text: "Codigo verde", value: "Belen" },
-        { text: "Codigo Negro", value: "Laureles" },
-        { text: "Codigo blanco", value: "Poblado" },
+        { text: "Codigo Blanco", value: "sinaprobar" },
+        { text: "Codigo Verde", value: "pendientes" },
+        { text: "Codigo Negro", value: "recogidos" },
       ],
       //Table data
-      statistics: [
+      estadisticas: [
         {
-          name: "Belen",
-          Belen: 32,
-          Laureles: 15,
-          Poblado: 24,
+          name: "Sin aprobar",
+          sinaprobar: 0,
+          pendientes: 0,
+          recogidos: 0,
         },
         {
-          name: "Laureles",
-          Belen: 13,
-          Laureles: 28,
-          Poblado: 37,
+          name: "Pendientes",
+          sinaprobar: 0,
+          pendientes: 0,
+          recogidos: 0,
         },
         {
-          name: "Poblado",
-          Belen: 34,
-          Laureles: 16,
-          Poblado: 23,
-        },
-        {
-          name: "Prado",
-          Belen: 11,
-          Laureles: 3,
-          Poblado: 27,
-        },
-        {
-          name: "Santo Domingo Savio",
-          Belen: 36,
-          Laureles: 16,
-          Poblado: 19,
-        },
-        {
-          name: "San Joaquín",
-          Belen: 35,
-          Laureles: 25,
-          Poblado: 11,
+          name: "Recogidos",
+          sinaprobar: 0,
+          pendientes: 0,
+          recogidos: 0,
         },
       ],
     };
@@ -528,6 +511,55 @@ export default {
     reloadPage() {
       this.Cambiocategoria = "";
       window.location.reload();
+    },
+    async calcularEstadisticas() {
+      let estados = [0, 1, 2];
+      let categorias = [1, 2, 3];
+      try {
+        for (let i = 0; i < estados.length; i++) {
+          let estado = estados[i];
+          for (let j = 0; j < categorias.length; j++) {
+            let categoria = categorias[j];
+            let token = this.token;
+            let response = await axios.get(
+              `http://localhost:3001/estadisticasAdministrador/${estado}/${categoria}`,
+              {
+                headers: { token },
+              }
+            );
+            console.log(estado, categoria, response.data.content[0].count);
+            let valor = response.data.content[0].count;
+            if (i == 0) {
+              if (j == 0) {
+                this.estadisticas[0].sinaprobar = valor;
+              } else if (j == 1) {
+                this.estadisticas[0].pendientes = valor;
+              } else {
+                this.estadisticas[0].recogidos = valor;
+              }
+            } else if (i == 1) {
+              if (j == 0) {
+                this.estadisticas[1].sinaprobar = valor;
+              } else if (j == 1) {
+                this.estadisticas[1].pendientes = valor;
+              } else {
+                this.estadisticas[1].recogidos = valor;
+              }
+            } else {
+              if (j == 0) {
+                this.estadisticas[2].sinaprobar = valor;
+              } else if (j == 1) {
+                this.estadisticas[2].pendientes = valor;
+              } else {
+                this.estadisticas[2].recogidos = valor;
+              }
+            }
+          }
+        }
+      } catch (error) {
+        this.reports = [];
+        console.error(error);
+      }
     },
     eliminarReporte(report) {
       Swal.fire({
