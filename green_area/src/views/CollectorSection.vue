@@ -16,15 +16,13 @@
           </v-col>
         </v-row>
 
-        <v-row align="center" justify="center" class="mx-3">
-          <v-col sm="6" cols="12" align="center" justify="center">
+        <v-row class="mx-3">
+          <v-col sm="6" cols="12">
             <v-card class="rounded-lg">
               <div class="sul-box-raised-1 with-hover">
                 <v-card-text class="d-flex justify-space-between align-center">
                   <div><strong>Recogidos</strong> <br /></div>
                 </v-card-text>
-                <v-card-actions class="d-flex justify-space-between">
-                </v-card-actions>
               </div>
             </v-card>
 
@@ -39,10 +37,10 @@
                       :key="index"
                     >
                       <v-card
-                        class=" rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl cardcont codneg text-center "
+                        class=" rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl cardcont codneg text-center"
                         shaped
                       >
-                        <div class="sul-box-inset-1 with-hover py-7">
+                        <div class="sul-box-inset-1 with-hover py-15">
                           <v-img
                             :src="`${rutaimagen}${report.rutaimagen}`"
                             width="60%"
@@ -79,10 +77,6 @@
                             </v-col>
                             <br />
                           </v-row>
-
-                          <v-btn color="green" class=" mt-6 modalButton" tile>
-                            Cambiar estado
-                          </v-btn>
                         </div>
                       </v-card>
                     </div>
@@ -98,13 +92,11 @@
                 <v-card-text class="d-flex justify-space-between align-center">
                   <div><strong>No Recogidos</strong> <br /></div>
                 </v-card-text>
-                <v-card-actions class="d-flex justify-space-between">
-                </v-card-actions>
               </div>
             </v-card>
             <v-row>
               <v-col sm="12" cols="12">
-                <v-row align="center" justify="center">
+                <v-row>
                   <v-col>
                     <div
                       id="reportesNoRecogidos"
@@ -116,7 +108,7 @@
                         class=" rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl cardcont codneg text-center "
                         shaped
                       >
-                        <div class="sul-box-inset-1 with-hover py-7">
+                        <div class="sul-box-inset-1 with-hover py-8">
                           <v-img
                             :src="`${rutaimagen}${report.rutaimagen}`"
                             width="60%"

@@ -62,34 +62,24 @@
     <nav>
       <v-navigation-drawer v-model="drawer" color="#ebecf0" app>
         <div class="sul-box-raised-2 with-hover">
-          <v-img
-            height="140"
-            class="pa-4"
-            src="https://preview.pixlr.com/images/800wm/1439/2/1439104804.jpg"
-          >
-            <div class="text-center">
-              <v-avatar class="mb-4" color="grey darken-1" size="64">
-                <v-img aspect-ratio="30" src="@/assets/img/logo.png" />
-              </v-avatar>
-              <h2 class="white--text">Area verde</h2>
-            </div>
-          </v-img>
           <v-divider></v-divider>
           <v-list>
-            <v-list-item
-              v-for="[icon, text] in links"
-              :key="icon"
-              link
-              @click="goBack(icon)"
-            >
-              <v-list-item-icon>
-                <v-icon>{{ icon }}</v-icon>
-              </v-list-item-icon>
+            <v-col cols="12" sm="12" justify="center" align-self="center">
+              <v-list-item
+                v-for="[icon, text] in links"
+                :key="icon"
+                link
+                @click="goBack(icon)"
+              >
+                <v-list-item-icon>
+                  <v-icon>{{ icon }}</v-icon>
+                </v-list-item-icon>
 
-              <v-list-item-content>
-                <v-list-item-title>{{ text }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>{{ text }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-col>
           </v-list>
         </div>
       </v-navigation-drawer>
@@ -168,7 +158,7 @@
                 <v-data-table
                   caption="Segumiento"
                   :headers="headers"
-                  :items="statistics"
+                  :items="estadisticas"
                   :items-per-page="5"
                   class="elevation-1 px-10 py-5 my-10 mx-5"
                 >
@@ -205,49 +195,54 @@
                         lazy-validation
                       >
                         <v-text-field
-                          :rules="rules"
+                          :rules="rules.doc"
                           class="sul-text-field mb-5"
                           label="Documento de identificación"
                           v-model="documento"
                           color="green"
                           autocomplete="false"
+                          required
                         >
                         </v-text-field>
                         <v-text-field
-                          :rules="rules"
+                          :rules="rules.texto"
                           class="sul-text-field mb-5"
                           label="Nombre"
                           v-model="nombre"
                           color="green"
                           autocomplete="false"
+                          required
                         >
                         </v-text-field>
                         <v-text-field
-                          :rules="rules"
+                          :rules="rules.celular"
                           class="sul-text-field mb-5"
                           label="Celular"
                           v-model="celular"
                           color="green"
                           autocomplete="false"
+                          required
                         >
                         </v-text-field>
                         <v-text-field
-                          :rules="emailRules"
+                          :rules="rules.emailRules"
                           class="sul-text-field mb-5"
                           label="Correo"
                           v-model="correo"
                           color="green"
                           autocomplete="false"
+                          required
                         >
                         </v-text-field>
                         <v-select
-                          :rules="rules"
+                          :rules="rules.required"
                           class="sul-select"
                           v-model="categoria"
                           :items="categorias"
                           label="Tipo"
                           outlined
                           color="green"
+                          required
                         ></v-select>
 
                         <br />
@@ -420,21 +415,37 @@ export default {
   celular: "",
   correo: "",
   categoria: "",
-  rules: {
-    required: [(v) => !!v || "El campo es obligatorio"],
-    min: (v) => v.length >= 8 || "Min 8 characters",
-    emailRules: [
-      (v) => !!v || "El campo es obligatorio",
-      (v) => /.+@.+\..+/.test(v) || "Correo invalido",
-    ],
-  },
+
   beforeMount() {
     this.token = localStorage.getItem("token");
     this.cargarRecolectores();
     this.getReports();
+    this.calcularEstadisticas();
   },
   data() {
     return {
+      rules: {
+        required: [(v) => !!v || "El campo es obligatorio"],
+        min: (v) => v.length >= 8 || "Min 8 characters",
+        emailRules: [
+          (v) => !!v || "El campo es obligatorio",
+          (v) => /.+@.+\..+/.test(v) || "Correo invalido",
+        ],
+        doc: [
+          (v) => !!v || "El campo es obligatorio",
+          (v) => /[0-9+]/.test(v) || "Ingrese solo numeros",
+          (v) => v.length <= 20 || "Max 20 caracteres",
+        ],
+        texto: [
+          (v) => !!v || "El campo es obligatorio",
+          (v) => /[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(v) || "Ingrese solo letras",
+        ],
+        celular: [
+          (v) => !!v || "El campo es obligatorio",
+          (v) => /[0-9+]/.test(v) || "Ingrese solo numeros",
+          (v) => v.length == 10 || "Debe ingresar 10 caracteres",
+        ],
+      },
       //steps that are used to manage the windows
       step: 1,
       //Path static de imagenes
@@ -444,11 +455,7 @@ export default {
       showingReportsModal: false,
       showingTestModal: false,
       //SideBar links
-      links: [
-        ["mdi-microsoft-windows", "Tablero"],
-        ["mdi-account", "Perfil"],
-        ["mdi-clipboard-list-outline", "Estadísticas"],
-      ],
+      links: [["mdi-microsoft-windows", "Tablero"]],
       //....................................................................
       categorias: ["Reciclable", "Organico", "No reciclable"],
       reports: [],
@@ -481,52 +488,34 @@ export default {
       ],
       headers: [
         {
-          text: "zona metropolitana",
+          text: "Reportes",
           align: "start",
           sortable: false,
           value: "name",
         },
-        { text: "Codigo verde", value: "Belen" },
-        { text: "Codigo Negro", value: "Laureles" },
-        { text: "Codigo blanco", value: "Poblado" },
+        { text: "Codigo Blanco", value: "sinaprobar" },
+        { text: "Codigo Verde", value: "pendientes" },
+        { text: "Codigo Negro", value: "recogidos" },
       ],
       //Table data
-      statistics: [
+      estadisticas: [
         {
-          name: "Belen",
-          Belen: 32,
-          Laureles: 15,
-          Poblado: 24,
+          name: "Sin aprobar",
+          sinaprobar: 0,
+          pendientes: 0,
+          recogidos: 0,
         },
         {
-          name: "Laureles",
-          Belen: 13,
-          Laureles: 28,
-          Poblado: 37,
+          name: "Pendientes",
+          sinaprobar: 0,
+          pendientes: 0,
+          recogidos: 0,
         },
         {
-          name: "Poblado",
-          Belen: 34,
-          Laureles: 16,
-          Poblado: 23,
-        },
-        {
-          name: "Prado",
-          Belen: 11,
-          Laureles: 3,
-          Poblado: 27,
-        },
-        {
-          name: "Santo Domingo Savio",
-          Belen: 36,
-          Laureles: 16,
-          Poblado: 19,
-        },
-        {
-          name: "San Joaquín",
-          Belen: 35,
-          Laureles: 25,
-          Poblado: 11,
+          name: "Recogidos",
+          sinaprobar: 0,
+          pendientes: 0,
+          recogidos: 0,
         },
       ],
     };
@@ -540,6 +529,54 @@ export default {
     reloadPage() {
       this.Cambiocategoria = "";
       window.location.reload();
+    },
+    async calcularEstadisticas() {
+      let estados = [0, 1, 2];
+      let categorias = [1, 2, 3];
+      try {
+        for (let i = 0; i < estados.length; i++) {
+          let estado = estados[i];
+          for (let j = 0; j < categorias.length; j++) {
+            let categoria = categorias[j];
+            let token = this.token;
+            let response = await axios.get(
+              `http://localhost:3001/estadisticasAdministrador/${estado}/${categoria}`,
+              {
+                headers: { token },
+              }
+            );
+            let valor = response.data.content[0].count;
+            if (i == 0) {
+              if (j == 0) {
+                this.estadisticas[0].sinaprobar = valor;
+              } else if (j == 1) {
+                this.estadisticas[0].pendientes = valor;
+              } else {
+                this.estadisticas[0].recogidos = valor;
+              }
+            } else if (i == 1) {
+              if (j == 0) {
+                this.estadisticas[1].sinaprobar = valor;
+              } else if (j == 1) {
+                this.estadisticas[1].pendientes = valor;
+              } else {
+                this.estadisticas[1].recogidos = valor;
+              }
+            } else {
+              if (j == 0) {
+                this.estadisticas[2].sinaprobar = valor;
+              } else if (j == 1) {
+                this.estadisticas[2].pendientes = valor;
+              } else {
+                this.estadisticas[2].recogidos = valor;
+              }
+            }
+          }
+        }
+      } catch (error) {
+        this.reports = [];
+        console.error(error);
+      }
     },
     eliminarReporte(report) {
       Swal.fire({
@@ -728,29 +765,51 @@ export default {
       }
     },
     async crearRecolecor() {
-      let tipo;
-      if (this.categoria == "Reciclable") {
-        tipo = 1;
-      } else if (this.categoria == "Organico") {
-        tipo = 2;
-      } else if (this.categoria == "No reciclable") {
-        tipo = 3;
-      }
-      let recolector = {
-        nombre: this.nombre,
-        cedula: this.documento,
-        celular: this.celular,
-        correo: this.correo,
-        id_categoriarecolector: tipo,
-      };
-      let token = this.token;
-      try {
-        await axios.post("http://localhost:3001/postrecolectores", recolector, {
-          headers: { token },
+      if (this.$refs.formReport.validate()) {
+        let tipo;
+        if (this.categoria == "Reciclable") {
+          tipo = 1;
+        } else if (this.categoria == "Organico") {
+          tipo = 2;
+        } else if (this.categoria == "No reciclable") {
+          tipo = 3;
+        }
+        let recolector = {
+          nombre: this.nombre,
+          cedula: this.documento,
+          celular: this.celular,
+          correo: this.correo,
+          id_categoriarecolector: tipo,
+        };
+        let token = this.token;
+        try {
+          await axios.post(
+            "http://localhost:3001/postrecolectores",
+            recolector,
+            {
+              headers: { token },
+            }
+          );
+          Swal.fire({
+            icon: "success",
+            title: "Ok...",
+            text: "Categoria actualizada",
+          });
+          this.reloadPage();
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Diligencie correctamente el formulario",
+          });
+          console.log(error);
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Ups...",
+          text: "Diligencie correctamente el formulario",
         });
-        this.reloadPage();
-      } catch (error) {
-        console.log(error);
       }
     },
   },
