@@ -146,7 +146,9 @@
                             <br />
                           </v-row>
 
-                          <v-btn color="green" class="mt-6 modalButton" tile>
+                          <v-btn color="green" class="mt-6 modalButton" 
+                          @click="putEstado(report)"
+                          tile>
                             Cambiar estado
                           </v-btn>
                         </div>
@@ -166,11 +168,13 @@
 
 <script>
 import Sidebar from "../components/Sidebar.vue";
+import Swal from "sweetalert2/src/sweetalert2.js";
 import axios from "axios";
 export default {
   components: {
     Sidebar,
   },
+    token: "",
   name: "Dashboard",
   data() {
     return {
@@ -193,8 +197,10 @@ export default {
     };
   },
   beforeMount() {
+    this.token = localStorage.getItem("token");
+    console.log(this.token);
     let id = localStorage.getItem("user-id");
-    console.log("ESTE ES EL ID",id);
+    console.log("ESTE ES EL ID", id);
     this.getReportesPendientes();
     this.getReportesRecogidos();
     console.log("ACAAAAAAA");
@@ -206,36 +212,48 @@ export default {
     getUserLogeado() {
       this.id = localStorage.getItem("user-id");
     },
-    async loadCategorias(id_categoria) {
-      if (id_categoria == 1) {
-        id_categoria = "Reciclable";
-      } else if (id_categoria == 2) {
-        id_categoria = "Organicos";
-      } else if (id_categoria == 3) {
-        id_categoria = "No reciclables";
-      }
-    },
-    async getReportesPendientes()
-    {
+    async getReportesPendientes() {
       try {
-        let token = localStorage.getItem("token");
+        let token = this.token;
         let id = localStorage.getItem("user-id");
-        let response = await axios.get(`http://localhost:3001/getReportsPendientes/${id}`, {
-          headers: { token },
-        });
+        let response = await axios.get(
+          `http://localhost:3001/getReportsPendientes/${id}`,
+          {
+            headers: { token },
+          }
+        );
         console.log(response);
         this.reportsNorecogidos = response.data.content;
       } catch (error) {
         console.log(error);
       }
     },
-    async getReportesRecogidos() {
+    async putEstado(report) {
       try {
-        let token = localStorage.getItem("token");
-        let id = localStorage.getItem("user-id");
-        let response = await axios.get(`http://localhost:3001/getReportsRecogidos/${id}`, {
+        let token = this.token;
+        await axios.put("http://localhost:3001/cambiarEstado", report, {
           headers: { token },
         });
+        Swal.fire({
+          icon: "success",
+          title: "Ok...",
+          text: "Reporte actualizado",
+        });
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getReportesRecogidos() {
+      try {
+        let token = this.token;
+        let id = localStorage.getItem("user-id");
+        let response = await axios.get(
+          `http://localhost:3001/getReportsRecogidos/${id}`,
+          {
+            headers: { token },
+          }
+        );
         this.reports = response.data.content;
       } catch (error) {
         console.log(error);
