@@ -40,7 +40,7 @@
                         class=" rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl cardcont codneg text-center"
                         shaped
                       >
-                        <div class="sul-box-inset-1 with-hover py-7">
+                        <div class="sul-box-inset-1 with-hover py-15">
                           <v-img
                             :src="`${rutaimagen}${report.rutaimagen}`"
                             width="60%"
@@ -108,7 +108,7 @@
                         class=" rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl cardcont codneg text-center "
                         shaped
                       >
-                        <div class="sul-box-inset-1 with-hover py-7">
+                        <div class="sul-box-inset-1 with-hover py-8">
                           <v-img
                             :src="`${rutaimagen}${report.rutaimagen}`"
                             width="60%"
