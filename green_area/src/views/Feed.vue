@@ -104,10 +104,6 @@
                       {{ report.ubicacion }}
                       <br />
                       <br />
-                      <strong> Estado: </strong>
-                      {{ report.estado }}
-                      <br />
-                      <br />
                       <strong> Categoria: </strong>
                       {{ report.categoria }}
                     </h4>
