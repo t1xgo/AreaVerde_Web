@@ -44,7 +44,7 @@
                             :class="{ 'zoom-efect': hover }"
                           ></v-img>
                           <h1 class="font-weight-regular">
-                            {{ feature.total }}
+                            Total: {{ feature.total }}
                           </h1>
                           <h3 class="font-weight-regular">
                             Recogidos: {{ feature.recogidos }}
