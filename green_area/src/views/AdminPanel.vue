@@ -430,7 +430,7 @@ export default {
         min: (v) => v.length >= 8 || "Min 8 characters",
         emailRules: [
           (v) => !!v || "El campo es obligatorio",
-          (v) => /.+@.+\..+/.test(v) || "Correo invalido",
+          (v) => /[a-zA-Z0-9.]+@.+(..{2,3}){1,2}/.test(v) || "Correo invalido",
         ],
         doc: [
           (v) => !!v || "El campo es obligatorio",

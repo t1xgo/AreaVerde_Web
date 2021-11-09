@@ -52,21 +52,6 @@
                             type="password"
                           >
                           </v-text-field>
-                          <v-row>
-                            <v-col cols="12" sm="7">
-                              <v-checkbox
-                                label="Remember me"
-                                class="mt-n1"
-                                color="green"
-                              >
-                              </v-checkbox>
-                            </v-col>
-                            <v-col cols="12" sm="5">
-                              <span class="caption green--text">
-                                Forgot password?
-                              </span>
-                            </v-col>
-                          </v-row>
 
                           <v-btn
                             color="green"
@@ -152,10 +137,10 @@
                           </v-text-field>
 
                           <v-text-field
-                            label="ID"
+                            label="Documento Identificación"
                             outlined
                             v-model="usuario.cedula"
-                            :rules="rules.required"
+                            :rules="rules.doc"
                             dense
                             color="green"
                             autocomplete="false"
@@ -168,7 +153,7 @@
                             outlined
                             v-model="usuario.celular"
                             dense
-                            :rules="rules.required"
+                            :rules="rules.celular"
                             color="green"
                             autocomplete="false"
                             class="mt-4"
@@ -180,7 +165,7 @@
                             outlined
                             v-model="usuario.correo"
                             dense
-                            :rules="rules.required"
+                            :rules="rules.emailRules"
                             color="green"
                             autocomplete="false"
                             class="mt-4"
@@ -229,6 +214,7 @@
                                   v-model="usuario.fechanacimiento"
                                   label="Fecha de cumpleaños"
                                   prepend-icon="mdi-calendar"
+                                  :rules="rules.required"
                                   readonly
                                   v-bind="attrs"
                                   v-on="on"
@@ -252,12 +238,16 @@
                           </div>
                         </template>
                         <v-row>
+                          <v-col cols="12" sm="7"> </v-col>
                           <v-col cols="12" sm="7">
-                          </v-col>
-                          <v-col cols="12" sm="5">
-                            <span class="caption green--text ml-n4">
-                              Términos & Condiciones
-                            </span>
+                            <v-checkbox
+                              required="required"
+                              class="mt-n1"
+                              color="green"
+                              v-model="checkbox"
+                              :label="`Términos y condiciones:`"
+                            >
+                            </v-checkbox>
                           </v-col>
                         </v-row>
                         <v-btn
@@ -269,20 +259,6 @@
                         >
                           Registrarse
                         </v-btn>
-                        <h5 class="text-center grey--text mt-4 mb-3">
-                          O realiza el registro usando:
-                          <br />
-                          <div
-                            class="
-                              d-flex
-                              justify-space-between
-                              align-center
-                              mx-10
-                              mb-11
-                            "
-                          >
-                          </div>
-                        </h5>
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -299,12 +275,14 @@
 <script>
 import Navbar from "../components/Navigation.vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   components: {
     Navbar,
   },
   dialogError: false,
   data: () => ({
+    checkbox: false,
     activePicker: null,
     menu: false,
     step: 1,
@@ -319,10 +297,20 @@ export default {
     },
     rules: {
       required: [(v) => !!v || "El campo es obligatorio"],
-      min: (v) => v.length >= 8 || "Min 8 characters",
+      min: [(v) => v.length >= 8 || "Min 8 characters"],
       emailRules: [
         (v) => !!v || "El campo es obligatorio",
-        (v) => /.+@.+\..+/.test(v) || "Correo invalido",
+        (v) => /^[a-zA-Z0-9.]+@.+(..{2,3}){1,2}$/.test(v) || "Correo invalido",
+      ],
+      celular: [
+        (v) => !!v || "El campo es obligatorio",
+        (v) => /[0-9+]/.test(v) || "Ingrese solo numeros",
+        (v) => v.length == 10 || "Debe ingresar 10 caracteres",
+      ],
+      doc: [
+        (v) => !!v || "El campo es obligatorio",
+        (v) => /[0-9+]/.test(v) || "Ingrese solo numeros",
+        (v) => v.length <= 20 || "Max 20 caracteres",
       ],
     },
   }),
@@ -337,39 +325,46 @@ export default {
     },
     async crearUsuario() {
       if (this.$refs.formRegistro.validate()) {
-        this.dialogError = false;
         try {
-          console.log("Inicio guardar usuario");
-          let usuario = Object.assign({}, this.usuario);
-          console.log(usuario);
-          let response = await axios.post(
-            "http://localhost:3001/personaCreate",
-            usuario
-          );
-          localStorage.setItem("user-id", usuario.content.id);
-          let resp = response.data;
-          if (resp.ok == true) {
-            localStorage.setItem("user-id", usuario.content.id);
-            let token = usuario.content.token;
-            localStorage.setItem("token",token);
-            this.$router.push("/user");
+          if (this.checkbox == true) {
+            console.log(this.checkbox);
+            console.log("Inicio guardar usuario");
+            let usuario = Object.assign({}, this.usuario);
+            console.log(usuario);
+            let response = await axios.post(
+              "http://localhost:3001/personaCreate",
+              usuario
+            );
+            let resp = response.data;
+            if (resp.ok == true) {
+              localStorage.setItem("user-id", resp.content.id);
+              let token = resp.content.token;
+              localStorage.setItem("token", token);
+              this.$router.push("/user");
+            }
           } else {
-            this.dialogError = true;
+            Swal.fire({
+              icon: "error",
+              title: "Ups...",
+              text: "El checkbox es obligatorio",
+            });
           }
         } catch (error) {
           this.dialogError = true;
           console.log(error);
         }
       } else {
-        this.dialogError = true;
-        console.log("Formato incompleto");
+        Swal.fire({
+          icon: "error",
+          title: "Ups...",
+          text: "Diligencie correctamente el formulario",
+        });
       }
     },
     async ingreso() {
       try {
         if (this.$refs.formLogin.validate()) {
           this.dialogError = false;
-          console.log(this.usuario);
           let response = await axios.post(
             "http://localhost:3001/login",
             this.usuario
@@ -381,19 +376,23 @@ export default {
             localStorage.setItem("user-in", rol);
             localStorage.setItem("user-id", id);
             let token = usuario.content.token;
-            localStorage.setItem("token",token);
+            localStorage.setItem("token", token);
             if (rol == 0) {
               this.$router.push("/admin");
             } else if (rol == 1) {
               this.$router.push("/collector");
-            } else { 
+            } else {
               this.$router.push("/user");
             }
           } else {
             this.dialogError = true;
           }
         } else {
-          console.log("Formato incompleto");
+          Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Diligencie correctamente el formulario",
+          });
         }
       } catch (error) {
         this.dialogError = true;

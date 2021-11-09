@@ -171,14 +171,8 @@ export default {
     },
     async getReportesRecogidos() {
       try {
-        let token = localStorage.getItem("token");
-        let id = undefined;
         let response = await axios.get(
-          `http://localhost:3001/getReportsRecogidos/${id}`,
-          {
-            headers: { token },
-          }
-        );
+          `http://localhost:3001/getReportsRecogidos`);
         this.reports = response.data.content;
       } catch (error) {
         console.log(error);
