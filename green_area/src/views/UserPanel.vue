@@ -60,8 +60,14 @@
                           label="Categoría"
                           color="green"
                           outlined
+                          @change="indicarImpacto(report.id_categoria)"
                           class="sul-select"
                         ></v-select>
+                        <div>
+                          <h2>
+                            <strong> {{ impacto }} </strong>
+                          </h2>
+                        </div>
 
                         <v-btn
                           color="green"
@@ -186,6 +192,7 @@ export default {
   name: "Dashboard",
   data() {
     return {
+      impacto: "",
       dialogError: false,
       //Data spinner categorías
       categoria: ["Reciclable", "Organicos", "No reciclables"],
@@ -218,6 +225,15 @@ export default {
   },
 
   methods: {
+    indicarImpacto(categoria) {
+      if (categoria == "Organicos") {
+        this.impacto = "Impacto moderado";
+      } else if (categoria == "Reciclable") {
+        this.impacto = "Impacto Medio";
+      } else if (categoria == "No reciclables") {
+        this.impacto = "Alto impacto";
+      }
+    },
     cleanCampos() {
       (this.report.descripcion = ""),
         (this.report.ubicacion = ""),
@@ -316,7 +332,7 @@ export default {
             text: error,
           });
         }
-      }else{
+      } else {
         Swal.fire({
           icon: "error",
           title: "Ups...",
