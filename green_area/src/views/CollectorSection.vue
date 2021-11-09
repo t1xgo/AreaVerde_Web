@@ -72,7 +72,7 @@
                                 <br />
                                 <br />
                                 <strong> Categoria: </strong>
-                                {{ report.id_categoria }}
+                                {{ report.categoria }}
                               </h4>
                             </v-col>
                             <br />

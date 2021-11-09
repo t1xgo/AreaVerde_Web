@@ -64,61 +64,56 @@
     <v-row class="mx-10 mt-10">
       <v-col sm="12" cols="12">
         <v-col align="center" justify="center">
-          <div
-            class="my-5 py-5"
-            v-for="report in reports"
-            :key="report.id_reporte"
-          >
-            <v-card
-              color="#ebecf0"
-              class="
-                mx-12
-                rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                mt-n15
-                cardcont
-                codneg
-                text-center
-                my-5
-              "
-              shaped
-            >
-            <div class="sul-box-inset-1 with-hover py-10">
-                <v-img
-                  :src="`${pathImg}${report.rutaimagen}`"
-                  width="60%"
-                  class="ml-auto mr-auto"
-                ></v-img>
+           <div
+                      id="reportesRecogidos"
+                      class="my-5 py-5"
+                      v-for="(report, index) in reports"
+                      :key="index"
+                    >
+                      <v-card
+                        class=" rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl cardcont codneg text-center"
+                        shaped
+                      >
+                        <div class="sul-box-inset-1 with-hover py-15">
+                          <v-img
+                            :src="`${rutaimagen}${report.rutaimagen}`"
+                            width="60%"
+                            max-height="50%"
+                            class="ml-auto mr-auto py-5"
+                          ></v-img>
 
-                <v-row align="center" justify="center" class="mt-5">
-                  <v-col
-                    cols="12"
-                    sm="12"
-                    class="text-center px-auto"
-                    align="center"
-                    justify="center"
-                  >
-                    <h4 class="font-weight-regular subtitle-1 px-10 mb-10">
-                      <strong> Descripción: </strong>
-                      {{ report.descripcion }}
-                      <br />
-                      <br />
-                      <strong> Ubicación: </strong>
-                      {{ report.ubicacion }}
-                      <br />
-                      <br />
-                      <strong> Estado: </strong>
-                      {{ report.estado }}
-                      <br />
-                      <br />
-                      <strong> Tipo: </strong>
-                      {{ report.categoria }}
-                    </h4>
-                  </v-col>
-                  <br />
-                </v-row>
-              </div>
-            </v-card>
-          </div>
+                          <v-row align="center" justify="center" class="mt-5">
+                            <v-col
+                              cols="12"
+                              sm="8"
+                              class="text-center"
+                              align="center"
+                              justify="center"
+                            >
+                              <h4
+                                class="font-weight-regular subtitle-1 text-center"
+                              >
+                                <strong> Descripción: </strong>
+                                {{ report.descripcion }}
+                                <br />
+                                <br />
+                                <strong> Ubicación: </strong>
+                                {{ report.ubicacion }}
+                                <br />
+                                <br />
+                                <strong> Estado: </strong>
+                                {{ report.estado }}
+                                <br />
+                                <br />
+                                <strong> Categoria: </strong>
+                                {{ report.categoria }}
+                              </h4>
+                            </v-col>
+                            <br />
+                          </v-row>
+                        </div>
+                      </v-card>
+                    </div>
         </v-col>
       </v-col>
     </v-row>
@@ -140,8 +135,7 @@ export default {
     return {
       rutaimagen: "http://localhost:3001/public/static/",
       totalReportes: "",
-      reports: [
-      ],
+      reports: [],
       dialog: false,
       estadisticas: [
         {
@@ -178,8 +172,7 @@ export default {
     async getReportesRecogidos() {
       try {
         let token = localStorage.getItem("token");
-        let id = undefined
-        console.log(id);
+        let id = undefined;
         let response = await axios.get(
           `http://localhost:3001/getReportsRecogidos/${id}`,
           {
@@ -216,11 +209,11 @@ export default {
             headers: { token },
           });
           let valor = response.data.content.rows[0].count;
-          console.log(valor)
-          let porcentaje = 0
-          if(valor != 0){
-          porcentaje = (valor * 100) / this.estadisticas[i].total;
-          porcentaje = porcentaje.toFixed(2);
+          console.log(valor);
+          let porcentaje = 0;
+          if (valor != 0) {
+            porcentaje = (valor * 100) / this.estadisticas[i].total;
+            porcentaje = porcentaje.toFixed(2);
           }
           this.estadisticas[i].recogidos = `${porcentaje}%`;
         } catch (error) {
