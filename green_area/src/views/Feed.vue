@@ -64,56 +64,59 @@
     <v-row class="mx-10 mt-10">
       <v-col sm="12" cols="12">
         <v-col align="center" justify="center">
-           <div
-                      id="reportesRecogidos"
-                      class="my-5 py-5"
-                      v-for="(report, index) in reports"
-                      :key="index"
-                    >
-                      <v-card
-                        class=" rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl cardcont codneg text-center"
-                        shaped
-                      >
-                        <div class="sul-box-inset-1 with-hover py-15">
-                          <v-img
-                            :src="`${rutaimagen}${report.rutaimagen}`"
-                            width="60%"
-                            max-height="50%"
-                            class="ml-auto mr-auto py-5"
-                          ></v-img>
+          <div
+            id="reportesRecogidos"
+            class="my-5 py-5"
+            v-for="(report, index) in reports"
+            :key="index"
+          >
+            <v-card
+              class="
+                rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
+                cardcont
+                codneg
+                text-center
+              "
+              shaped
+            >
+              <div class="sul-box-inset-1 with-hover py-15">
+                <v-img
+                  :src="`${rutaimagen}${report.rutaimagen}`"
+                  width="60%"
+                  max-height="50%"
+                  class="ml-auto mr-auto py-5"
+                ></v-img>
 
-                          <v-row align="center" justify="center" class="mt-5">
-                            <v-col
-                              cols="12"
-                              sm="8"
-                              class="text-center"
-                              align="center"
-                              justify="center"
-                            >
-                              <h4
-                                class="font-weight-regular subtitle-1 text-center"
-                              >
-                                <strong> Descripción: </strong>
-                                {{ report.descripcion }}
-                                <br />
-                                <br />
-                                <strong> Ubicación: </strong>
-                                {{ report.ubicacion }}
-                                <br />
-                                <br />
-                                <strong> Estado: </strong>
-                                {{ report.estado }}
-                                <br />
-                                <br />
-                                <strong> Categoria: </strong>
-                                {{ report.categoria }}
-                              </h4>
-                            </v-col>
-                            <br />
-                          </v-row>
-                        </div>
-                      </v-card>
-                    </div>
+                <v-row align="center" justify="center" class="mt-5">
+                  <v-col
+                    cols="12"
+                    sm="8"
+                    class="text-center"
+                    align="center"
+                    justify="center"
+                  >
+                    <h4 class="font-weight-regular subtitle-1 text-center">
+                      <strong> Descripción: </strong>
+                      {{ report.descripcion }}
+                      <br />
+                      <br />
+                      <strong> Ubicación: </strong>
+                      {{ report.ubicacion }}
+                      <br />
+                      <br />
+                      <strong> Estado: </strong>
+                      {{ report.estado }}
+                      <br />
+                      <br />
+                      <strong> Categoria: </strong>
+                      {{ report.categoria }}
+                    </h4>
+                  </v-col>
+                  <br />
+                </v-row>
+              </div>
+            </v-card>
+          </div>
         </v-col>
       </v-col>
     </v-row>
@@ -159,11 +162,8 @@ export default {
   methods: {
     async gettotalReportes() {
       try {
-        let token = localStorage.getItem("token");
         let url = `http://localhost:3001/totalreportes`;
-        let response = await axios.get(url, {
-          headers: { token },
-        });
+        let response = await axios.get(url);
         this.totalReportes = response.data.content.rows[0].count;
       } catch (error) {
         console.error(error);
@@ -188,11 +188,8 @@ export default {
       let categorias = [1, 2, 3];
       for (let i = 0; i < categorias.length; i++) {
         try {
-          let token = localStorage.getItem("token");
           let url = `http://localhost:3001/totalreportesCategoria/${categorias[i]}`;
-          let response = await axios.get(url, {
-            headers: { token },
-          });
+          let response = await axios.get(url);
           this.estadisticas[i].total = response.data.content.rows[0].count;
         } catch (error) {
           console.error(error);
@@ -203,11 +200,8 @@ export default {
       let categorias = [1, 2, 3];
       for (let i = 0; i < categorias.length; i++) {
         try {
-          let token = localStorage.getItem("token");
           let url = `http://localhost:3001/porcentajeCategoria/${categorias[i]}/`;
-          let response = await axios.get(url, {
-            headers: { token },
-          });
+          let response = await axios.get(url);
           let valor = response.data.content.rows[0].count;
           console.log(valor);
           let porcentaje = 0;
