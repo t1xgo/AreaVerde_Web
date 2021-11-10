@@ -179,9 +179,7 @@
                   v-if="this.dialogError == true"
                   :estadoDialog="true"
                   :tituloMensaje="'Error'"
-                  :mensaje="
-                    'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
-                  "
+                  :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
                 />
                 <v-row justify="center" align="center">
                   <v-col cols="12" sm="6">
@@ -311,7 +309,6 @@
           <v-col sm="12" cols="12">
             <v-row align="center" justify="center">
               <v-col align="center" justify="center">
-                
                 <div
                   class="my-5 py-5"
                   v-for="report in reports"
@@ -639,18 +636,27 @@ export default {
     async eliminar(report) {
       let token = this.token;
       try {
-        await axios.delete(
+        let response = await axios.delete(
           `http://localhost:3001/eliminarReporte/${report.id_reporte}`,
           {
             headers: { token },
           }
         );
-        Swal.fire({
-          icon: "success",
-          title: "Ok...",
-          text: "Reporte eliminado",
-        });
-        this.reloadPage();
+        if (response.data.ok == true) {
+          Swal.fire({
+            icon: "success",
+            title: "Ok...",
+            text: "Reporte eliminado",
+          });
+          this.reloadPage();
+          window.location.reload();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Error eliminando el reporte",
+          });
+        }
       } catch (error) {
         console.error(error);
       }
@@ -696,7 +702,7 @@ export default {
         }
         let token = this.token;
         try {
-          await axios.put(
+          let response = await axios.put(
             "http://localhost:3001/estadoAprobadoCategoria",
             report,
             {
@@ -704,12 +710,21 @@ export default {
             }
           );
           this.showingReportsModal = false;
-          Swal.fire({
-            icon: "success",
-            title: "Ok...",
-            text: "Reporte actualizado",
-          });
-          this.reloadPage();
+          if (response.data.ok == true) {
+            Swal.fire({
+              icon: "success",
+              title: "Ok...",
+              text: "Reporte actualizado",
+            });
+            this.reloadPage();
+            window.location.reload();
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Ups...",
+              text: "Error actualizando el reporte",
+            });
+          }
         } catch (error) {
           console.log(error);
         }
@@ -734,14 +749,29 @@ export default {
     async putEstado(report) {
       let token = this.token;
       try {
-        await axios.put("http://localhost:3001/estadoAprobado", report, {
-          headers: { token },
-        });
-        Swal.fire({
-          icon: "success",
-          title: "Ok...",
-          text: "Reporte actualizado",
-        });
+        let response = await axios.put(
+          "http://localhost:3001/estadoAprobado",
+          report,
+          {
+            headers: { token },
+          }
+        );
+        if (response.data.ok == true) {
+          Swal.fire({
+            icon: "success",
+            title: "Ok...",
+            text: "Reporte actualizado",
+          });
+          this.reloadPage();
+          window.location.reload();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Error actualizando el reporte",
+          });
+        }
+
         this.reloadPage();
       } catch (error) {
         console.log(error);
@@ -767,15 +797,28 @@ export default {
           recolector.id_categoriarecolector = 3;
         }
         try {
-          await axios.put("http://localhost:3001/putrecolectores", recolector, {
-            headers: { token },
-          });
-          Swal.fire({
-            icon: "success",
-            title: "Ok...",
-            text: "Categoria actualizada",
-          });
-          this.reloadPage();
+          let response = await axios.put(
+            "http://localhost:3001/putrecolectores",
+            recolector,
+            {
+              headers: { token },
+            }
+          );
+          if (response.data.ok == true) {
+            Swal.fire({
+              icon: "success",
+              title: "Ok...",
+              text: "Categoria actualizada",
+            });
+            this.reloadPage();
+            window.location.reload();
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Ups...",
+              text: "Error actualizando la categoria",
+            });
+          }
         } catch (error) {
           console.log(error);
         }
@@ -825,19 +868,28 @@ export default {
         };
         let token = this.token;
         try {
-          await axios.post(
+          let response = await axios.post(
             "http://localhost:3001/postrecolectores",
             recolector,
             {
               headers: { token },
             }
           );
-          Swal.fire({
-            icon: "success",
-            title: "Ok...",
-            text: "Categoria actualizada",
-          });
-          this.reloadPage();
+          if (response.data.ok == true) {
+            Swal.fire({
+              icon: "success",
+              title: "Ok...",
+              text: "Recolector creado",
+            });
+            this.reloadPage();
+            window.location.reload();
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Ups...",
+              text: "Error creando el recolector",
+            });
+          }
         } catch (error) {
           Swal.fire({
             icon: "error",
