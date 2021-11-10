@@ -311,6 +311,7 @@
           <v-col sm="12" cols="12">
             <v-row align="center" justify="center">
               <v-col align="center" justify="center">
+                
                 <div
                   class="my-5 py-5"
                   v-for="report in reports"
@@ -448,7 +449,7 @@ export default {
         min: (v) => v.length >= 8 || "Min 8 characters",
         emailRules: [
           (v) => !!v || "El campo es obligatorio",
-          (v) => /.+@.+\..+/.test(v) || "Correo invalido",
+          (v) => /[a-zA-Z0-9.]+@.+(..{2,3}){1,2}/.test(v) || "Correo invalido",
         ],
         doc: [
           (v) => !!v || "El campo es obligatorio",

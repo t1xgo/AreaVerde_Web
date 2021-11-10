@@ -237,6 +237,7 @@ export default {
   data() {
     return {
       step: 1,
+      impacto: "",
       dialogError: false,
       //Data spinner categorías
       categoria: ["Reciclable", "Organicos", "No reciclables"],
@@ -282,6 +283,15 @@ export default {
         this.step = 2;
       } else if (item == "mdi-format-line-weight") {
         this.step = 3;
+      }
+    },
+    indicarImpacto(categoria) {
+      if (categoria == "Organicos") {
+        this.impacto = "Impacto moderado";
+      } else if (categoria == "Reciclable") {
+        this.impacto = "Impacto Medio";
+      } else if (categoria == "No reciclables") {
+        this.impacto = "Alto impacto";
       }
     },
     cleanCampos() {
@@ -382,6 +392,12 @@ export default {
             text: error,
           });
         }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Ups...",
+          text: "Diligencie correctamente el formulario",
+        });
       }
     },
   },

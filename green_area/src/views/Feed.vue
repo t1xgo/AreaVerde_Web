@@ -44,7 +44,7 @@
                             :class="{ 'zoom-efect': hover }"
                           ></v-img>
                           <h1 class="font-weight-regular">
-                            {{ feature.total }}
+                            Total: {{ feature.total }}
                           </h1>
                           <h3 class="font-weight-regular">
                             Recogidos: {{ feature.recogidos }}
@@ -65,26 +65,23 @@
       <v-col sm="12" cols="12">
         <v-col align="center" justify="center">
           <div
+            id="reportesRecogidos"
             class="my-5 py-5"
-            v-for="report in reports"
-            :key="report.id_reporte"
+            v-for="(report, index) in reports"
+            :key="index"
           >
             <v-card
-              color="#ebecf0"
               class="
-                mx-12
                 rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
-                mt-n15
                 cardcont
                 codneg
                 text-center
-                my-5
               "
               shaped
             >
-              <div class="sul-box-inset-1 with-hover py-10">
+              <div class="sul-box-inset-1 with-hover py-15">
                 <v-img
-                  :src="`${pathImg}${report.rutaimagen}`"
+                  :src="`${rutaimagen}${report.rutaimagen}`"
                   width="60%"
                   class="ml-auto mr-auto"
                 ></v-img>
@@ -92,12 +89,12 @@
                 <v-row align="center" justify="center" class="mt-5">
                   <v-col
                     cols="12"
-                    sm="12"
-                    class="text-center px-auto"
+                    sm="8"
+                    class="text-center"
                     align="center"
                     justify="center"
                   >
-                    <h4 class="font-weight-regular subtitle-1 px-10 mb-10">
+                    <h4 class="font-weight-regular subtitle-1 text-center">
                       <strong> Descripción: </strong>
                       {{ report.descripcion }}
                       <br />
@@ -106,11 +103,7 @@
                       {{ report.ubicacion }}
                       <br />
                       <br />
-                      <strong> Estado: </strong>
-                      {{ report.estado }}
-                      <br />
-                      <br />
-                      <strong> Tipo: </strong>
+                      <strong> Categoria: </strong>
                       {{ report.categoria }}
                     </h4>
                   </v-col>
@@ -164,11 +157,8 @@ export default {
   methods: {
     async gettotalReportes() {
       try {
-        let token = localStorage.getItem("token");
         let url = `http://localhost:3001/totalreportes`;
-        let response = await axios.get(url, {
-          headers: { token },
-        });
+        let response = await axios.get(url);
         this.totalReportes = response.data.content.rows[0].count;
       } catch (error) {
         console.error(error);
@@ -176,15 +166,8 @@ export default {
     },
     async getReportesRecogidos() {
       try {
-        let token = localStorage.getItem("token");
-        let id = undefined;
-        console.log(id);
         let response = await axios.get(
-          `http://localhost:3001/getReportsRecogidos/${id}`,
-          {
-            headers: { token },
-          }
-        );
+          `http://localhost:3001/getReportsRecogidos`);
         this.reports = response.data.content;
       } catch (error) {
         console.log(error);
@@ -194,11 +177,8 @@ export default {
       let categorias = [1, 2, 3];
       for (let i = 0; i < categorias.length; i++) {
         try {
-          let token = localStorage.getItem("token");
           let url = `http://localhost:3001/totalreportesCategoria/${categorias[i]}`;
-          let response = await axios.get(url, {
-            headers: { token },
-          });
+          let response = await axios.get(url);
           this.estadisticas[i].total = response.data.content.rows[0].count;
         } catch (error) {
           console.error(error);
@@ -209,11 +189,8 @@ export default {
       let categorias = [1, 2, 3];
       for (let i = 0; i < categorias.length; i++) {
         try {
-          let token = localStorage.getItem("token");
           let url = `http://localhost:3001/porcentajeCategoria/${categorias[i]}/`;
-          let response = await axios.get(url, {
-            headers: { token },
-          });
+          let response = await axios.get(url);
           let valor = response.data.content.rows[0].count;
           console.log(valor);
           let porcentaje = 0;
