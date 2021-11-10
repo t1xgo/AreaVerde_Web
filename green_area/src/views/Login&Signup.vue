@@ -306,7 +306,7 @@ export default {
       ],
       texto: [
         (v) => !!v || "El campo es obligatorio",
-        (v) => /^[a-zA-ZñÑáéíóúÁÉÍÓÚ]*$/.test(v) || "Ingrese solo letras",
+        (v) => /^[a-zA-ZñÑáéíóú ÁÉÍÓÚ]*$/.test(v) || "Ingrese solo letras",
       ],
       celular: [
         (v) => !!v || "El campo es obligatorio",
