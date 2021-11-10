@@ -650,7 +650,6 @@ export default {
             text: "Reporte eliminado",
           });
           this.reloadPage();
-          window.location.reload();
         } else {
           Swal.fire({
             icon: "error",
@@ -718,7 +717,6 @@ export default {
               text: "Reporte actualizado",
             });
             this.reloadPage();
-            window.location.reload();
           } else {
             Swal.fire({
               icon: "error",
@@ -764,7 +762,6 @@ export default {
             text: "Reporte actualizado",
           });
           this.reloadPage();
-          window.location.reload();
         } else {
           Swal.fire({
             icon: "error",
@@ -812,7 +809,6 @@ export default {
               text: "Categoria actualizada",
             });
             this.reloadPage();
-            window.location.reload();
           } else {
             Swal.fire({
               icon: "error",
@@ -880,10 +876,9 @@ export default {
                 Swal.fire({
                   icon: "success",
                   title: "Ok...",
-                  text: "Recolector creado",
+                  text: "Recolector creado. El usuario y contraseña son el documento de identificación",
                 });
                 this.reloadPage();
-                window.location.reload();
               } else {
                 Swal.fire({
                   icon: "error",
