@@ -446,11 +446,11 @@ export default {
         min: (v) => v.length >= 8 || "Min 8 characters",
         emailRules: [
           (v) => !!v || "El campo es obligatorio",
-          (v) => /[a-zA-Z0-9.]+@.+(..{2,3}){1,2}/.test(v) || "Correo invalido",
+          (v) => /^[a-zA-Z0-9.]+@([a-z]|[A-Z]).+(..{2,3}){1,2}$/.test(v) || "Correo invalido",
         ],
         doc: [
           (v) => !!v || "El campo es obligatorio",
-          (v) => /[0-9+]/.test(v) || "Ingrese solo numeros",
+          (v) => /[0-9+]*/.test(v) || "Ingrese solo numeros",
           (v) => v.length <= 20 || "Max 20 caracteres",
         ],
         texto: [
@@ -459,7 +459,7 @@ export default {
         ],
         celular: [
           (v) => !!v || "El campo es obligatorio",
-          (v) => /[0-9+]/.test(v) || "Ingrese solo numeros",
+          (v) => /[0-9+]*/.test(v) || "Ingrese solo numeros",
           (v) => v.length == 10 || "Debe ingresar 10 caracteres",
         ],
       },
