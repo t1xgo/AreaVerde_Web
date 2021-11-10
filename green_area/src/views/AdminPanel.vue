@@ -851,68 +851,60 @@ export default {
       }
     },
     async crearRecolecor() {
-      const regexNumeros = /^[0-9]*$/;
-      const regexTexto = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ]*$/;
-      const documento = regexNumeros.test(this.documento);
-      const celular = regexNumeros.test(this.celular);
-      const nombre = regexTexto.test(this.nombre);
-      console.log("doc", documento);
-      console.log("cel",celular);
-      console.log("nom",nombre);
       if (this.$refs.formReport.validate()) {
-        //     let tipo;
-        //     if (this.categoria == "Reciclable") {
-        //       tipo = 1;
-        //     } else if (this.categoria == "Organico") {
-        //       tipo = 2;
-        //     } else if (this.categoria == "No reciclable") {
-        //       tipo = 3;
-        //     }
-        //     let recolector = {
-        //       nombre: this.nombre,
-        //       cedula: this.documento,
-        //       celular: this.celular,
-        //       correo: this.correo,
-        //       id_categoriarecolector: tipo,
-        //     };
-        //     let token = this.token;
-        //     try {
-        //       let response = await axios.post(
-        //         "http://localhost:3001/postrecolectores",
-        //         recolector,
-        //         {
-        //           headers: { token },
-        //         }
-        //       );
-        //       if (response.data.ok == true) {
-        //         Swal.fire({
-        //           icon: "success",
-        //           title: "Ok...",
-        //           text: "Recolector creado",
-        //         });
-        //         this.reloadPage();
-        //         window.location.reload();
-        //       } else {
-        //         Swal.fire({
-        //           icon: "error",
-        //           title: "Ups...",
-        //           text: "Error creando el recolector",
-        //         });
-        //       }
-        //     } catch (error) {
-        //       Swal.fire({
-        //         icon: "error",
-        //         title: "Ups...",
-        //         text: "Diligencie correctamente el formulario",
-        //       });
-        //       console.log(error);
-        //     }
-        //   } else {
-        //     Swal.fire({
-        //       icon: "error",
-        //       title: "Ups...",
-        //       text: "Diligencie correctamente el formulario",
-        //     });
+            let tipo;
+            if (this.categoria == "Reciclable") {
+              tipo = 1;
+            } else if (this.categoria == "Organico") {
+              tipo = 2;
+            } else if (this.categoria == "No reciclable") {
+              tipo = 3;
+            }
+            let recolector = {
+              nombre: this.nombre,
+              cedula: this.documento,
+              celular: this.celular,
+              correo: this.correo,
+              id_categoriarecolector: tipo,
+            };
+            let token = this.token;
+            try {
+              let response = await axios.post(
+                "http://localhost:3001/postrecolectores",
+                recolector,
+                {
+                  headers: { token },
+                }
+              );
+              if (response.data.ok == true) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Ok...",
+                  text: "Recolector creado",
+                });
+                this.reloadPage();
+                window.location.reload();
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Ups...",
+                  text: "Error creando el recolector",
+                });
+              }
+            } catch (error) {
+              Swal.fire({
+                icon: "error",
+                title: "Ups...",
+                text: "Diligencie correctamente el formulario",
+              });
+              console.log(error);
+            }
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Ups...",
+              text: "Diligencie correctamente el formulario",
+            });
       }
     },
   },
