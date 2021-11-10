@@ -1,7 +1,5 @@
 <template>
   <section id="statistics">
-    <navbar :color="color" :flat="flat" />
-
     <v-row class="mx-10">
       <v-col cols="12" sm="12">
         <v-card
@@ -126,10 +124,8 @@
 </template>
 
 <script>
-import Navbar from "../components/Navigation.vue";
 import axios from "axios";
 export default {
-  components: { Navbar },
   beforeMount() {
     this.getReportesRecogidos();
     this.gettotalReportes();

@@ -1,5 +1,33 @@
 <template>
   <div class="dashboard">
+    <!-- ...............................................Sidebar........................................................-->
+    <nav>
+      <v-navigation-drawer v-model="drawer" app>
+        <div class="sul-box-raised-2 with-hover">
+          <v-divider></v-divider>
+          <v-list>
+            <v-col cols="12" sm="12" justify="center" align-self="center">
+              <v-list-item
+                v-for="[icon, text] in links"
+                :key="icon"
+                link
+                @click="sideBarAction(icon)"
+              >
+                <v-list-item-icon>
+                  <v-icon>{{ icon }}</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-content>
+                  <v-list-item-title>{{ text }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-col>
+          </v-list>
+        </div>
+      </v-navigation-drawer>
+    </nav>
+
+    <!-- ...............................................Seccion principal........................................................-->
     <v-window v-model="step">
       <v-window-item :value="1">
         <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
@@ -146,9 +174,12 @@
                             <br />
                           </v-row>
 
-                          <v-btn color="green" class="mt-6 modalButton" 
-                          @click="putEstado(report)"
-                          tile>
+                          <v-btn
+                            color="green"
+                            class="mt-6 modalButton"
+                            @click="putEstado(report)"
+                            tile
+                          >
                             Cambiar estado
                           </v-btn>
                         </div>
@@ -161,20 +192,31 @@
           </v-col>
         </v-row>
       </v-window-item>
+      <!-- ...............................................Seccion Home........................................................-->
+      <v-window-item :value="2">
+        <v-row>
+          <v-col cols="10"> <home></home> </v-col>
+        </v-row>
+      </v-window-item>
+      <!-- ...............................................Seccion Feed........................................................-->
+      <v-window-item :value="3">
+        <feed></feed>
+      </v-window-item>
     </v-window>
-    <sidebar></sidebar>
   </div>
 </template>
 
 <script>
-import Sidebar from "../components/Sidebar.vue";
+import home from "../components/LoggedHome.vue";
+import feed from "../components/LoginFeed.vue";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import axios from "axios";
 export default {
   components: {
-    Sidebar,
+    home,
+    feed,
   },
-    token: "",
+  token: "",
   name: "Dashboard",
   data() {
     return {
@@ -192,6 +234,12 @@ export default {
           color: "deep-orange darken-1",
         },
       ],
+      links: [
+        ["mdi-microsoft-windows", "Tablero"],
+        ["mdi-home", "Inicio"],
+        ["mdi-format-line-weight", "Feed"],
+        ["mdi-logout", "Salir"],
+      ],
       reports: [],
       reportsNorecogidos: [],
     };
@@ -206,6 +254,15 @@ export default {
     console.log("ACAAAAAAA");
   },
   methods: {
+    sideBarAction(item) {
+      if (item == "mdi-microsoft-windows") {
+        this.step = 1;
+      } else if (item == "mdi-home") {
+        this.step = 2;
+      } else if (item == "mdi-format-line-weight") {
+        this.step = 3;
+      }
+    },
     onButtonClick(item) {
       console.log("click on " + item.no);
     },

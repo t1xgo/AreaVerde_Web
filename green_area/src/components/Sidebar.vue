@@ -30,7 +30,11 @@ export default {
   props: ["drawer"],
   data() {
     return {
-      links: [["mdi-microsoft-windows", "Tablero"]],
+      links: [
+        ["mdi-microsoft-windows", "Inicio"],
+        ["mdi-format-line-weight", "Feed"],
+        ["mdi-logout", "Salir"],
+      ],
     };
   },
 };

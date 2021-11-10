@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
+    "@mdi/font": "^6.4.95",
     "axios": "^0.23.0",
     "core-js": "^3.6.5",
     "lint": "^0.7.0",

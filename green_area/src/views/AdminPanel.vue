@@ -69,7 +69,7 @@
                 v-for="[icon, text] in links"
                 :key="icon"
                 link
-                @click="goBack(icon)"
+                @click="sideBarAction(icon)"
               >
                 <v-list-item-icon>
                   <v-icon>{{ icon }}</v-icon>
@@ -160,7 +160,7 @@
                   :headers="headers"
                   :items="estadisticas"
                   :items-per-page="5"
-                  class="elevation-1 px-10 py-5 my-10 mx-5"
+                  class="elevation-1 px-10 py-5 my-10 mx-5 subtitle-1"
                 >
                 </v-data-table>
               </div>
@@ -179,7 +179,9 @@
                   v-if="this.dialogError == true"
                   :estadoDialog="true"
                   :tituloMensaje="'Error'"
-                  :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
+                  :mensaje="
+                    'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
+                  "
                 />
                 <v-row justify="center" align="center">
                   <v-col cols="12" sm="6">
@@ -309,7 +311,6 @@
           <v-col sm="12" cols="12">
             <v-row align="center" justify="center">
               <v-col align="center" justify="center">
-                
                 <div
                   class="my-5 py-5"
                   v-for="report in reports"
@@ -394,14 +395,31 @@
           </v-col>
         </v-row>
       </v-window-item>
+
+      <!-- ...............................................Seccion Home........................................................-->
+      <v-window-item :value="4">
+        <v-row>
+          <v-col cols="10"> <home></home> </v-col>
+        </v-row>
+      </v-window-item>
+      <!-- ...............................................Seccion Feed........................................................-->
+      <v-window-item :value="5">
+        <feed></feed>
+      </v-window-item>
     </v-window>
   </div>
 </template>
 
 <script>
+import home from "../components/LoggedHome.vue";
+import feed from "../components/LoginFeed.vue";
 import axios from "axios";
 import Swal from "sweetalert2/src/sweetalert2.js";
 export default {
+  components: {
+    home,
+    feed,
+  },
   reporteEnEdicion: "",
   recolectorSeleccionado: "",
   Cambiocategoria: "",
@@ -456,7 +474,12 @@ export default {
       showingReportsModal: false,
       showingTestModal: false,
       //SideBar links
-      links: [["mdi-microsoft-windows", "Tablero"]],
+      links: [
+        ["mdi-microsoft-windows", "Tablero"],
+        ["mdi-home", "Inicio"],
+        ["mdi-format-line-weight", "Feed"],
+        ["mdi-logout", "Salir"],
+      ],
       //....................................................................
       categorias: ["Reciclable", "Organico", "No reciclable"],
       reports: [],
@@ -493,10 +516,23 @@ export default {
           align: "start",
           sortable: false,
           value: "name",
+          class: "white--text subtitle-1",
         },
-        { text: "Codigo Blanco", value: "sinaprobar" },
-        { text: "Codigo Verde", value: "pendientes" },
-        { text: "Codigo Negro", value: "recogidos" },
+        {
+          text: "Codigo Blanco",
+          value: "sinaprobar",
+          class: "white--text subtitle-1",
+        },
+        {
+          text: "Codigo Verde",
+          value: "pendientes",
+          class: "white--text subtitle-1",
+        },
+        {
+          text: "Codigo Negro",
+          value: "recogidos",
+          class: "white--text subtitle-1",
+        },
       ],
       //Table data
       estadisticas: [
@@ -522,9 +558,13 @@ export default {
     };
   },
   methods: {
-    goBack(item) {
+    sideBarAction(item) {
       if (item == "mdi-microsoft-windows") {
         this.step = 1;
+      } else if (item == "mdi-home") {
+        this.step = 4;
+      } else if (item == "mdi-format-line-weight") {
+        this.step = 5;
       }
     },
     reloadPage() {
@@ -848,15 +888,14 @@ table {
   font-family: "Open Sans", sans-serif;
   width: 750px;
   border-collapse: collapse;
-  border: 3px solid #44475c;
   margin: 10px 10px 0 10px;
 }
 
 table th {
   text-transform: uppercase;
   text-align: left;
-  background: #44475c;
-  color: #ebecf0;
+  background: #4caf50;
+  color: white;
   padding: 8px;
   min-width: 30px;
 }
@@ -864,13 +903,13 @@ table th {
 table td {
   text-align: left;
   padding: 8px;
-  border-right: 2px solid #7d82a8;
+  border-right: 2px solid #20bf55;
 }
 table td:last-child {
   border-right: none;
 }
 table tbody tr:nth-child(2n) td {
-  background: #d4d8f9;
+  background: #ebecf0;
 }
 #popUpBox {
   display: flex;

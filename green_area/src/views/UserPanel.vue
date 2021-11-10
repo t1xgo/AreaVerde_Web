@@ -1,114 +1,149 @@
 <template>
   <div class="dashboard">
-    <sidebar></sidebar>
-    <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
-      <h1>Tablero</h1>
-    </v-subheader>
-    <br />
-    <v-row>
-      <v-col sm="6" cols="12">
-        <div class="sul-box-raised-1 with-hover">
-          <v-alert dense text type="success">
-            Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
-          </v-alert>
+    <!-- ...............................................Sidebar........................................................-->
+    <nav>
+      <v-navigation-drawer v-model="drawer" app>
+        <div class="sul-box-raised-2 with-hover">
+          <v-divider></v-divider>
+          <v-list>
+            <v-col cols="12" sm="12" justify="center" align-self="center">
+              <v-list-item
+                v-for="[icon, text] in links"
+                :key="icon"
+                link
+                @click="sideBarAction(icon)"
+              >
+                <v-list-item-icon>
+                  <v-icon>{{ icon }}</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-content>
+                  <v-list-item-title>{{ text }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-col>
+          </v-list>
         </div>
-      </v-col>
-    </v-row>
+      </v-navigation-drawer>
+    </nav>
 
-    <v-row justify="center" align="center">
-      <v-col sm="12" cols="12">
-        <v-card class="mt-5 mb-10 mx-10">
-          <div class="sul-box-inset-1 with-hover">
-            <v-row justify="center" align="center">
-              <v-col cols="12" sm="6">
-                <v-card-text class="mt-12">
-                  <h2 class="text-center">Agregar un reporte</h2>
-                  <h4 class="text-center grey--text">
-                    Por favor ingresa la información necesaria para poder hacer
-                    un reporte
-                  </h4>
-                  <v-form
-                    ref="formReport"
-                    v-model="valid"
-                    class="pa-3 pt-4"
-                    lazy-validation
-                  >
-                    <v-row align="center" justify="center">
-                      <v-col cols="12" sm="8" align="center" justify="center">
-                        <v-text-field
-                          :rules="rules"
-                          v-model="report.descripcion"
-                          label="Descripción (opcional)"
-                          color="green"
-                          autocomplete="false"
-                          class="my-5 sul-text-field"
-                        >
-                        </v-text-field>
-                        <v-text-field
-                          :rules="rules"
-                          class="my-5 sul-text-field"
-                          v-model="report.ubicacion"
-                          label="Ubicación"
-                          color="green"
-                          autocomplete="false"
-                        >
-                        </v-text-field>
+    <!-- ...............................................Seccion principal........................................................-->
 
-                        <v-select
-                          :rules="rules"
-                          v-model="report.id_categoria"
-                          :items="categoria"
-                          label="Categoría"
-                          color="green"
-                          outlined
-                          class="sul-select"
-                        ></v-select>
+    <v-window v-model="step">
+      <v-window-item :value="1">
+        <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
+          <h1>Tablero</h1>
+        </v-subheader>
+        <br />
+        <v-row>
+          <v-col sm="6" cols="12">
+            <div class="sul-box-raised-1 with-hover">
+              <v-alert dense text type="success">
+                Ingreso exitoso! Bienvenido a <strong>Area verde</strong>
+              </v-alert>
+            </div>
+          </v-col>
+        </v-row>
 
-                        <v-btn
-                          color="green"
-                          class="my-3 pb-5 perpendButton"
-                          dark
-                        >
-                          <v-file-input
-                            :rules="rules"
-                            hide-input
-                            class="pt-4 pl-2"
-                            v-model="report.rutaimagen"
-                            color="green"
-                            accept="image/png, image/jpeg, image/bmp"
-                            prepend-inner-icon="mdi-camera"
-                          ></v-file-input>
-                        </v-btn>
+        <v-row justify="center" align="center">
+          <v-col sm="12" cols="12">
+            <v-card class="mt-5 mb-10 mx-10">
+              <div class="sul-box-inset-1 with-hover">
+                <v-row justify="center" align="center">
+                  <v-col cols="12" sm="6">
+                    <v-card-text class="mt-12">
+                      <h2 class="text-center">Agregar un reporte</h2>
+                      <h4 class="text-center grey--text">
+                        Por favor ingresa la información necesaria para poder
+                        hacer un reporte
+                      </h4>
+                      <v-form
+                        ref="formReport"
+                        v-model="valid"
+                        class="pa-3 pt-4"
+                        lazy-validation
+                      >
+                        <v-row align="center" justify="center">
+                          <v-col
+                            cols="12"
+                            sm="8"
+                            align="center"
+                            justify="center"
+                          >
+                            <v-text-field
+                              :rules="rules"
+                              v-model="report.descripcion"
+                              label="Descripción (opcional)"
+                              color="green"
+                              autocomplete="false"
+                              class="my-5 sul-text-field"
+                            >
+                            </v-text-field>
+                            <v-text-field
+                              :rules="rules"
+                              class="my-5 sul-text-field"
+                              v-model="report.ubicacion"
+                              label="Ubicación"
+                              color="green"
+                              autocomplete="false"
+                            >
+                            </v-text-field>
 
-                        <br />
-                        <v-btn
-                          @click="createReport()"
-                          class="modalButton"
-                          block
-                          tile
-                        >
-                          Reportar
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-form>
-                </v-card-text>
-              </v-col>
-            </v-row>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
+                            <v-select
+                              :rules="rules"
+                              v-model="report.id_categoria"
+                              :items="categoria"
+                              label="Categoría"
+                              color="green"
+                              outlined
+                              class="sul-select"
+                            ></v-select>
 
-    <v-row class="feedRow">
-      <v-col
-        sm="12"
-        cols="12"
-        v-for="report in reports"
-        :key="report.id_reporte"
-      >
-        <v-card
-          class="
+                            <v-btn
+                              color="green"
+                              class="my-3 pb-5 perpendButton"
+                              dark
+                            >
+                              <v-file-input
+                                :rules="rules"
+                                hide-input
+                                class="pt-4 pl-2"
+                                v-model="report.rutaimagen"
+                                color="green"
+                                accept="image/png, image/jpeg, image/bmp"
+                                prepend-inner-icon="mdi-camera"
+                              ></v-file-input>
+                            </v-btn>
+
+                            <br />
+                            <v-btn
+                              @click="createReport()"
+                              class="modalButton"
+                              block
+                              tile
+                            >
+                              Reportar
+                            </v-btn>
+                          </v-col>
+                        </v-row>
+                      </v-form>
+                    </v-card-text>
+                  </v-col>
+                </v-row>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+
+        <v-row class="feedRow">
+          <v-col
+            sm="12"
+            cols="12"
+            v-for="report in reports"
+            :key="report.id_reporte"
+          >
+            <v-card
+              class="
             mx-12
             rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-xl
             mt-n15
@@ -118,62 +153,76 @@
             py-7
             my-15
           "
-          color="#ebecf0"
-          shaped
-        >
-          <div class="sul-box-inset-1 with-hover">
-            <v-row align="center" justify="center">
-              <v-col
-                cols="12"
-                sm="12"
-                class="d-md-flex"
-                align="center"
-                justify="center"
-              >
-                <img
-                  :src="`${pathImg}${report.rutaimagen}`"
-                  width="60%"
-                  class="d-block ml-auto mr-auto pt-5"
-                />
-              </v-col>
-            </v-row>
-            <v-row align="center" justify="center">
-              <v-col
-                cols="12"
-                sm="8"
-                class="text-center"
-                align="center"
-                justify="center"
-              >
-                <h4 class="font-weight-regular subtitle-1 text-center mb-5">
-                  <strong> Descripción: </strong>
-                  {{ report.descripcion }}
+              color="#ebecf0"
+              shaped
+            >
+              <div class="sul-box-inset-1 with-hover">
+                <v-row align="center" justify="center">
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    class="d-md-flex"
+                    align="center"
+                    justify="center"
+                  >
+                    <img
+                      :src="`${pathImg}${report.rutaimagen}`"
+                      width="60%"
+                      class="d-block ml-auto mr-auto pt-5"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row align="center" justify="center">
+                  <v-col
+                    cols="12"
+                    sm="8"
+                    class="text-center"
+                    align="center"
+                    justify="center"
+                  >
+                    <h4 class="font-weight-regular subtitle-1 text-center mb-5">
+                      <strong> Descripción: </strong>
+                      {{ report.descripcion }}
+                      <br />
+                      <br />
+                      <strong> Ubicación: </strong>
+                      {{ report.ubicacion }}
+                      <br />
+                      <br />
+                      <strong> Estado: </strong>
+                      {{ report.estado }}
+                      <br />
+                      <br />
+                      <strong> Categoria: </strong>
+                      {{ report.categoria }}
+                    </h4>
+                  </v-col>
                   <br />
-                  <br />
-                  <strong> Ubicación: </strong>
-                  {{ report.ubicacion }}
-                  <br />
-                  <br />
-                  <strong> Estado: </strong>
-                  {{ report.estado }}
-                  <br />
-                  <br />
-                  <strong> Categoria: </strong>
-                  {{ report.categoria }}
-                </h4>
-              </v-col>
-              <br />
-            </v-row>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
+                </v-row>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-window-item>
+
+      <!-- ...............................................Seccion Home........................................................-->
+      <v-window-item :value="2">
+        <v-row>
+          <v-col cols="10"> <home></home> </v-col>
+        </v-row>
+      </v-window-item>
+      <!-- ...............................................Seccion Feed........................................................-->
+      <v-window-item :value="3">
+        <feed></feed>
+      </v-window-item>
+    </v-window>
   </div>
 </template>
 
 <script>
+import home from "../components/LoggedHome.vue";
+import feed from "../components/LoginFeed.vue";
 import axios from "axios";
-import Sidebar from "../components/Sidebar.vue";
 import Swal from "sweetalert2";
 export default {
   beforeMount() {
@@ -181,12 +230,13 @@ export default {
   },
 
   components: {
-    Sidebar,
+    home,
+    feed,
   },
-
   name: "Dashboard",
   data() {
     return {
+      step: 1,
       dialogError: false,
       //Data spinner categorías
       categoria: ["Reciclable", "Organicos", "No reciclables"],
@@ -205,6 +255,12 @@ export default {
 
       //JSON reports para listarlos
       reports: [],
+      links: [
+        ["mdi-microsoft-windows", "Tablero"],
+        ["mdi-home", "Inicio"],
+        ["mdi-format-line-weight", "Feed"],
+        ["mdi-logout", "Salir"],
+      ],
 
       //Reglas formReport
       rules: {
@@ -219,6 +275,15 @@ export default {
   },
 
   methods: {
+    sideBarAction(item) {
+      if (item == "mdi-microsoft-windows") {
+        this.step = 1;
+      } else if (item == "mdi-home") {
+        this.step = 2;
+      } else if (item == "mdi-format-line-weight") {
+        this.step = 3;
+      }
+    },
     cleanCampos() {
       (this.report.descripcion = ""),
         (this.report.ubicacion = ""),
