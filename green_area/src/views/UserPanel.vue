@@ -71,7 +71,6 @@
                             justify="center"
                           >
                             <v-text-field
-                              :rules="rules"
                               v-model="report.descripcion"
                               label="Descripción (opcional)"
                               color="green"
@@ -80,7 +79,7 @@
                             >
                             </v-text-field>
                             <v-text-field
-                              :rules="rules"
+                              :rules="rules.required"
                               class="my-5 sul-text-field"
                               v-model="report.ubicacion"
                               label="Ubicación"
@@ -90,7 +89,7 @@
                             </v-text-field>
 
                             <v-select
-                              :rules="rules"
+                              :rules="rules.required"
                               v-model="report.id_categoria"
                               :items="categoria"
                               label="Categoría"
@@ -105,7 +104,7 @@
                               dark
                             >
                               <v-file-input
-                                :rules="rules"
+                                :rules="rules.required"
                                 hide-input
                                 class="pt-4 pl-2"
                                 v-model="report.rutaimagen"
@@ -389,7 +388,7 @@ export default {
           Swal.fire({
             type: "error",
             title: "Ups...",
-            text: error,
+            text: "Favor diligenciar todos los campos",
           });
         }
       } else {
