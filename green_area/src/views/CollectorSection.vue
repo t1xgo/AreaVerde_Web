@@ -192,12 +192,6 @@
           </v-col>
         </v-row>
       </v-window-item>
-      <!-- ...............................................Seccion Home........................................................-->
-      <v-window-item :value="2">
-        <v-row>
-          <v-col cols="10"> <home></home> </v-col>
-        </v-row>
-      </v-window-item>
       <!-- ...............................................Seccion Feed........................................................-->
       <v-window-item :value="3">
         <feed></feed>
@@ -207,13 +201,11 @@
 </template>
 
 <script>
-import home from "../components/LoggedHome.vue";
 import feed from "../components/LoginFeed.vue";
 import Swal from "sweetalert2/src/sweetalert2.js";
 import axios from "axios";
 export default {
   components: {
-    home,
     feed,
   },
   token: "",
@@ -236,7 +228,6 @@ export default {
       ],
       links: [
         ["mdi-microsoft-windows", "Tablero"],
-        ["mdi-home", "Inicio"],
         ["mdi-format-line-weight", "Feed"],
         ["mdi-logout", "Salir"],
       ],
@@ -257,8 +248,6 @@ export default {
     sideBarAction(item) {
       if (item == "mdi-microsoft-windows") {
         this.step = 1;
-      } else if (item == "mdi-home") {
-        this.step = 2;
       } else if (item == "mdi-format-line-weight") {
         this.step = 3;
       }

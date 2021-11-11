@@ -311,7 +311,6 @@
           <v-col sm="12" cols="12">
             <v-row align="center" justify="center">
               <v-col align="center" justify="center">
-                
                 <div
                   class="my-5 py-5"
                   v-for="report in reports"
@@ -396,13 +395,6 @@
           </v-col>
         </v-row>
       </v-window-item>
-
-      <!-- ...............................................Seccion Home........................................................-->
-      <v-window-item :value="4">
-        <v-row>
-          <v-col cols="10"> <home></home> </v-col>
-        </v-row>
-      </v-window-item>
       <!-- ...............................................Seccion Feed........................................................-->
       <v-window-item :value="5">
         <feed></feed>
@@ -412,13 +404,11 @@
 </template>
 
 <script>
-import home from "../components/LoggedHome.vue";
 import feed from "../components/LoginFeed.vue";
 import axios from "axios";
 import Swal from "sweetalert2/src/sweetalert2.js";
 export default {
   components: {
-    home,
     feed,
   },
   reporteEnEdicion: "",
@@ -477,7 +467,6 @@ export default {
       //SideBar links
       links: [
         ["mdi-microsoft-windows", "Tablero"],
-        ["mdi-home", "Inicio"],
         ["mdi-format-line-weight", "Feed"],
         ["mdi-logout", "Salir"],
       ],
@@ -562,8 +551,6 @@ export default {
     sideBarAction(item) {
       if (item == "mdi-microsoft-windows") {
         this.step = 1;
-      } else if (item == "mdi-home") {
-        this.step = 4;
       } else if (item == "mdi-format-line-weight") {
         this.step = 5;
       }
