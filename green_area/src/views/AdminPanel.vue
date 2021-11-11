@@ -179,9 +179,7 @@
                   v-if="this.dialogError == true"
                   :estadoDialog="true"
                   :tituloMensaje="'Error'"
-                  :mensaje="
-                    'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
-                  "
+                  :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
                 />
                 <v-row justify="center" align="center">
                   <v-col cols="12" sm="6">
@@ -436,23 +434,24 @@ export default {
     return {
       rules: {
         required: [(v) => !!v || "El campo es obligatorio"],
-        min: (v) => v.length >= 8 || "Min 8 characters",
         emailRules: [
           (v) => !!v || "El campo es obligatorio",
-          (v) => /[a-zA-Z0-9.]+@.+(..{2,3}){1,2}/.test(v) || "Correo invalido",
+          (v) =>
+            /^[a-zA-Z0-9.]+@([a-z]|[A-Z]).+(..{2,3}){1,2}$/.test(v) ||
+            "Correo invalido",
         ],
         doc: [
           (v) => !!v || "El campo es obligatorio",
-          (v) => /[0-9+]/.test(v) || "Ingrese solo numeros",
+          (v) => /^[0-9+]*$/.test(v) || "Ingrese solo numeros",
           (v) => v.length <= 20 || "Max 20 caracteres",
         ],
         texto: [
           (v) => !!v || "El campo es obligatorio",
-          (v) => /[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(v) || "Ingrese solo letras",
+          (v) => /^[a-zA-ZñÑáé íóúÁÉÍÓÚ]*$/.test(v) || "Ingrese solo letras",
         ],
         celular: [
           (v) => !!v || "El campo es obligatorio",
-          (v) => /[0-9+]/.test(v) || "Ingrese solo numeros",
+          (v) => /^[0-9+]*$/.test(v) || "Ingrese solo numeros",
           (v) => v.length == 10 || "Debe ingresar 10 caracteres",
         ],
       },
@@ -626,18 +625,26 @@ export default {
     async eliminar(report) {
       let token = this.token;
       try {
-        await axios.delete(
+        let response = await axios.delete(
           `http://localhost:3001/eliminarReporte/${report.id_reporte}`,
           {
             headers: { token },
           }
         );
-        Swal.fire({
-          icon: "success",
-          title: "Ok...",
-          text: "Reporte eliminado",
-        });
-        this.reloadPage();
+        if (response.data.ok == true) {
+          Swal.fire({
+            icon: "success",
+            title: "Ok...",
+            text: "Reporte eliminado",
+          });
+          this.reloadPage();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Error eliminando el reporte",
+          });
+        }
       } catch (error) {
         console.error(error);
       }
@@ -683,7 +690,7 @@ export default {
         }
         let token = this.token;
         try {
-          await axios.put(
+          let response = await axios.put(
             "http://localhost:3001/estadoAprobadoCategoria",
             report,
             {
@@ -691,12 +698,20 @@ export default {
             }
           );
           this.showingReportsModal = false;
-          Swal.fire({
-            icon: "success",
-            title: "Ok...",
-            text: "Reporte actualizado",
-          });
-          this.reloadPage();
+          if (response.data.ok == true) {
+            Swal.fire({
+              icon: "success",
+              title: "Ok...",
+              text: "Reporte actualizado",
+            });
+            this.reloadPage();
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Ups...",
+              text: "Error actualizando el reporte",
+            });
+          }
         } catch (error) {
           console.log(error);
         }
@@ -721,14 +736,28 @@ export default {
     async putEstado(report) {
       let token = this.token;
       try {
-        await axios.put("http://localhost:3001/estadoAprobado", report, {
-          headers: { token },
-        });
-        Swal.fire({
-          icon: "success",
-          title: "Ok...",
-          text: "Reporte actualizado",
-        });
+        let response = await axios.put(
+          "http://localhost:3001/estadoAprobado",
+          report,
+          {
+            headers: { token },
+          }
+        );
+        if (response.data.ok == true) {
+          Swal.fire({
+            icon: "success",
+            title: "Ok...",
+            text: "Reporte actualizado",
+          });
+          this.reloadPage();
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Error actualizando el reporte",
+          });
+        }
+
         this.reloadPage();
       } catch (error) {
         console.log(error);
@@ -754,15 +783,27 @@ export default {
           recolector.id_categoriarecolector = 3;
         }
         try {
-          await axios.put("http://localhost:3001/putrecolectores", recolector, {
-            headers: { token },
-          });
-          Swal.fire({
-            icon: "success",
-            title: "Ok...",
-            text: "Categoria actualizada",
-          });
-          this.reloadPage();
+          let response = await axios.put(
+            "http://localhost:3001/putrecolectores",
+            recolector,
+            {
+              headers: { token },
+            }
+          );
+          if (response.data.ok == true) {
+            Swal.fire({
+              icon: "success",
+              title: "Ok...",
+              text: "Categoria actualizada",
+            });
+            this.reloadPage();
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Ups...",
+              text: "Error actualizando la categoria",
+            });
+          }
         } catch (error) {
           console.log(error);
         }
@@ -795,50 +836,58 @@ export default {
     },
     async crearRecolecor() {
       if (this.$refs.formReport.validate()) {
-        let tipo;
-        if (this.categoria == "Reciclable") {
-          tipo = 1;
-        } else if (this.categoria == "Organico") {
-          tipo = 2;
-        } else if (this.categoria == "No reciclable") {
-          tipo = 3;
-        }
-        let recolector = {
-          nombre: this.nombre,
-          cedula: this.documento,
-          celular: this.celular,
-          correo: this.correo,
-          id_categoriarecolector: tipo,
-        };
-        let token = this.token;
-        try {
-          await axios.post(
-            "http://localhost:3001/postrecolectores",
-            recolector,
-            {
-              headers: { token },
+            let tipo;
+            if (this.categoria == "Reciclable") {
+              tipo = 1;
+            } else if (this.categoria == "Organico") {
+              tipo = 2;
+            } else if (this.categoria == "No reciclable") {
+              tipo = 3;
             }
-          );
-          Swal.fire({
-            icon: "success",
-            title: "Ok...",
-            text: "Categoria actualizada",
-          });
-          this.reloadPage();
-        } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Ups...",
-            text: "Diligencie correctamente el formulario",
-          });
-          console.log(error);
-        }
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Ups...",
-          text: "Diligencie correctamente el formulario",
-        });
+            let recolector = {
+              nombre: this.nombre,
+              cedula: this.documento,
+              celular: this.celular,
+              correo: this.correo,
+              id_categoriarecolector: tipo,
+            };
+            let token = this.token;
+            try {
+              let response = await axios.post(
+                "http://localhost:3001/postrecolectores",
+                recolector,
+                {
+                  headers: { token },
+                }
+              );
+              if (response.data.ok == true) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Ok...",
+                  text: "Recolector creado. El usuario y contraseña son el documento de identificación",
+                });
+                this.reloadPage();
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Ups...",
+                  text: "Error creando el recolector",
+                });
+              }
+            } catch (error) {
+              Swal.fire({
+                icon: "error",
+                title: "Ups...",
+                text: "Diligencie correctamente el formulario",
+              });
+              console.log(error);
+            }
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Ups...",
+              text: "Diligencie correctamente el formulario",
+            });
       }
     },
   },
