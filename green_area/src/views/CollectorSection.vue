@@ -95,10 +95,6 @@
                                 {{ report.ubicacion }}
                                 <br />
                                 <br />
-                                <strong> Estado: </strong>
-                                {{ report.estado }}
-                                <br />
-                                <br />
                                 <strong> Categoria: </strong>
                                 {{ report.categoria }}
                               </h4>
@@ -161,11 +157,7 @@
                                 <br />
                                 <strong> Ubicación: </strong>
                                 {{ report.ubicacion }}
-                                <br />
-                                <br />
-                                <strong> Estado: </strong>
-                                {{ report.estado }}
-                                <br />
+                                <br />                      
                                 <br />
                                 <strong> Categoria: </strong>
                                 {{ report.categoria }}
