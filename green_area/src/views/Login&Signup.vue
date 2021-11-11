@@ -280,6 +280,9 @@ export default {
   components: {
     Navbar,
   },
+  beforeMount() {
+    this.cleanCampos()
+  },
   dialogError: false,
   data: () => ({
     checkbox: false,
@@ -329,6 +332,11 @@ export default {
     save(date) {
       this.$refs.menu.save(date);
     },
+    async cleanCampos()
+    {
+      (this.usuario.usuario = ""),
+      (this.usuario.password = "")
+    },
     async crearUsuario() {
       if (this.$refs.formRegistro.validate()) {
         try {
@@ -376,6 +384,7 @@ export default {
             this.usuario
           );
           let usuario = response.data;
+          this.cleanCampos();
           if (usuario.ok == true) {
             let rol = usuario.content.rol;
             let id = usuario.content.id;

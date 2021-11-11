@@ -272,6 +272,9 @@ export default {
       } else if (item == "mdi-format-line-weight") {
         this.step = 3;
       }
+      else if (item == "mdi-logout") {
+        this.$router.push("/login")
+      }
     },
     indicarImpacto(categoria) {
       if (categoria == "Organicos") {

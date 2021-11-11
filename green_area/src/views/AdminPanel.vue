@@ -179,7 +179,9 @@
                   v-if="this.dialogError == true"
                   :estadoDialog="true"
                   :tituloMensaje="'Error'"
-                  :mensaje="'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'"
+                  :mensaje="
+                    'Ocurrió un error creando el reclector, verifique que todos los campos estén ingresados y/o que la información sea valida'
+                  "
                 />
                 <v-row justify="center" align="center">
                   <v-col cols="12" sm="6">
@@ -552,6 +554,8 @@ export default {
         this.step = 1;
       } else if (item == "mdi-format-line-weight") {
         this.step = 5;
+      } else if (item == "mdi-logout") {
+        this.$router.push("/login");
       }
     },
     reloadPage() {
@@ -836,58 +840,59 @@ export default {
     },
     async crearRecolecor() {
       if (this.$refs.formReport.validate()) {
-            let tipo;
-            if (this.categoria == "Reciclable") {
-              tipo = 1;
-            } else if (this.categoria == "Organico") {
-              tipo = 2;
-            } else if (this.categoria == "No reciclable") {
-              tipo = 3;
+        let tipo;
+        if (this.categoria == "Reciclable") {
+          tipo = 1;
+        } else if (this.categoria == "Organico") {
+          tipo = 2;
+        } else if (this.categoria == "No reciclable") {
+          tipo = 3;
+        }
+        let recolector = {
+          nombre: this.nombre,
+          cedula: this.documento,
+          celular: this.celular,
+          correo: this.correo,
+          id_categoriarecolector: tipo,
+        };
+        let token = this.token;
+        try {
+          let response = await axios.post(
+            "http://localhost:3001/postrecolectores",
+            recolector,
+            {
+              headers: { token },
             }
-            let recolector = {
-              nombre: this.nombre,
-              cedula: this.documento,
-              celular: this.celular,
-              correo: this.correo,
-              id_categoriarecolector: tipo,
-            };
-            let token = this.token;
-            try {
-              let response = await axios.post(
-                "http://localhost:3001/postrecolectores",
-                recolector,
-                {
-                  headers: { token },
-                }
-              );
-              if (response.data.ok == true) {
-                Swal.fire({
-                  icon: "success",
-                  title: "Ok...",
-                  text: "Recolector creado. El usuario y contraseña son el documento de identificación",
-                });
-                this.reloadPage();
-              } else {
-                Swal.fire({
-                  icon: "error",
-                  title: "Ups...",
-                  text: "Error creando el recolector",
-                });
-              }
-            } catch (error) {
-              Swal.fire({
-                icon: "error",
-                title: "Ups...",
-                text: "Diligencie correctamente el formulario",
-              });
-              console.log(error);
-            }
+          );
+          if (response.data.ok == true) {
+            Swal.fire({
+              icon: "success",
+              title: "Ok...",
+              text:
+                "Recolector creado. El usuario y contraseña son el documento de identificación",
+            });
+            this.reloadPage();
           } else {
             Swal.fire({
               icon: "error",
               title: "Ups...",
-              text: "Diligencie correctamente el formulario",
+              text: "Error creando el recolector",
             });
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Ups...",
+            text: "Diligencie correctamente el formulario",
+          });
+          console.log(error);
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Ups...",
+          text: "Diligencie correctamente el formulario",
+        });
       }
     },
   },

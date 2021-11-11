@@ -168,7 +168,7 @@
                                 <br />
                                 <br />
                                 <strong> Categoria: </strong>
-                                {{ report.id_categoria }}
+                                {{ report.categoria }}
                               </h4>
                             </v-col>
                             <br />
@@ -250,6 +250,8 @@ export default {
         this.step = 1;
       } else if (item == "mdi-format-line-weight") {
         this.step = 3;
+      } else if (item == "mdi-logout") {
+        this.$router.push("/login");
       }
     },
     onButtonClick(item) {
